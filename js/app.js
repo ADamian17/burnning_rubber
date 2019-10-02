@@ -44,22 +44,49 @@ let mainCarHeight = 10;
 let mainCarWidth = 75;
 let carX = (canvas.width-mainCarWidth) / 2;
 
+//--keys variables--//-- They are false because the control buttons are not pressed//
+// let rightPressed = false;
+// let leftPressed = false;
+
+
+
 
 
 
 //-------- function --------//
 
-function drawCar() {
+
+//----- main car start -------//
+
+drawCar = () => {
     ctx.beginPath();
-    ctx.rect(carX, canvas.height-mainCarHeight, mainCarWidth, mainCarHeight);
+    // ctx.rect(carX, canvas.height-mainCarHeight, mainCarWidth, mainCarHeight);
     let img = new Image();
     img.src = "image/cars3.png";
-    img.onload = function(){
-        ctx.drawImage(img, 90, 90, 50, 50);
+    img.onload = () => {
+        ctx.drawImage(img, 5, 40, 50, 50);
     }
     ctx.closePath();
 }
 
+//----- main car ends -------//
+
+//----- other cars start ------// 
+ obstacleCars = () => {
+    ctx.beginPath();
+    let yTruck = new Image();
+    yTruck.src = "image/yellow_truck.png";
+    yTruck.onload = () => {
+        ctx.drawImage(yTruck, 80, 80, 50, 50);
+    }
+    ctx.closePath();
+
+ }
+
+
+//----- other cars end ------// 
+
+obstacleCars();
 drawCar();
 
 
