@@ -1,6 +1,30 @@
-canvas{
-    background-color: #fff334;
-    border: 2px solid #000000;
-    width: 500px;
-    height: 650px;
+*{
+    font-family: sans-serif;
+    padding: 0;
+    margin:0;
+    box-sizing:border-box ;
 }
+
+button{
+    font-size: 15px;
+    margin: 30px;
+}
+
+
+canvas {
+    background-image: url(../image/street_four_lane_divided.jpg4353b9f8-24f0-4500-a3fb-da99e773a367Larger.jpg);
+    background-position: center;
+    border: 2px solid #000000;
+    margin: 200px;
+    width: 500px;
+    height: 750px;
+}
+/* 
+footer{
+    background: #000000;
+    width: 100%;
+    padding: 30PX 20PX;
+    font-size: 18px;
+    text-align: center;
+    color: #ffffff;
+} */

@@ -29,18 +29,38 @@ console.log('Hello Adonis!')
 //-------- event listener ---------//
  
 $('#start').on('click', () => {
-gameStart();
-});
+   console.log("I'm working!")
+  
+})
+  
+    
+ 
 
-//----------- functions -----------//
+
+//----------- variables -----------//  
+let canvas = document.getElementById("gameArea");
+let ctx = canvas.getContext("2d");
+let mainCarHeight = 10;
+let mainCarWidth = 75;
+let carX = (canvas.width-mainCarWidth) / 2;
 
 
 
-const gameStart = (event) => {
-    let canvas = document.getElementById("gameArea");
-    var mainCar = canvas.getContext("2d");
-    mainCar.fillStyle = "#FF0000";
-    mainCar.fillRect(130, 100, 20, 20);
+
+//-------- function --------//
+
+function drawCar() {
+    ctx.beginPath();
+    ctx.rect(carX, canvas.height-mainCarHeight, mainCarWidth, mainCarHeight);
+    let img = new Image();
+    img.src = "image/cars3.png";
+    img.onload = function(){
+        ctx.drawImage(img, 90, 90, 50, 50);
+    }
+    ctx.closePath();
 }
+
+drawCar();
+
 
 
