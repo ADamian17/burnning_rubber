@@ -40,42 +40,41 @@ $(document).ready(function () {
 
 //------------------------//
 
+
+
 //-------- main car ------------------///
 
-
-
-
- createAuto = () => {
-    let player1 = $('<div class="player"></div>'); /* Utilices un objeto */
+createAuto = () => {
+    let $player1 = $('<div class="player"></div>'); /* Utilices un objeto */
     // $(player1).css('background', 'red');
-     $(player1).css('bottom', '3%');
-    $(player1).css('left', '45%');
+     $($player1).css('bottom', '3%');
+    $($player1).css('left', '45%');
 
 
 
-    $("#gameArea").append(player1);
+    $("#gameArea").append($player1);
 
     $( "body" ).keypress(function( event ) {
-        var anchoRoad = $("#gameArea").width();
-        var anchoPlayer = $(player1).width();
+        let $anchoRoad = $("#gameArea").width();
+        let $anchoPlayer = $($player1).width();
         
 
         if ( event.which == 97 ) {
-            let left = $(player1).position().left;
-
-            //mientras el left no sea negativo que disminuya
-
-            left -= 3;
-            $(player1).css('left', left + "px");
+            let left = $($player1).position().left;
+            if(left > 15){
+                left -= 5;
+                $($player1).css('left', left + "px");
+            }
+    
         }
         if ( event.which == 100 ) {
-            var right = $(player1).position().left;
-            console.log(right);
-        
-            //mientras el left no sea mayor que el ancho de la carretera menos el ancho el carro entonces aumentas a la izquierda.
-
-            right += 3;
-            $(player1).css('left', right + "px");
+            let right = $($player1).position().left;
+            if(right < 425){
+                right += 5;
+                $($player1).css('left', right + "px");
+            }
         }
     });
 }
+
+//--------------------------------------------------------//
