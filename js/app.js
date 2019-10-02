@@ -26,68 +26,56 @@ console.log('Hello Adonis!')
 //--- level 5
 //-- 50 cars 
 
-//-------- event listener ---------//
- 
-$('#start').on('click', () => {
-   console.log("I'm working!")
-  
-})
-  
-    
- 
+//---- start button  ------ //
 
+$(document).ready(function () {
+     
+    let start = $('<button class="start">Start</button>');
+    $("#gameArea").append(start);
+    $(start).click(function (a) {
+        createAuto();
+        $(start).hide();
+    });
+});
 
-//----------- variables -----------//  
-let canvas = document.getElementById("gameArea");
-let ctx = canvas.getContext("2d");
-let mainCarHeight = 10;
-let mainCarWidth = 75;
-let carX = (canvas.width-mainCarWidth) / 2;
+//------------------------//
 
-//--keys variables--//-- They are false because the control buttons are not pressed//
-// let rightPressed = false;
-// let leftPressed = false;
+//-------- main car ------------------///
 
 
 
 
+ createAuto = () => {
+    let player1 = $('<div class="player"></div>'); /* Utilices un objeto */
+    // $(player1).css('background', 'red');
+     $(player1).css('bottom', '3%');
+    $(player1).css('left', '45%');
 
 
-//-------- function --------//
 
+    $("#gameArea").append(player1);
 
-//----- main car start -------//
+    $( "body" ).keypress(function( event ) {
+        var anchoRoad = $("#gameArea").width();
+        var anchoPlayer = $(player1).width();
+        
 
-drawCar = () => {
-    ctx.beginPath();
-    // ctx.rect(carX, canvas.height-mainCarHeight, mainCarWidth, mainCarHeight);
-    let img = new Image();
-    img.src = "image/cars3.png";
-    img.onload = () => {
-        ctx.drawImage(img, 5, 40, 50, 50);
-    }
-    ctx.closePath();
+        if ( event.which == 97 ) {
+            let left = $(player1).position().left;
+
+            //mientras el left no sea negativo que disminuya
+
+            left -= 3;
+            $(player1).css('left', left + "px");
+        }
+        if ( event.which == 100 ) {
+            var right = $(player1).position().left;
+            console.log(right);
+        
+            //mientras el left no sea mayor que el ancho de la carretera menos el ancho el carro entonces aumentas a la izquierda.
+
+            right += 3;
+            $(player1).css('left', right + "px");
+        }
+    });
 }
-
-//----- main car ends -------//
-
-//----- other cars start ------// 
- obstacleCars = () => {
-    ctx.beginPath();
-    let yTruck = new Image();
-    yTruck.src = "image/yellow_truck.png";
-    yTruck.onload = () => {
-        ctx.drawImage(yTruck, 80, 80, 50, 50);
-    }
-    ctx.closePath();
-
- }
-
-
-//----- other cars end ------// 
-
-obstacleCars();
-drawCar();
-
-
-
