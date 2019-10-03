@@ -47,11 +47,11 @@ $(document).ready(function () {
 
 
 const vechicles = {
-    yellowTruck: "../image/yellow_trunk.png",
-    camaro: "../image/camaro.png",
-    police: "../image/police.png", 
-    fireTruck: "../image/red_truck.png", 
-    greenTruck: "../image/green_truck.png", 
+    yellowTruck: "./image/yellow_truck.png",
+    camaro: "./image/camaro.png",
+    police: "./image/police.png", 
+    fireTruck: "./image/red_truck.png", 
+    greenTruck: "./image/green_truck.png", 
 
 }
 
@@ -91,7 +91,7 @@ const createAuto = () => {
         
     });
 
-   
+    makeObstacles(10);  
 }
 
 //--------------------------------------------------------//
@@ -107,28 +107,27 @@ const createAuto = () => {
 //---- make cars obstacles----------//
 
 const makeObstacles = (numeroDeCars) => {
-    
+
      const $gameCars = $('.cars');
     for (let i = 0; i < numeroDeCars; i++) {
-      const $gameCar = $('<div class="car">') 
-    //   $gameCar.css("background-image", randomCars());
+      const $gameCar = $('<div class="car"/>') 
+      $gameCar.css("background-image", `url(${randomCars()})`);
          $gameCars.prepend($gameCar);
          
     
     }
   
 }
-makeObstacles(5);   
+
 
 
 
 const randomCars = () => {
     console.log("i work!")
-    const gameCars = [vechicles.camaro, vechicles.police, vechicles.greenTruck, vechicles.yellowTruck, vechicles.fireTruck];
+    const gameCars = [vechicles.fireTruck, vechicles.greenTruck, vechicles.police, vechicles.camaro, vechicles.yellowTruck];
     const index = Math.floor(Math.random() * (gameCars.length));
 
-   console.log(gameCars[index]);
+   return gameCars[index];
 };
 
-
-randomCars();
+//---------------------------------------------------//
