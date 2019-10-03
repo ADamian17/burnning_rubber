@@ -73,28 +73,26 @@ const createAuto = () => {
         
     });
 
-    obstacles();
+   
 }
 
 //--------------------------------------------------------//
 
-let truck1 = $('<div class="cars yellow"></div>'); 
-let camaro = $('<div class="cars camaro"></div>'); 
-let police = $('<div class="cars police"></div>'); 
-let fireTruck = $('<div class="cars fire"></div>'); 
-let greenTruck = $('<div class="cars green"></div>'); 
 
 
-
-const obstacles = () => {
-
-    const $gameCars = [truck1, police, camaro, fireTruck, greenTruck];
-       for (let i = 0; i < $gameCars.length; i++) {
-         $($gameCars).css('top', '10%');
-         $('#gameArea').prepend($gameCars);
-       }
+//---- make car obstacles----------//
+const makeObstacles = (numeroDeCars) => {
+     console.log("i word hey!");
+     const $gameCars = $('.cars');
+    for (let i = 0; i < numeroDeCars; i++) {
+      const $gameCar = $('<div class="car">') 
+    //   $gameCar.css("background-image", randomCars());
+         $gameCars.prepend($gameCar);
+         
+    
+    }
   
 }
 
-
+makeObstacles(50);
 

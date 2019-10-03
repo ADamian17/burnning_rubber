@@ -1,37 +1,59 @@
+*{
+    margin: 0;
+    padding: 0;
+    text-decoration: none;
+}
+/* body{
+ background-image: url(../image/sunset.jpg);
+ background-size: cover;
+ background-position: center;
+}
+header{
+    color:#ffffff;
+    text-align: center;
+    font-family: 'Mansalva', cursive;
+    font-size: 30px;
+}
+
+.container{
+    display: inline-block;
+    color: #ffffff;
+} */
+
 #gameArea {
     background-image: url(../image/road2.jpg);
-    /* background-size: cover;  */
+    background-size: cover;
     background-position: top center;
     max-width: 500px;
     height: 650px;
     margin: 0 auto;
+    margin-top: 20px;
+    margin-bottom: 20px;
     position: relative;
     background-repeat: repeat-y;
     animation: animatedBackground 1s linear infinite;/* Para que mi pista sea mi referencia en las coordenadas 0.0*/
 }
 
 @keyframes animatedBackground {
-	/* from { background-position: top; }
-    to { background-position:  bottom; } */
+	
     from {
         background-position-y: 0;
     }
 
     to {
-        background-position-y: 500%;
+        background-position-y: 600%;
     }
 }
 
- /*@keyframes animatedBackground2 {
-	/* from { background-position: top; }
-    to { background-position:  bottom; } 
+@keyframes animatedBackground2 {
+	
     from {
         background-position-y: 0;
     }
 
     to {
-        background-position-y: 3000%;
-    }*/
+        background-position-y: 2000%;
+    }
 }
 
 
@@ -59,6 +81,7 @@
    background-image: url(../image/yellow_truck.png);
    background-size: contain;
    background-repeat: no-repeat;
+  
 }
 
 .camaro{
