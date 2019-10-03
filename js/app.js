@@ -23,27 +23,11 @@ console.log('Hello Adonis!')
 //-- 30 cars
 //--- level 4
 //-- 40 cars
-//--- level 5
-//-- 50 cars 
-
-//---- start button  ------ //
-
-$(document).ready(function () {
-     
-    let start = $('<button class="start">Start</button>');
-    $("#gameArea").append(start);
-    $(start).on('click', function (a) {
-        createAuto();
-        $(start).hide();
-    });
-});
-
-//------------------------//
 
 
 
 
-//------------- Object ----------------//
+//------------- Object and array ----------------//
 
 
 const vechicles = {
@@ -55,19 +39,45 @@ const vechicles = {
 
 }
 
-console.log(vechicles.camaro);
+const gameCars = [vechicles.fireTruck, vechicles.greenTruck, vechicles.police, vechicles.camaro, vechicles.yellowTruck];
 //----------------------------------------//
 
 
 
+//----intervalos y variables---//
+
+let interval1 = 0;
+let interval2 = 0;
+let $player1; 
+
+//---------------------//
+
+
+//---- start button  ------ //
+
+$(document).ready(function () {
+     
+    let start = $('<button class="start">Start</button>');
+    $("#gameArea").append(start);
+    $(start).on('click', function (a) {
+        $("#gameArea .player1, #gameArea .cars").remove();
+        createAuto();
+        randomCars();
+        makeObstacles();
+        $(start).hide();
+        $('#gameArea').addClass('animate');
+    });
+});
+
+//------------------------//
+
 //-------- main car ------------------///
 
 const createAuto = () => {
-    let $player1 = $('<div class="player"></div>'); /* Utilices un objeto */
+
+    $player1 = $('<div class="player"></div>'); 
      $($player1).css('bottom', '3%');
      $($player1).css('left', '45%');
-
-
 
     $("#gameArea").append($player1);
 
@@ -76,7 +86,7 @@ const createAuto = () => {
         if ( event.which == 97 ) {
             let left = $($player1).position().left;
             if(left > 15){
-                left -= 5;
+                left -= 15;
                 $($player1).css('left', left + "px");
             }
     
@@ -84,50 +94,45 @@ const createAuto = () => {
         if ( event.which == 100 ) {
             let right = $($player1).position().left;
             if(right < 425){
-                right += 5;
+                right += 15;
                 $($player1).css('left', right + "px");
             }
         }
         
     });
 
-    makeObstacles(10);  
+    
 }
-
-//--------------------------------------------------------//
-
-
-
-//create a function the display obtacle cars
-//display the cars in random positions
-//animate the car so they go for top to bottom
-//random position in the screen
 
 
 //---- make cars obstacles----------//
 
-const makeObstacles = (numeroDeCars) => {
-
-     const $gameCars = $('.cars');
-    for (let i = 0; i < numeroDeCars; i++) {
-      const $gameCar = $('<div class="car"/>') 
-      $gameCar.css("background-image", `url(${randomCars()})`);
-         $gameCars.prepend($gameCar);
-         
+const makeObstacles = () => {
+    inteval1 = setInterval(randomCars,1000); //Se crea un carro cada 3 segundos
     
-    }
-  
+    
 }
 
-
-
-
 const randomCars = () => {
-    console.log("i work!")
-    const gameCars = [vechicles.fireTruck, vechicles.greenTruck, vechicles.police, vechicles.camaro, vechicles.yellowTruck];
-    const index = Math.floor(Math.random() * (gameCars.length));
+    //other car
+    let $gameCar = $('<div class="car"/>'); 
+    let cars = Math.ceil(Math.random() * 10);
+        $gameCar.css("background-image", `url(${gameCars[cars]})`);
+        
+    //en posicion de 500
+    let widthCar = 50;
+    let pos = Math.ceil(Math.random() * 10);
 
-   return gameCars[index];
+    if (pos !== 10) {
+        pos *= widthCar;
+
+        $($gameCar).css('top', '-60px');
+        $($gameCar).css('left', pos + 'px');
+
+         $('#gameArea').prepend($gameCar);
+            
+    }
+  
 };
 
 //---------------------------------------------------//

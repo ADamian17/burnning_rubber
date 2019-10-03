@@ -20,7 +20,7 @@
 
 #gameArea {
     background-image: url(../image/road2.jpg);
-    background-size: cover; 
+    /* background-size: cover;  */
     background-position: top center;
     max-width: 500px;
     height: 650px;
@@ -29,9 +29,12 @@
     margin-bottom: 20px;
     position: relative;
     background-repeat: repeat-y;
+    
+}
+.animate{
     animation: animatedBackground 1s linear infinite;/* Para que mi pista sea mi referencia en las coordenadas 0.0*/
 }
-
+/* level 1 */
 @keyframes animatedBackground {
 	
     from {
@@ -42,7 +45,9 @@
         background-position-y: 600%;
     }
 }
+ 
 
+/* leevl 2 */
 @keyframes animatedBackground2 {
 	
     from {
@@ -54,6 +59,31 @@
     }
 }
 
+/* level 3 */
+
+@keyframes animatedBackground3 {
+	
+    from {
+        background-position-y: 0;
+    }
+
+    to {
+        background-position-y: 2000%;
+    }
+}
+
+/* level 4 */
+
+@keyframes animatedBackground4 {
+	
+    from {
+        background-position-y: 0;
+    }
+
+    to {
+        background-position-y: 2000%;
+    }
+}
 
 .start{
     position: absolute;
@@ -67,7 +97,7 @@
     background-size: contain;
     background-repeat: no-repeat;
     position: absolute;
-    width: 60px;
+    width: 50px;
     height: 120px;
 }
 
