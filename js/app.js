@@ -44,11 +44,13 @@ const gameCars = [vechicles.fireTruck, vechicles.greenTruck, vechicles.police, v
 
 
 //----intervalos y variables---//
-
+let scrore = 0;
 let interval1 = 0;
 let interval2 = 0;
 let $player1; 
 let start = $('<button class="start">Start</button>');
+let restart = $('<button class="restart">Restart</button>');
+
 
 let lane = [400, 278, 160, 40];
 //---------------------//
@@ -65,6 +67,7 @@ $(document).ready(function () {
         createAuto();
         randomCars();
         makeObstacles();
+        setScore();
         $(start).hide();
         $('#gameArea').addClass('animate');
     });
@@ -120,12 +123,12 @@ const randomCars = () => {
     //other car
     let $gameCar = $('<div class="car"/>'); 
     let cars = Math.floor(Math.random() * gameCars.length);
-    console.log(cars);
         $gameCar.css("background-image", `url("${gameCars[cars]}")`);
-        
+        console.log(cars);
     
-    // let widthCar = 50;
+
     let pos = Math.floor(Math.random() * 4);
+    
 
     if (pos !== 4) {
         // pos *= widthCar;
@@ -174,8 +177,25 @@ const moveCar = () => {
 }
 
 
+//---------- handle score ---------------//
 
- gameOver = () => {
+const setScore = () => {
+    console.log('working');
+    scrore = $('<div class="wall"></div>'); 
+    $($player1).css('bottom', '3%');
+    $($player1).css('left', '45%');
+    $("#gameArea").append(scrore);
+
+    
+    
+    
+}
+
+
+
+
+
+const gameOver = () => {
     clearInterval(inteval2);
     clearInterval(inteval1);
     $('.player').addClass('explosion');
@@ -183,5 +203,6 @@ const moveCar = () => {
         $('.player').hide();
     },1000)
 
+    $(start).show();
 }
 

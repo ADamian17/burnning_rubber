@@ -72,6 +72,16 @@
 }
 
 
-.car.game-over{
-    background-image: url(../image/game-over.gif);
+.wall {
+  display: inline-block;
+  background-color: blue;
+  width: 500px;
+  height: 10px;  
+  margin-top: 128%;
 }
+
+/* 
+.playe.game-over{
+    background-image: url(../image/game-over.gif);
+    background-size:  50% 50%;
+} */
