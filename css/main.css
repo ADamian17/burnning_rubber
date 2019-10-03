@@ -1,11 +1,37 @@
 #gameArea {
-    background-image: url(../image/mainHighway.jpg);
-    background-size: cover;
-    background-position: center;
+    background-image: url(../image/road2.jpg);
+    /* background-size: cover;  */
+    background-position: top center;
     max-width: 500px;
     height: 650px;
     margin: 0 auto;
-    position: relative;  /* Para que mi pista sea mi referencia en las coordenadas 0.0*/
+    position: relative;
+    background-repeat: repeat-y;
+    animation: animatedBackground 1s linear infinite;/* Para que mi pista sea mi referencia en las coordenadas 0.0*/
+}
+
+@keyframes animatedBackground {
+	/* from { background-position: top; }
+    to { background-position:  bottom; } */
+    from {
+        background-position-y: 0;
+    }
+
+    to {
+        background-position-y: 500%;
+    }
+}
+
+ /*@keyframes animatedBackground2 {
+	/* from { background-position: top; }
+    to { background-position:  bottom; } 
+    from {
+        background-position-y: 0;
+    }
+
+    to {
+        background-position-y: 3000%;
+    }*/
 }
 
 
@@ -23,3 +49,40 @@
     width: 60px;
     height: 120px;
 }
+
+.cars{
+    width: 60px;
+    height: 120px;
+}
+
+.yellow {
+   background-image: url(../image/yellow_truck.png);
+   background-size: contain;
+   background-repeat: no-repeat;
+}
+
+.camaro{
+    background-image: url(../image/camaro.png);
+    background-size: contain;
+    background-repeat: no-repeat;
+}
+
+.police{
+    background-image: url(../image/police.png);
+    background-size: contain;
+    background-repeat: no-repeat;
+} 
+.fire{
+    background-image: url(../image/Fire-Truck-Top-Red-icon.png);
+    background-size: contain;
+    background-repeat: no-repeat;
+} 
+.green{
+    background-image: url(../image/Truck-Top-Green-icon.png);
+    background-size: contain;
+    background-repeat: no-repeat;
+} 
+
+
+
+
