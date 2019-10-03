@@ -22,7 +22,7 @@ header{
 
 #gameArea {
     background-image: url(../image/road2.jpg);
-    background-size: cover;
+    background-size: cover; 
     background-position: top center;
     max-width: 500px;
     height: 650px;
@@ -72,39 +72,11 @@ header{
     height: 120px;
 }
 
-.cars{
+.car{
     width: 60px;
     height: 120px;
 }
 
-.yellow {
-   background-image: url(../image/yellow_truck.png);
-   background-size: contain;
-   background-repeat: no-repeat;
-  
-}
-
-.camaro{
-    background-image: url(../image/camaro.png);
-    background-size: contain;
-    background-repeat: no-repeat;
-}
-
-.police{
-    background-image: url(../image/police.png);
-    background-size: contain;
-    background-repeat: no-repeat;
-} 
-.fire{
-    background-image: url(../image/Fire-Truck-Top-Red-icon.png);
-    background-size: contain;
-    background-repeat: no-repeat;
-} 
-.green{
-    background-image: url(../image/Truck-Top-Green-icon.png);
-    background-size: contain;
-    background-repeat: no-repeat;
-} 
 
 
 

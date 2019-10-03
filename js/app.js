@@ -16,7 +16,7 @@ console.log('Hello Adonis!')
 //--- levels ----//
 
 //--- level 1
-//-- 10 cars
+//-- 10  cars
 //--- level 2
 //-- 20 cars
 //--- level 3
@@ -39,6 +39,24 @@ $(document).ready(function () {
 });
 
 //------------------------//
+
+
+
+
+//------------- Object ----------------//
+
+
+const vechicles = {
+    yellowTruck: "../image/yellow_trunk.png",
+    camaro: "../image/camaro.png",
+    police: "../image/police.png", 
+    fireTruck: "../image/red_truck.png", 
+    greenTruck: "../image/green_truck.png", 
+
+}
+
+console.log(vechicles.camaro);
+//----------------------------------------//
 
 
 
@@ -80,9 +98,16 @@ const createAuto = () => {
 
 
 
-//---- make car obstacles----------//
+//create a function the display obtacle cars
+//display the cars in random positions
+//animate the car so they go for top to bottom
+//random position in the screen
+
+
+//---- make cars obstacles----------//
+
 const makeObstacles = (numeroDeCars) => {
-     console.log("i word hey!");
+    
      const $gameCars = $('.cars');
     for (let i = 0; i < numeroDeCars; i++) {
       const $gameCar = $('<div class="car">') 
@@ -93,6 +118,17 @@ const makeObstacles = (numeroDeCars) => {
     }
   
 }
+makeObstacles(5);   
 
-makeObstacles(50);
 
+
+const randomCars = () => {
+    console.log("i work!")
+    const gameCars = [vechicles.camaro, vechicles.police, vechicles.greenTruck, vechicles.yellowTruck, vechicles.fireTruck];
+    const index = Math.floor(Math.random() * (gameCars.length));
+
+   console.log(gameCars[index]);
+};
+
+
+randomCars();
