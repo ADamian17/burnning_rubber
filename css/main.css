@@ -3,31 +3,18 @@
     padding: 0;
     text-decoration: none;
 }
- body{
- overflow: hidden;
-}
-/*header{
-    color:#ffffff;
-    text-align: center;
-    font-family: 'Mansalva', cursive;
-    font-size: 30px;
-}
+ 
 
-.container{
-    display: inline-block;
-    color: #ffffff;
-} */
 
 #gameArea {
     background-image: url(../image/road2.jpg);
-    /* background-size: cover;  */
+    background-size: 500px 500px; 
     background-position: top center;
-    max-width: 500px;
+    width: 500px;
     height: 650px;
     margin: 0 auto;
-    margin-top: 20px;
-    margin-bottom: 20px;
-    position: relative;
+    position: relative; /* Para que mi pista sea mi referencia en las coordenadas 0.0*/
+    overflow: hidden;
     background-repeat: repeat-y;
     
 }
@@ -42,48 +29,10 @@
     }
 
     to {
-        background-position-y: 600%;
+        background-position-y: 500%;
     }
 }
  
-
-/* leevl 2 */
-@keyframes animatedBackground2 {
-	
-    from {
-        background-position-y: 0;
-    }
-
-    to {
-        background-position-y: 2000%;
-    }
-}
-
-/* level 3 */
-
-@keyframes animatedBackground3 {
-	
-    from {
-        background-position-y: 0;
-    }
-
-    to {
-        background-position-y: 2000%;
-    }
-}
-
-/* level 4 */
-
-@keyframes animatedBackground4 {
-	
-    from {
-        background-position-y: 0;
-    }
-
-    to {
-        background-position-y: 2000%;
-    }
-}
 
 .start{
     position: absolute;
@@ -92,32 +41,37 @@
     font-size: 20px;
 }
 
+.restart {
+    position: absolute;
+    left: 45%;
+    top: 50%;
+    font-size: 20px; 
+}
+
 .player {
     background-image: url(../image/cars3.png);
-    background-size: contain;
+    background-size: 100% 100%;
+    background-position: center;
     background-repeat: no-repeat;
     position: absolute;
-    width: 50px;
-    height: 120px;
+    width: 60px;
+    height: 110px;
 }
 
 .car{
-    background-size: contain;
+    background-size: 100% 100%;
+    background-position: center;
     background-repeat: no-repeat;
-    display: inline-block;
-    width: 60px;
-    height: 120px;
-    margin: 10px;
-}
-
-/* 
-.car div {
     position: absolute;
-    
+    width: 60px;
+    height: 110px;
 }
 
-.car div:nth-child(1){
-    left: 0%;
+.player.explosion {
+    background-image: url(../image/explosion-animation-1.gif);
 }
- */
 
+
+.car.game-over{
+    background-image: url(../image/game-over.gif);
+}

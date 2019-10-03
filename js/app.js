@@ -8,7 +8,6 @@ console.log('Hello Adonis!')
 //--- The user will have to avoid the cars coming in the opposite directtion.
 //--- the user will control the car by using the A and D. 
 //--- the User will get 5 points, everytime  he or she avoids an obstacle. 
-//--- Each level is going last 40 sec. 
 //--- the obstacle and the speed will increase as the levels gets higher. 
 //--- If the driver crashes the level, timer and the scrore will reset and the game starts again.
 
@@ -31,11 +30,11 @@ console.log('Hello Adonis!')
 
 
 const vechicles = {
-    yellowTruck: "./image/yellow_truck.png",
+    yellowTruck: "./image/truck1.png",
     camaro: "./image/camaro.png",
     police: "./image/police.png", 
-    fireTruck: "./image/red_truck.png", 
-    greenTruck: "./image/green_truck.png", 
+    fireTruck: "./image/truck3.png", 
+    greenTruck: "./image/truck3.png", 
 
 }
 
@@ -49,7 +48,9 @@ const gameCars = [vechicles.fireTruck, vechicles.greenTruck, vechicles.police, v
 let interval1 = 0;
 let interval2 = 0;
 let $player1; 
+let start = $('<button class="start">Start</button>');
 
+let lane = [400, 278, 160, 40];
 //---------------------//
 
 
@@ -57,10 +58,10 @@ let $player1;
 
 $(document).ready(function () {
      
-    let start = $('<button class="start">Start</button>');
+   
     $("#gameArea").append(start);
     $(start).on('click', function (a) {
-        $("#gameArea .player1, #gameArea .cars").remove();
+        $("#gameArea .player, #gameArea .cars").remove();
         createAuto();
         randomCars();
         makeObstacles();
@@ -82,7 +83,7 @@ const createAuto = () => {
     $("#gameArea").append($player1);
 
     $( "body" ).keypress(function( event ) {
-
+           event.preventDefault(); 
         if ( event.which == 97 ) {
             let left = $($player1).position().left;
             if(left > 15){
@@ -105,29 +106,32 @@ const createAuto = () => {
 }
 
 
-//---- make cars obstacles----------//
+//---- make cars sequencia----------//
 
 const makeObstacles = () => {
     inteval1 = setInterval(randomCars,1000); //Se crea un carro cada 3 segundos
-    
+    inteval2 = setInterval(moveCar, 50); //move cars
     
 }
 
+
+//-------cars ------------//
 const randomCars = () => {
     //other car
     let $gameCar = $('<div class="car"/>'); 
-    let cars = Math.ceil(Math.random() * 10);
-        $gameCar.css("background-image", `url(${gameCars[cars]})`);
+    let cars = Math.floor(Math.random() * gameCars.length);
+    console.log(cars);
+        $gameCar.css("background-image", `url("${gameCars[cars]}")`);
         
-    //en posicion de 500
-    let widthCar = 50;
-    let pos = Math.ceil(Math.random() * 10);
+    
+    // let widthCar = 50;
+    let pos = Math.floor(Math.random() * 4);
 
-    if (pos !== 10) {
-        pos *= widthCar;
-
+    if (pos !== 4) {
+        // pos *= widthCar;
+        
         $($gameCar).css('top', '-60px');
-        $($gameCar).css('left', pos + 'px');
+        $($gameCar).css('left',lane[pos] + 'px');
 
          $('#gameArea').prepend($gameCar);
             
@@ -135,4 +139,49 @@ const randomCars = () => {
   
 };
 
-//---------------------------------------------------//
+//https://developer.mozilla.org/en-US/docs/Games/Techniques/2D_collision_detection// grabed from here 
+const moveCar = () => {
+    $("#gameArea .car").each(function (a) {
+
+        //Calcular colission
+
+        let yP1 = $($player1).position().top;
+        let xP1 = $($player1).position().left;
+        let widthP1 = $($player1).width();
+        let heightP1 = $($player1).height();
+
+        let widthCart = $(this).width();
+        let heightCar = $(this).height();
+        let yCar = $(this).position().top;
+        let xCar = $(this).position().left;
+
+        if (xP1 < xCar + widthCart &&
+            xP1 + widthP1 > xCar &&
+            yP1 < yCar + heightCar &&
+            heightP1 + yP1 > yCar) {
+            gameOver();
+        }
+
+        let top = $(this).position().top;
+        if (top > 650){
+            $(this).remove();
+        }else{
+            top += 10;
+            $(this).css('top', top + 'px');
+        }
+
+    });
+}
+
+
+
+ gameOver = () => {
+    clearInterval(inteval2);
+    clearInterval(inteval1);
+    $('.player').addClass('explosion');
+    setTimeout(function () {
+        $('.player').hide();
+    },1000)
+
+}
+
