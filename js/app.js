@@ -44,7 +44,7 @@ const gameCars = [vechicles.fireTruck, vechicles.greenTruck, vechicles.police, v
 
 
 //----intervalos y variables---//
-let scrore = 0;
+let score = 0;
 let interval1 = 0;
 let interval2 = 0;
 let $player1; 
@@ -67,7 +67,6 @@ $(document).ready(function () {
         createAuto();
         randomCars();
         makeObstacles();
-        setScore();
         $(start).hide();
         $('#gameArea').addClass('animate');
     });
@@ -167,7 +166,10 @@ const moveCar = () => {
 
         let top = $(this).position().top;
         if (top > 650){
+            score += 1; 
+            console.log("score " + score);
             $(this).remove();
+
         }else{
             top += 10;
             $(this).css('top', top + 'px');
@@ -179,17 +181,6 @@ const moveCar = () => {
 
 //---------- handle score ---------------//
 
-const setScore = () => {
-    console.log('working');
-    scrore = $('<div class="wall"></div>'); 
-    $($player1).css('bottom', '3%');
-    $($player1).css('left', '45%');
-    $("#gameArea").append(scrore);
-
-    
-    
-    
-}
 
 
 
