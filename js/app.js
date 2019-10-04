@@ -20,7 +20,7 @@ const vechicles = {
     camaro: "./image/camaro.png",
     police: "./image/police.png", 
     fireTruck: "./image/truck3.png", 
-    greenTruck: "./image/truck3.png", 
+    greenTruck: "./image/truck2.png", 
 
 }
 
@@ -170,7 +170,9 @@ const gameOver = () => {
     clearInterval(inteval2);
     clearInterval(inteval1);
     $('.player').addClass('explosion');
-    location.reload(true);
+    $('.car').remove()
+    $('#gameArea').removeClass('animate');
+    $('h3').text('scoreboard: 0')
     setTimeout(function () {
         $('.player').hide();
     },1000)

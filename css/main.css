@@ -14,7 +14,7 @@ body{
 
 header{
     text-align: center;
-    background-color: blueviolet;
+    background-color: rgba(red, green, blue, alpha);
     font-family: 'Kaushan Script', cursive;
     color: #fff;
     margin: 0 auto;
