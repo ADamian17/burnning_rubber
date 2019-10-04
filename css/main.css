@@ -8,18 +8,37 @@ body{
     background-image: url(../image/arcade3.jpg);
     background-position: center;
     background-size: cover;
+    margin: 0 auto;
 
 
 }
 
-header{
+.titulo{
     text-align: center;
-    background-color: rgba(red, green, blue, alpha);
-    font-family: 'Kaushan Script', cursive;
+    font-family: 'Underdog', cursive;
     color: #fff;
     margin: 0 auto;
+    margin-top: 30px;
 }
 
+h1{
+    font-size: 100px;
+    color: #F28D35;
+    text-shadow: 5px 6px #000000; 
+    margin: 20px;
+} 
+
+.fear { 
+    font-size: 50px;
+    color: #F28D35;
+    text-shadow: 5px 6px #000000; 
+    margin: 20px;
+}
+
+
+li{
+  display: none;
+}
 
 .container{
     display: inline-block;
@@ -34,6 +53,11 @@ h3 {
     color: #fff;
     text-align: center;
     
+}
+
+.howtoplay {
+    margin: 30px;
+    color: #fff;
 }
 
 
@@ -88,6 +112,7 @@ h3 {
     position: absolute;
     width: 60px;
     height: 110px;
+    border-radius: 20px; 
 }
 
 .car{
@@ -108,8 +133,15 @@ h3 {
 footer {
     width: auto;
     padding: 25px;
+    margin: 20px;
     margin-top: 10px;
-    background-color: blueviolet; 
-    color: #fff;
+    color: #000000;
     text-align: center;
+    font-weight: bolder;
+    font-size: 20px;
   }
+
+ 
+  
+  
+ 
