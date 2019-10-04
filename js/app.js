@@ -7,23 +7,9 @@ console.log('Hello Adonis!')
 //--- When the user click START, the user should see their car in the game window and the timer should start running.
 //--- The user will have to avoid the cars coming in the opposite directtion.
 //--- the user will control the car by using the A and D. 
-//--- the User will get 5 points, everytime  he or she avoids an obstacle. 
+//--- Everytime  he or she avoids an obstacle they get 1 point. 
 //--- the obstacle and the speed will increase as the levels gets higher. 
-//--- If the driver crashes the level, timer and the scrore will reset and the game starts again.
-
-
-//--- levels ----//
-
-//--- level 1
-//-- 10  cars
-//--- level 2
-//-- 20 cars
-//--- level 3
-//-- 30 cars
-//--- level 4
-//-- 40 cars
-
-
+//--- If the driver crashes the level, the scrore will reset and the game starts again.
 
 
 //------------- Object and array ----------------//
@@ -39,7 +25,6 @@ const vechicles = {
 }
 
 const gameCars = [vechicles.fireTruck, vechicles.greenTruck, vechicles.police, vechicles.camaro, vechicles.yellowTruck];
-//----------------------------------------//
 
 
 
@@ -53,12 +38,11 @@ let restart = $('<button class="restart">Restart</button>');
 
 
 let lane = [400, 278, 160, 40];
-//---------------------//
 
 
 //---- start button  ------ //
 
-$(document).ready(function () {
+$(document).ready(startGame = ()  => {
      
    
     $("#gameArea").append(start);
@@ -72,9 +56,8 @@ $(document).ready(function () {
     });
 });
 
-//------------------------//
 
-//-------- main car ------------------///
+//-------- main car ------------------//
 
 const createAuto = () => {
 
@@ -130,7 +113,6 @@ const randomCars = () => {
     
 
     if (pos !== 4) {
-        // pos *= widthCar;
         
         $($gameCar).css('top', '-60px');
         $($gameCar).css('left',lane[pos] + 'px');
@@ -165,8 +147,9 @@ const moveCar = () => {
         }
 
         let top = $(this).position().top;
-        if (top > 650){
+        if (top > 550){
             score += 1; 
+            $('h3').text(`scoreboard: ${score}`)
             console.log("score " + score);
             $(this).remove();
 
@@ -182,18 +165,15 @@ const moveCar = () => {
 //---------- handle score ---------------//
 
 
-
-
-
-
 const gameOver = () => {
     clearInterval(inteval2);
     clearInterval(inteval1);
     $('.player').addClass('explosion');
+    location.reload(true);
     setTimeout(function () {
         $('.player').hide();
     },1000)
-
+    
     $(start).show();
+   
 }
-

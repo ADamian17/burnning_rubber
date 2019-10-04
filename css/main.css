@@ -4,18 +4,50 @@
     text-decoration: none;
 }
  
+body{
+    background-image: url(../image/arcade3.jpg);
+    background-position: center;
+    background-size: cover;
+
+
+}
+
+header{
+    text-align: center;
+    background-color: blueviolet;
+    font-family: 'Kaushan Script', cursive;
+    color: #fff;
+    margin: 0 auto;
+}
+
+
+.container{
+    display: inline-block;
+    background-color: #000000;
+    width: 130px;
+    height: 50px;
+    margin: 15px;
+}
+
+
+h3 {
+    color: #fff;
+    text-align: center;
+    
+}
 
 
 #gameArea {
     background-image: url(../image/road2.jpg);
-    background-size: 500px 500px; 
+    background-size: 500px; 
     background-position: top center;
     width: 500px;
-    height: 650px;
+    height: 550px;
     margin: 0 auto;
     position: relative; /* Para que mi pista sea mi referencia en las coordenadas 0.0*/
     overflow: hidden;
     background-repeat: repeat-y;
+    border: 2px solid #000000;
     
 }
 .animate{
@@ -29,7 +61,7 @@
     }
 
     to {
-        background-position-y: 500%;
+        background-position-y: 600%;
     }
 }
  
@@ -72,8 +104,12 @@
 }
 
 
-/* 
-.playe.game-over{
-    background-image: url(../image/game-over.gif);
-    background-size:  50% 50%;
-} */
+
+footer {
+    width: auto;
+    padding: 25px;
+    margin-top: 10px;
+    background-color: blueviolet; 
+    color: #fff;
+    text-align: center;
+  }
