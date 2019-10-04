@@ -29,6 +29,7 @@ const gameCars = [vechicles.fireTruck, vechicles.greenTruck, vechicles.police, v
 
 
 //----intervalos y variables---//
+
 let score = 0;
 let interval1 = 0;
 let interval2 = 0;
