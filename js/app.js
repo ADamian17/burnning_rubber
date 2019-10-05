@@ -1,4 +1,3 @@
-console.log('Hello Adonis!')
 //------------- BURNNING RUBBER GAME------------------//
 
 
@@ -101,7 +100,7 @@ const createAuto = () => {
 //---- make cars sequencia----------//
 
 const makeObstacles = () => {
-    inteval1 = setInterval(randomCars,900); //Se crea un carro cada 3 segundos
+    inteval1 = setInterval(randomCars,1000); //Se crea un carro cada 3 segundos
     inteval2 = setInterval(moveCar, 50); //move cars
     
 }
@@ -156,7 +155,7 @@ const moveCar = () => {
         let top = $(this).position().top;
         if (top > 550){
             score += 1; 
-            console.log(score);
+            console.log("i got " + score);
             $('h3').text(`scoreboard: ${score}`);
             $(this).remove();
 
@@ -183,7 +182,7 @@ const gameOver = () => {
     $('.car').remove()
     $('#gameArea').removeClass('animate');
     score = 0;
-    console.log(score);
+    console.log("back to " + 0);
     $('h3').text('scoreboard: 0')
     setTimeout(function () {
         $('.player').hide();

@@ -73,7 +73,7 @@ h3 {
     text-align: center;
     width: 15%;
     margin: 10px;
-    padding-top: 20px;
+    padding-top: 10px;
     text-decoration: none;
      font-family: 'Underdog', cursive;
 }
@@ -89,6 +89,8 @@ h4{
 
 
 h4:hover {
+    color: #000000;
+    text-shadow: 2px 3px #F28D35;
     border-radius: 15px;
     cursor: pointer;
 }
@@ -125,9 +127,18 @@ h4:hover {
 
 .start{
     position: absolute;
-    left: 45%;
+    left: 43%;
     top: 50%;
-    font-size: 20px;
+    padding: 5px;
+    font-size: 30px;
+    border-radius: 5px;
+    font-family: 'Underdog', cursive;
+}
+
+.start:hover{
+    color:  #F28D35;
+    background-color: #000000;
+    cursor: pointer;
 }
 
 .restart {
@@ -169,7 +180,7 @@ footer {
     margin: 20px;
     margin-top: 10px;
     color: #000000;
-    text-align: center;
+    text-align: right;
     font-weight: bolder;
     font-size: 20px;
   }
