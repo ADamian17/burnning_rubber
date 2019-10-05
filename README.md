@@ -24,7 +24,7 @@
 
 # Documentation used:
 
-* ![JQuery](https://api.jquery.com/);
-* ![MDN web docs](https://developer.mozilla.org/en-US/);
-* ![stackoverFlow](https://stackoverflow.com);
-* ![3WSchools Online](https://stackoverflow.com);
+* [JQuery](https://api.jquery.com/);
+* [MDN web docs](https://developer.mozilla.org/en-US/);
+* [stackoverFlow](https://stackoverflow.com);
+* [3WSchools Online](https://stackoverflow.com);
