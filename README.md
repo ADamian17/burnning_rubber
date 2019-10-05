@@ -11,6 +11,6 @@
 
 # Wireframe
 
-![WireFrame1] (./image/WireFrame1.png);
-![WireFrame2] (./image/WireFrame2.png);
+![WireFrame1](./image/WireFrame1.png);
+![WireFrame2](./image/WireFrame2.png);
 
