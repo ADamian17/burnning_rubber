@@ -187,7 +187,7 @@ const gameOver = () => {
     $('h3').text('scoreboard: 0')
     setTimeout(function () {
         $('.player').hide();
-    },700)
+    },1000)
 
     
     $(start).show();

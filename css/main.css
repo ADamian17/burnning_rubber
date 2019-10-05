@@ -31,33 +31,66 @@ h1{
 .fear { 
     font-size: 50px;
     color: #F28D35;
-    text-shadow: 5px 6px #000000; 
+    text-shadow: 2px 3px #000000; 
     margin: 20px;
 }
 
-
+ul{
+ background-color: rgba(0, 0, 0, .7); 
+  text-decoration: none;  
+  list-style: none;
+ color: #fff;
+}
 li{
   display: none;
+  text-decoration: none;
+  font-size: 20px;
+  padding: 3px;
+  border-bottom: 1px solid #fff;
 }
 
-.container{
-    display: inline-block;
-    background-color: #000000;
-    width: 130px;
-    height: 50px;
-    margin: 15px;
+.score {
+     width: 15%; 
+     padding-top: 30px;
 }
 
+.main_container {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around; 
+    margin: 0 auto;
+}
 
 h3 {
-    color: #fff;
+    background-color: #fff;
+    color: #000000;
     text-align: center;
+    border: 2px solid #000000;
     
 }
 
 .howtoplay {
-    margin: 30px;
-    color: #fff;
+    text-align: center;
+    width: 15%;
+    margin: 10px;
+    padding-top: 20px;
+    text-decoration: none;
+     font-family: 'Underdog', cursive;
+}
+
+
+
+h4{
+ color: #F28D35;
+ font-size: 30px;
+ text-shadow: 2px 3px #000000;
+ font-weight: 600;
+}
+
+
+h4:hover {
+    border-radius: 15px;
+    cursor: pointer;
 }
 
 
@@ -67,7 +100,7 @@ h3 {
     background-position: top center;
     width: 500px;
     height: 550px;
-    margin: 0 auto;
+    margin: 30px;
     position: relative; /* Para que mi pista sea mi referencia en las coordenadas 0.0*/
     overflow: hidden;
     background-repeat: repeat-y;
