@@ -28,3 +28,8 @@
 * [MDN web docs](https://developer.mozilla.org/en-US/);
 * [stackoverFlow](https://stackoverflow.com);
 * [3WSchools Online](https://stackoverflow.com);
+* [Google](https://www.google.com/);
+
+# Technology used:
+* Visual Studio Code (VSC)
+* [mockupsApp](https://app.moqups.com);
