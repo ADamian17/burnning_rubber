@@ -1,14 +1,6 @@
 //------------- BURNNING RUBBER GAME------------------//
 
 
-//------------- User Storie/Game Logic------------------//
-
-//--- When the user click START, the user should see their car in the game window and the timer should start running.
-//--- The user will have to avoid the cars coming in the opposite directtion.
-//--- the user will control the car by using the A and D. 
-//--- Everytime  he or she avoids an obstacle they get 1 point. 
-//--- the obstacle and the speed will increase as the levels gets higher. 
-//--- If the driver crashes the level, the scrore will reset and the game starts again.
 
 
 //------------- Object and array ----------------//
@@ -68,12 +60,11 @@ const createAuto = () => {
     $player1 = $('<div class="player"></div>'); 
      $($player1).css('bottom', '3%');
      $($player1).css('left', '45%');
-
-    $("#gameArea").append($player1);
+     $("#gameArea").append($player1);
+    
+     //key functions
     ///https://api.jquery.com/category/events/keyboard-events/
-
-    //key functions
-    $( "body" ).keypress(function( event ) {
+    $( "body" ).keypress(function (event) {
            event.preventDefault(); 
         if ( event.which == 97 ) {
             let left = $($player1).position().left;
@@ -92,8 +83,6 @@ const createAuto = () => {
         }
         
     });
-
-    
 }
 
 
@@ -128,11 +117,12 @@ const randomCars = () => {
   
 };
 
-//https://developer.mozilla.org/en-US/docs/Games/Techniques/2D_collision_detection// grabed from here 
 const moveCar = () => {
     $("#gameArea .car").each(function (a) {
 
         //Calcular colission
+
+       //https://developer.mozilla.org/en-US/docs/Games/Techniques/2D_collision_detection// grabed from here //
 
         let yP1 = $($player1).position().top;
         let xP1 = $($player1).position().left;
@@ -153,21 +143,19 @@ const moveCar = () => {
         }
 
         let top = $(this).position().top;
-        if (top > 550){
+        if (top > 550) {
             score += 1; 
             console.log("i got " + score);
             $('h3').text(`scoreboard: ${score}`);
             $(this).remove();
 
-        }else{
+        } else {
             top += 10;
             $(this).css('top', top + 'px');
         }
 
     });
 }
-
-
 
 //---------- reset the game ---------------//
 
@@ -182,7 +170,6 @@ const gameOver = () => {
     $('.car').remove()
     $('#gameArea').removeClass('animate');
     score = 0;
-    console.log("back to " + 0);
     $('h3').text('scoreboard: 0')
     setTimeout(function () {
         $('.player').hide();
@@ -195,5 +182,5 @@ const gameOver = () => {
 
 
 $('.howtoplay h4',).on('click', function() {
-   $('li').slideToggle()
+   $('li').slideToggle(500);
 });
