@@ -34,3 +34,7 @@
 
 * Visual Studio Code (VSC)
 * [mockupsApp](https://app.moqups.com)
+
+
+# Link to the game 
+* [burningRubber](https://pages.git.generalassemb.ly/ADamian17/burnning_rubber/.);
