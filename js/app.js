@@ -27,18 +27,13 @@ let interval2 = 0;
 let $player1; 
 let start = $('<button class="start">Start</button>');
 let cardriving = document.getElementById('shift');
-
-
-
-
-let lane = [400, 278, 160, 40];
+let carsLane = [400, 278, 160, 40];
 
 
 //---- start button  ------ //
 
 $(document).ready(startGame = ()  => {
-     
-   
+    
     $("#gameArea").append(start);
     $(start).on('click', function (a) {
         $("#gameArea .player, #gameArea .cars").remove();
@@ -61,7 +56,6 @@ const createAuto = () => {
      $($player1).css('bottom', '3%');
      $($player1).css('left', '45%');
      $("#gameArea").append($player1);
-    
      //key functions
     ///https://api.jquery.com/category/events/keyboard-events/
     $( "body" ).keypress(function (event) {
@@ -89,9 +83,8 @@ const createAuto = () => {
 //---- make cars sequencia----------//
 
 const makeObstacles = () => {
-    inteval1 = setInterval(randomCars,1000); //Se crea un carro cada 3 segundos
+    inteval1 = setInterval(randomCars,1000); //Se crea un carro cada 1 segundos
     inteval2 = setInterval(moveCar, 50); //move cars
-    
 }
 
 
@@ -109,7 +102,7 @@ const randomCars = () => {
     if (pos !== 4) {
         
         $($gameCar).css('top', '-60px');
-        $($gameCar).css('left',lane[pos] + 'px');
+        $($gameCar).css('left',carsLane[pos] + 'px');
 
          $('#gameArea').prepend($gameCar);
             
@@ -129,7 +122,7 @@ const moveCar = () => {
         let widthP1 = $($player1).width();
         let heightP1 = $($player1).height();
 
-        let widthCart = $(this).width();
+        let widthCart = $(this).width(); // cada elemento que contien la clase car (carrros contrarios)
         let heightCar = $(this).height();
         let yCar = $(this).position().top;
         let xCar = $(this).position().left;
@@ -145,7 +138,6 @@ const moveCar = () => {
         let top = $(this).position().top;
         if (top > 550) {
             score += 1; 
-            console.log("i got " + score);
             $('h3').text(`scoreboard: ${score}`);
             $(this).remove();
 
