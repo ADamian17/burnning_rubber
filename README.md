@@ -37,4 +37,4 @@
 
 
 # Link to the game 
-* [burningRubber](https://pages.git.generalassemb.ly/ADamian17/burnning_rubber/.);
+* [burningRubber](https://pages.git.generalassemb.ly/ADamian17/burnning_rubber/.)

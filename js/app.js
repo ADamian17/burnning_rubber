@@ -138,7 +138,7 @@ const moveCar = () => {
         let top = $(this).position().top;
         if (top > 550) {
             score += 1; 
-            $('h3').text(`scoreboard: ${score}`);
+            $('h3').text(`score: ${score}`);
             $(this).remove();
 
         } else {
@@ -162,7 +162,7 @@ const gameOver = () => {
     $('.car').remove()
     $('#gameArea').removeClass('animate');
     score = 0;
-    $('h3').text('scoreboard: 0')
+    $('h3').text('score: 0')
     setTimeout(function () {
         $('.player').hide();
     },1000)
