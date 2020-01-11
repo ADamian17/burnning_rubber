@@ -56,26 +56,24 @@ const createAuto = () => {
      $($player1).css('bottom', '3%');
      $($player1).css('left', '45%');
      $("#gameArea").append($player1);
-     //key functions
-    ///https://api.jquery.com/category/events/keyboard-events/
-    $( "body" ).keypress(function (event) {
-           event.preventDefault(); 
-        if ( event.which == 97 ) {
-            let left = $($player1).position().left;
-            if(left > 15){
-                left -= 15;
-                $($player1).css('left', left + "px");
-            }
-    
-        }
-        if ( event.which == 100 ) {
-            let right = $($player1).position().left;
-            if(right < 425){
-                right += 15;
-                $($player1).css('left', right + "px");
-            }
-        }
-        
+     
+    $( "body" ).on("keydown",function (event) {
+        event.preventDefault(); 
+      if ( event.which == 37 ) {
+         let left = $($player1).position().left;
+         if(left > 15){
+             left -= 15;
+             $($player1).css('left', left + "px");
+         }
+      
+      }
+      if ( event.which == 39 ) {
+         let right = $($player1).position().left;
+         if(right < 425){
+             right += 15;
+             $($player1).css('left', right + "px");
+         }
+      }
     });
 }
 
