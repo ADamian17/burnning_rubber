@@ -113,13 +113,13 @@ h4:hover {
     border: 2px solid #000000;
     
 }
+
 .animate{
     animation: animatedBackground .8s linear infinite;/* Para que mi pista sea mi referencia en las coordenadas 0.0*/
 }
 
 
 @keyframes animatedBackground {
-	
     from {
         background-position-y: 0;
     }

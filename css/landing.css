@@ -1,0 +1,96 @@
+:root {
+    --title-font: 'Underdog', cursive;
+    --main-orange: #F28D35;
+    --ligth-orange: #f77503;
+}
+
+
+*{
+    margin: 0;
+    padding: 0;
+    text-decoration: none;
+}
+
+/* Main container styles */
+.main-container {
+    background-image: url(../image/arcade3.jpg);
+    background-position: center;
+    background-size: cover;
+    width: 100%;
+    height: 100vh;
+    display: flex;
+    flex-flow: column wrap;
+    justify-content: space-evenly;
+    align-items: center;
+
+}
+
+.header {
+    height: 200px;
+    display: flex;
+    flex-flow: row nowrap;
+    justify-content: center;
+}
+
+.titulo{
+    text-align: center;
+    font-family: 'Underdog', cursive;
+    color: #fff;
+}
+
+.main-title {
+    font-size: 100px;
+    color: var(--main-orange);
+    text-shadow: 5px 6px #000000; 
+}
+
+.fear { 
+    font-size: 50px;
+    color: var(--main-orange);
+    text-shadow: 2px 3px #000000; 
+}
+
+
+.game-menu {
+    background-image: url(../image/garagedoor.jpg);
+    background-position: center;
+    background-size: cover;
+    width: 300px;
+    height: 350px;
+    padding: 20px;
+    display: flex;
+    flex-flow: column wrap;
+    justify-content: space-around;
+    align-items: center;
+}
+
+/* NOTE buttons */
+.menu-item {
+    width: 200px;
+    height: 70px;
+    border: none;
+    font-family: var(--title-font);
+    font-size: 24px;
+    cursor: pointer;
+    outline: none;
+    box-shadow: 1px 1px 9px 10px #999;
+    background-color: var(--main-orange);
+}
+  
+  .menu-item:hover {
+    background-color: var(--ligth-orange);
+}
+  
+.menu-item:active {
+    background-color: var(--main-orange);
+    box-shadow: 0 5px #666;
+    transform: translateY(4px);
+}
+
+footer {
+    width: 100%;
+    display: flex;
+    flex-flow: row nowrap;
+    justify-content:  center;
+    font-size: 20px;
+}
