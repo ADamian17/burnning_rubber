@@ -1,25 +1,16 @@
-//------------- BURNNING RUBBER GAME------------------//
-
-
-
-
-//------------- Object and array ----------------//
-
+//------------- NOTE  Object and array ----------------//
 
 const vechicles = {
     yellowTruck: "./image/truck1.png",
     camaro: "./image/camaro.png",
     police: "./image/police.png", 
     fireTruck: "./image/truck3.png", 
-    greenTruck: "./image/truck2.png", 
-
+    greenTruck: "./image/truck2.png"
 }
 
-const gameCars = [vechicles.fireTruck, vechicles.greenTruck, vechicles.police, vechicles.camaro, vechicles.yellowTruck];
+const gameCars = [ vechicles.fireTruck, vechicles.greenTruck, vechicles.police, vechicles.camaro, vechicles.yellowTruck ];
 
-
-
-//----intervalos y variables---//
+//---- NOTE intervalos y variables---//
 
 let score = 0;
 let interval1 = 0;
@@ -30,7 +21,7 @@ let cardriving = document.getElementById('shift');
 let carsLane = [400, 278, 160, 40];
 
 
-//---- start button  ------ //
+//---- NOTE start button  ------ //
 
 $(document).ready(startGame = ()  => {
     
@@ -48,7 +39,7 @@ $(document).ready(startGame = ()  => {
 });
 
 
-//-------- main car ------------------//
+//-------- NOTE main car ------------------//
 
 const createAuto = () => {
 
@@ -78,15 +69,14 @@ const createAuto = () => {
 }
 
 
-//---- make cars sequencia----------//
+//---- NOTE make cars sequencia----------//
 
 const makeObstacles = () => {
     inteval1 = setInterval(randomCars,1000); //Se crea un carro cada 1 segundos
     inteval2 = setInterval(moveCar, 50); //move cars
 }
 
-
-//-------cars ------------//
+//------- NOTE cars ------------//
 const randomCars = () => {
 
     let $gameCar = $('<div class="car"/>'); 
@@ -111,10 +101,6 @@ const randomCars = () => {
 const moveCar = () => {
     $("#gameArea .car").each(function (a) {
 
-        //Calcular colission
-
-       //https://developer.mozilla.org/en-US/docs/Games/Techniques/2D_collision_detection// grabed from here //
-
         let yP1 = $($player1).position().top;
         let xP1 = $($player1).position().left;
         let widthP1 = $($player1).width();
@@ -136,7 +122,7 @@ const moveCar = () => {
         let top = $(this).position().top;
         if (top > 550) {
             score += 1; 
-            $('h3').text(`score: ${score}`);
+            $('h3').text(`Score: ${score}`);
             $(this).remove();
 
         } else {
@@ -147,30 +133,26 @@ const moveCar = () => {
     });
 }
 
-//---------- reset the game ---------------//
-
+//---------- NOTE reset the game ---------------//
 
 const gameOver = () => {
     let audio2 = document.getElementById('crash');
+
     clearInterval(inteval2);
     clearInterval(inteval1);
+
     $('.player').addClass('explosion');
     cardriving.pause();
     audio2.play();
+
     $('.car').remove()
     $('#gameArea').removeClass('animate');
     score = 0;
-    $('h3').text('score: 0')
+
+    $('h3').text('Score: 0')
     setTimeout(function () {
         $('.player').hide();
     },1000)
 
-    
     $(start).show();
-   
 }
-
-
-$('.howtoplay h4',).on('click', function() {
-   $('li').slideToggle(500);
-});

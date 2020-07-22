@@ -1,0 +1,87 @@
+#gameArea {
+    background-image: url(../image/road2.jpg);
+    background-size: 500px; 
+    background-position: top center;
+    width: 500px;
+    height: 550px;
+    position: relative; /* Para que mi pista sea mi referencia en las coordenadas 0.0*/
+    overflow: hidden;
+    background-repeat: repeat-y;
+    border: 2px solid #000000;
+    
+}
+
+.score-container {
+    display: grid;
+    justify-items: center;
+    align-items: center;
+    width: 100%;
+    height: 47px;
+    text-align: center;
+}
+
+.score-container h3 {
+    background-color: rgba(0, 0, 0, .7);
+    border-radius: 5px;
+    width: 160px;
+    height: 35px;
+    letter-spacing: 2px;
+    font-size: 30px;
+}
+
+.animate {
+    animation: animatedBackground .8s linear infinite;/* Para que mi pista sea mi referencia en las coordenadas 0.0*/
+}
+
+
+@keyframes animatedBackground {
+    from {
+        background-position-y: 0;
+    }
+
+    to {
+        background-position-y: 500%;
+    }
+}
+
+.start{
+    position: absolute;
+    left: 43%;
+    top: 50%;
+    padding: 5px;
+    font-size: 30px;
+    border-radius: 5px;
+    font-family: 'Underdog', cursive;
+}
+
+.start:hover{
+    color:  #F28D35;
+    background-color: #000000;
+    cursor: pointer;
+}
+
+
+
+.player {
+    background-image: url(../image/cars3.png);
+    background-size: 100% 100%;
+    background-position: center;
+    background-repeat: no-repeat;
+    position: absolute;
+    width: 60px;
+    height: 110px;
+    border-radius: 20px; 
+}
+
+.car{
+    background-size: 100% 100%;
+    background-position: center;
+    background-repeat: no-repeat;
+    position: absolute;
+    width: 60px;
+    height: 110px;
+}
+
+.player.explosion {
+    background-image: url(../image/explosion-animation-1.gif);
+}
