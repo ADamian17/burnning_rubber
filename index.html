@@ -1,52 +1,68 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <link href="https://fonts.googleapis.com/css?family=Mansalva&display=swap" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css?family=Kaushan+Script&display=swap" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css?family=Underdog&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="./css/main.css">
-    <script defer src="./js/jquery-2.1.3.min.js"></script>
-    <script defer src="./js/app.js" ></script>
-    <title>Burnning Rubber</title>
-</head>
-  <body>
-    <audio id="shift" src="./sounds/carfinal.mp3" preload="auto"></audio>
-    <audio id="crash" src="./sounds/Explosion+7.mp3"></audio>
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta http-equiv="X-UA-Compatible" content="ie=edge">
+        <link href="https://fonts.googleapis.com/css?family=Mansalva&display=swap" rel="stylesheet">
+        <link href="https://fonts.googleapis.com/css?family=Kaushan+Script&display=swap" rel="stylesheet">
+        <link href="https://fonts.googleapis.com/css?family=Underdog&display=swap" rel="stylesheet">
+        <link rel="shortcut icon" href="./image/favicon.ico" type="image/x-icon">
+        <link rel="stylesheet" href="./css/main.css">
+        <link rel="stylesheet" href="./css/landing.css">
+        <link rel="stylesheet" href="./css/modal.css">
+        <script defer src="./js/jquery-2.1.3.min.js"></script>
+        <script defer src="./js/modal.js"></script>
+        <title>Burnning Rubber</title>
+    </head>
+    <body>
+        <div class="main-container">
 
-    <header class="titulo">
+            <div class="header-container">
+                <header class="titulo-container">
+                    <p class="main-title">Burning Rubber</p>
+                    <br />
+                    <p class="fear">"Fear The Road"</p>
+                </header>
+            </div>
+    
+    
+            <div class="main-content">
+                <div class="game-menu">
+                    <button class="menu-item"><a href="./gameArea.html">Play</a></button>
+                    <button id="myBtn" class="menu-item">How To Play</button>
+                    <button class="menu-item"><a href="./credits/credits.html">Credits</a></button>
+                </div>   
+            </div>
+    
+            <div class="footer-container">
+                <footer>
+                    <p>&copy; 2019 Adonis D Martin</p>
+                </footer> 
+            </div>
+        </div>
 
-      <h1>Burning Rubber</h1>
-      <p class="fear">"Fear The Road"</p>
-
-    </header>
-  <section class="main_container"> 
-    <section class="howtoplay">
-        <h4>How to play:</h4>
-        <ul class="rules">
-          <li>Click start to begin the game.</li>
-        
-          <li>Use the keyboard keys <span class="redLetter">Left Arrow</span> and <span class="redLetter">Right Arrow</span> to control the car.</li>
-        
-          <li>Everytime the user avoids an obstacle, the user get one point.</li>
-        
-          <li>If the user crashes the game restar.</li>
-         
-        </ul>
-    </section>
-    <section id="gameArea"></section>
-
-    <section class="score">
-      <h3>Score: 0</h3>
-  
-      </section> 
-  </section> 
-    <footer>
-
-      <p>&copy; 2019 AD .Org</p>
-
-    </footer>  
-  </body>
+        <!-- NOTE Modal -->
+        <!-- The Modal -->
+        <div id="myModal" class="modal">
+            <!-- Modal content -->
+            <div class="modal-content howtoplay">
+                <div>
+                    <span class="close">&times;</span>
+                </div>
+                <div class="rules-container">
+                    <h4>How to play:</h4>
+                    <ul class="rules">
+                        <li>Click start to begin the game.</li>
+                        
+                        <li>Use the <span class="redLetter">Left Arrow</span> and <span class="redLetter">Right Arrow</span> to control the car.</li>
+                        
+                        <li>Everytime the user avoids an obstacle, the user get one point.</li>
+                        
+                        <li>If the user crashes the car, the game restar.</li>    
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </body>
 </html> 
