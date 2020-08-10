@@ -1,9 +1,9 @@
 # Burning Rubber 
 
-# Link to the game 
-* [burningRubber](burningrubber.netlify.app)
+### Link to the game 
+* [burningRubber](https://burningrubber.netlify.app/)
 
-## User Stories/Game Logic:
+### User Stories/Game Logic:
 * When the user click START, to start the game. 
 * In the bottom of the game area the user should see a red car.
 * the user will control the car by using the keyboard keys A and D. 
