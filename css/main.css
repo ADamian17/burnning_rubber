@@ -10,6 +10,11 @@
     text-decoration: none;
 }
 
+a:visited,
+a:link {
+    color: inherit;
+}
+
 /* Main container styles */
 .main-container {
     background-image: url(../image/arcade3.jpg);
@@ -61,4 +66,14 @@ footer p {
     font-size: 100px;
     color: var(--main-orange);
     text-shadow: 5px 6px #000000; 
+}
+
+.letter-o {
+    width: 42px;
+    position: relative;
+    width: 42px;
+    top: 8px;
+    left: 3px;
+    /* animation: rotateTire .8s linear infinite; */
+    /* backface-visibility: hidden */
 }
