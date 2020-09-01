@@ -48,8 +48,8 @@ const createAuto = () => {
      $($player1).css('left', '45%');
      $("#gameArea").append($player1);
      
-    $( "body" ).on("keydown",function (event) {
-        event.preventDefault(); 
+    $( "body" ).on("keydown", function ( event ) {
+    
       if ( event.which === 37 ) {
          let left = $($player1).position().left;
          if(left > 15){
@@ -58,6 +58,7 @@ const createAuto = () => {
          }
       
       }
+      
       if ( event.which === 39 ) {
          let right = $($player1).position().left;
          if(right < 425){
