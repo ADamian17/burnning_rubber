@@ -1,0 +1,277 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<meta name="design_doc_mode" content="canvas">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Underdog&family=Outfit:wght@400;500;600;700;800;900&display=swap">
+<style>
+:root{
+      --ink:#0A0806; --orange:#F28D35; --hot:#f77503; --lite:#FFB765;
+      --cream:#F5EFE4; --muted:#9C9184; --gold:#FFC93C; --cyan:#35D6F2;
+      --magenta:#F2359B; --red:#E4322B; --lane:#EFE9DC;
+      --display:'Underdog','Chalkboard SE','Comic Sans MS',cursive;
+      --ui:'Outfit','Avenir Next','Segoe UI',system-ui,sans-serif;
+    }
+*{box-sizing:border-box;}
+a{color:var(--orange);}
+a:hover{color:var(--hot);}
+
+body{margin:0;background:#070605;}
+.car-donkeywork{background-image:url("data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA2OCAxNDIiIHdpZHRoPSI2OCIgaGVpZ2h0PSIxNDIiPgogIAogIDxkZWZzPgogICAgPGxpbmVhckdyYWRpZW50IGlkPSJiaGF1bGVyIiB4MT0iMCIgeTE9IjAiIHgyPSIxIiB5Mj0iMCI+CiAgICAgIDxzdG9wIG9mZnNldD0iMCUiICAgc3RvcC1jb2xvcj0iIzg1YzM5NyIvPgogICAgICA8c3RvcCBvZmZzZXQ9IjIwJSIgIHN0b3AtY29sb3I9IiMzQjlFNTgiLz4KICAgICAgPHN0b3Agb2Zmc2V0PSI2OCUiICBzdG9wLWNvbG9yPSIjM0I5RTU4Ii8+CiAgICAgIDxzdG9wIG9mZnNldD0iMTAwJSIgc3RvcC1jb2xvcj0iIzIzNWYzNSIvPgogICAgPC9saW5lYXJHcmFkaWVudD4KICAgIDxsaW5lYXJHcmFkaWVudCBpZD0iZ2hhdWxlciIgeDE9IjAiIHkxPSIwIiB4Mj0iMC40IiB5Mj0iMSI+CiAgICAgIDxzdG9wIG9mZnNldD0iMCUiICAgc3RvcC1jb2xvcj0iIzQxNTg2NiIvPgogICAgICA8c3RvcCBvZmZzZXQ9IjUyJSIgIHN0b3AtY29sb3I9IiMxNjFGMjciLz4KICAgICAgPHN0b3Agb2Zmc2V0PSIxMDAlIiBzdG9wLWNvbG9yPSIjNDA0NzRlIi8+CiAgICA8L2xpbmVhckdyYWRpZW50PgogIDwvZGVmcz4KICAKICA8cmVjdCB4PSIwIiB5PSIyNCIgd2lkdGg9IjE0IiBoZWlnaHQ9IjI4IiByeD0iNC4yIiBmaWxsPSIjMTIxMDEwIi8+CiAgPHJlY3QgeD0iMy4wOCIgeT0iMjguNDgiIHdpZHRoPSI3Ljg0MDAwMDAwMDAwMDAwMSIgaGVpZ2h0PSIxOS4wNDAwMDAwMDAwMDAwMDMiIHJ4PSIyLjI0IgogICAgICAgIGZpbGw9Im5vbmUiIHN0cm9rZT0iIzJFMjkyNiIgc3Ryb2tlLXdpZHRoPSIxLjUiIHN0cm9rZS1kYXNoYXJyYXk9IjIuNiAzIi8+CiAgPHJlY3QgeD0iNTQiIHk9IjI0IiB3aWR0aD0iMTQiIGhlaWdodD0iMjgiIHJ4PSI0LjIiIGZpbGw9IiMxMjEwMTAiLz4KICA8cmVjdCB4PSI1Ny4wOCIgeT0iMjguNDgiIHdpZHRoPSI3Ljg0MDAwMDAwMDAwMDAwMSIgaGVpZ2h0PSIxOS4wNDAwMDAwMDAwMDAwMDMiIHJ4PSIyLjI0IgogICAgICAgIGZpbGw9Im5vbmUiIHN0cm9rZT0iIzJFMjkyNiIgc3Ryb2tlLXdpZHRoPSIxLjUiIHN0cm9rZS1kYXNoYXJyYXk9IjIuNiAzIi8+CiAgCiAgPHJlY3QgeD0iMCIgeT0iOTYiIHdpZHRoPSIxNCIgaGVpZ2h0PSIzMCIgcng9IjQuMiIgZmlsbD0iIzEyMTAxMCIvPgogIDxyZWN0IHg9IjMuMDgiIHk9IjEwMC44IiB3aWR0aD0iNy44NDAwMDAwMDAwMDAwMDEiIGhlaWdodD0iMjAuNDAwMDAwMDAwMDAwMDAyIiByeD0iMi4yNCIKICAgICAgICBmaWxsPSJub25lIiBzdHJva2U9IiMyRTI5MjYiIHN0cm9rZS13aWR0aD0iMS41IiBzdHJva2UtZGFzaGFycmF5PSIyLjYgMyIvPgogIDxyZWN0IHg9IjU0IiB5PSI5NiIgd2lkdGg9IjE0IiBoZWlnaHQ9IjMwIiByeD0iNC4yIiBmaWxsPSIjMTIxMDEwIi8+CiAgPHJlY3QgeD0iNTcuMDgiIHk9IjEwMC44IiB3aWR0aD0iNy44NDAwMDAwMDAwMDAwMDEiIGhlaWdodD0iMjAuNDAwMDAwMDAwMDAwMDAyIiByeD0iMi4yNCIKICAgICAgICBmaWxsPSJub25lIiBzdHJva2U9IiMyRTI5MjYiIHN0cm9rZS13aWR0aD0iMS41IiBzdHJva2UtZGFzaGFycmF5PSIyLjYgMyIvPgogIDxyZWN0IHg9IjgiIHk9IjQiIHdpZHRoPSI1MiIgaGVpZ2h0PSIxMzQiIHJ4PSIxMyIgZmlsbD0idXJsKCNiaGF1bGVyKSIgc3Ryb2tlPSIjMDAwIiBzdHJva2Utd2lkdGg9IjIuOSIvPgogIDxjbGlwUGF0aCBpZD0ia2hhdWxlciI+PHJlY3QgeD0iOCIgeT0iNCIgd2lkdGg9IjUyIiBoZWlnaHQ9IjEzNCIgcng9IjEzIi8+PC9jbGlwUGF0aD4KICA8ZyBjbGlwLXBhdGg9InVybCgja2hhdWxlcikiPgogIDxyZWN0IHg9IjAiIHk9IjAiIHdpZHRoPSIxMCIgaGVpZ2h0PSIxNDIiIGZpbGw9IiNGRkYiIG9wYWNpdHk9Ii4xMyIvPgogIDxyZWN0IHg9IjU4IiB5PSIwIiB3aWR0aD0iMTAiIGhlaWdodD0iMTQyIiBmaWxsPSIjMDAwIiBvcGFjaXR5PSIuMjIiLz48L2c+CiAgPHJlY3QgeD0iMjAiIHk9IjE0IiB3aWR0aD0iMjgiIGhlaWdodD0iMTIiIHJ4PSIzLjQiIGZpbGw9IiMyMTU4MzEiIHN0cm9rZT0iIzAwMCIgc3Ryb2tlLXdpZHRoPSIxLjciLz4KICA8cGF0aCBkPSJNMjEgMzRMNDcgMzRMNTIgNTBMMTYgNTBaIiBmaWxsPSJ1cmwoI2doYXVsZXIpIgogICAgICAgICBzdHJva2U9IiMwMDAiIHN0cm9rZS13aWR0aD0iMS45IiBzdHJva2UtbGluZWpvaW49InJvdW5kIi8+CiAgPHJlY3QgeD0iMTYiIHk9IjUwIiB3aWR0aD0iMzYiIGhlaWdodD0iMjQiIHJ4PSI1IiBmaWxsPSJub25lIiBzdHJva2U9IiMyNjY1MzgiIHN0cm9rZS13aWR0aD0iMS43Ii8+CiAgPHBhdGggZD0iTTE3IDc0TDUxIDc0TDQ3IDg0TDIxIDg0WiIgZmlsbD0idXJsKCNnaGF1bGVyKSIKICAgICAgICAgc3Ryb2tlPSIjMDAwIiBzdHJva2Utd2lkdGg9IjEuOSIgc3Ryb2tlLWxpbmVqb2luPSJyb3VuZCIvPgogIDxyZWN0IHg9IjEzIiB5PSI5MCIgd2lkdGg9IjQyIiBoZWlnaHQ9IjQyIiByeD0iNSIgZmlsbD0iIzFlNGYyYyIgc3Ryb2tlPSIjMDAwIiBzdHJva2Utd2lkdGg9IjIuMiIvPgogIDxyZWN0IHg9IjE2LjUiIHk9Ijk3IiB3aWR0aD0iMzUiIGhlaWdodD0iMi42IiByeD0iMS4zIiBmaWxsPSIjMTUzOTIwIi8+PHJlY3QgeD0iMTYuNSIgeT0iMTA1IiB3aWR0aD0iMzUiIGhlaWdodD0iMi42IiByeD0iMS4zIiBmaWxsPSIjMTUzOTIwIi8+PHJlY3QgeD0iMTYuNSIgeT0iMTEzIiB3aWR0aD0iMzUiIGhlaWdodD0iMi42IiByeD0iMS4zIiBmaWxsPSIjMTUzOTIwIi8+PHJlY3QgeD0iMTYuNSIgeT0iMTIxIiB3aWR0aD0iMzUiIGhlaWdodD0iMi42IiByeD0iMS4zIiBmaWxsPSIjMTUzOTIwIi8+CiAgPHJlY3QgeD0iMTciIHk9Ijk0IiB3aWR0aD0iMzQiIGhlaWdodD0iMTkiIHJ4PSIzIiBmaWxsPSIjN0E1QTJFIiBzdHJva2U9IiMwMDAiIHN0cm9rZS13aWR0aD0iMS44Ii8+CiAgICA8cmVjdCB4PSIxNyIgeT0iMTAxIiB3aWR0aD0iMzQiIGhlaWdodD0iMi42IiBmaWxsPSIjNTEzYjFlIi8+CiAgCiAgPHJlY3QgeD0iMTAuNiIgeT0iNS42IiB3aWR0aD0iMTguOCIgaGVpZ2h0PSI5LjIiIHJ4PSI0LjYiIGZpbGw9IiNGRkY2REMiIG9wYWNpdHk9Ii4zMiIvPgogIDxyZWN0IHg9IjEyIiB5PSI3IiB3aWR0aD0iMTYiIGhlaWdodD0iNi40IiByeD0iMy4wNDc2MTkwNDc2MTkwNDc0IiBmaWxsPSIjRkZGNkRDIiBzdHJva2U9IiMwMDAiIHN0cm9rZS13aWR0aD0iMS4yIi8+CiAgPHJlY3QgeD0iMTMuNiIgeT0iOC4xIiB3aWR0aD0iMTIuOCIgaGVpZ2h0PSIyLjI4NTcxNDI4NTcxNDI4NiIgcng9IjEuMDY2NjY2NjY2NjY2NjY2NyIgZmlsbD0iI0ZGRiIgb3BhY2l0eT0iLjYiLz4KICA8cmVjdCB4PSIzOC42IiB5PSI1LjYiIHdpZHRoPSIxOC44IiBoZWlnaHQ9IjkuMiIgcng9IjQuNiIgZmlsbD0iI0ZGRjZEQyIgb3BhY2l0eT0iLjMyIi8+CiAgPHJlY3QgeD0iNDAiIHk9IjciIHdpZHRoPSIxNiIgaGVpZ2h0PSI2LjQiIHJ4PSIzLjA0NzYxOTA0NzYxOTA0NzQiIGZpbGw9IiNGRkY2REMiIHN0cm9rZT0iIzAwMCIgc3Ryb2tlLXdpZHRoPSIxLjIiLz4KICA8cmVjdCB4PSI0MS42IiB5PSI4LjEiIHdpZHRoPSIxMi44IiBoZWlnaHQ9IjIuMjg1NzE0Mjg1NzE0Mjg2IiByeD0iMS4wNjY2NjY2NjY2NjY2NjY3IiBmaWxsPSIjRkZGIiBvcGFjaXR5PSIuNiIvPgogIAogIDxyZWN0IHg9IjEwLjYiIHk9IjEyOC42IiB3aWR0aD0iMTguOCIgaGVpZ2h0PSI5LjIiIHJ4PSI0LjYiIGZpbGw9IiNGMDQwMkYiIG9wYWNpdHk9Ii4zMiIvPgogIDxyZWN0IHg9IjEyIiB5PSIxMzAiIHdpZHRoPSIxNiIgaGVpZ2h0PSI2LjQiIHJ4PSIzLjA0NzYxOTA0NzYxOTA0NzQiIGZpbGw9IiNGMDQwMkYiIHN0cm9rZT0iIzAwMCIgc3Ryb2tlLXdpZHRoPSIxLjIiLz4KICA8cmVjdCB4PSIxMy42IiB5PSIxMzEuMSIgd2lkdGg9IjEyLjgiIGhlaWdodD0iMi4yODU3MTQyODU3MTQyODYiIHJ4PSIxLjA2NjY2NjY2NjY2NjY2NjciIGZpbGw9IiNGRkYiIG9wYWNpdHk9Ii42Ii8+CiAgPHJlY3QgeD0iMzguNiIgeT0iMTI4LjYiIHdpZHRoPSIxOC44IiBoZWlnaHQ9IjkuMiIgcng9IjQuNiIgZmlsbD0iI0YwNDAyRiIgb3BhY2l0eT0iLjMyIi8+CiAgPHJlY3QgeD0iNDAiIHk9IjEzMCIgd2lkdGg9IjE2IiBoZWlnaHQ9IjYuNCIgcng9IjMuMDQ3NjE5MDQ3NjE5MDQ3NCIgZmlsbD0iI0YwNDAyRiIgc3Ryb2tlPSIjMDAwIiBzdHJva2Utd2lkdGg9IjEuMiIvPgogIDxyZWN0IHg9IjQxLjYiIHk9IjEzMS4xIiB3aWR0aD0iMTIuOCIgaGVpZ2h0PSIyLjI4NTcxNDI4NTcxNDI4NiIgcng9IjEuMDY2NjY2NjY2NjY2NjY2NyIgZmlsbD0iI0ZGRiIgb3BhY2l0eT0iLjYiLz4KPC9zdmc+");background-size:100% 100%;background-repeat:no-repeat;}
+.car-boarhound{background-image:url("data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA3MiAxMjgiIHdpZHRoPSI3MiIgaGVpZ2h0PSIxMjgiPgogIAogIDxkZWZzPgogICAgPGxpbmVhckdyYWRpZW50IGlkPSJid2lkZSIgeDE9IjAiIHkxPSIwIiB4Mj0iMSIgeTI9IjAiPgogICAgICA8c3RvcCBvZmZzZXQ9IjAlIiAgIHN0b3AtY29sb3I9IiNmN2I4ODIiLz4KICAgICAgPHN0b3Agb2Zmc2V0PSIyMCUiICBzdG9wLWNvbG9yPSIjRjI4RDM1Ii8+CiAgICAgIDxzdG9wIG9mZnNldD0iNjglIiAgc3RvcC1jb2xvcj0iI0YyOEQzNSIvPgogICAgICA8c3RvcCBvZmZzZXQ9IjEwMCUiIHN0b3AtY29sb3I9IiM5MTU1MjAiLz4KICAgIDwvbGluZWFyR3JhZGllbnQ+CiAgICA8bGluZWFyR3JhZGllbnQgaWQ9Imd3aWRlIiB4MT0iMCIgeTE9IjAiIHgyPSIwLjQiIHkyPSIxIj4KICAgICAgPHN0b3Agb2Zmc2V0PSIwJSIgICBzdG9wLWNvbG9yPSIjNDE1ODY2Ii8+CiAgICAgIDxzdG9wIG9mZnNldD0iNTIlIiAgc3RvcC1jb2xvcj0iIzE2MUYyNyIvPgogICAgICA8c3RvcCBvZmZzZXQ9IjEwMCUiIHN0b3AtY29sb3I9IiM0MDQ3NGUiLz4KICAgIDwvbGluZWFyR3JhZGllbnQ+CiAgPC9kZWZzPgogIAogIDxyZWN0IHg9IjAiIHk9IjIyIiB3aWR0aD0iMTUiIGhlaWdodD0iMjgiIHJ4PSI0LjUiIGZpbGw9IiMxMjEwMTAiLz4KICA8cmVjdCB4PSIzLjMiIHk9IjI2LjQ4IiB3aWR0aD0iOC40IiBoZWlnaHQ9IjE5LjA0MDAwMDAwMDAwMDAwMyIgcng9IjIuNCIKICAgICAgICBmaWxsPSJub25lIiBzdHJva2U9IiMyRTI5MjYiIHN0cm9rZS13aWR0aD0iMS41IiBzdHJva2UtZGFzaGFycmF5PSIyLjYgMyIvPgogIDxyZWN0IHg9IjU3IiB5PSIyMiIgd2lkdGg9IjE1IiBoZWlnaHQ9IjI4IiByeD0iNC41IiBmaWxsPSIjMTIxMDEwIi8+CiAgPHJlY3QgeD0iNjAuMyIgeT0iMjYuNDgiIHdpZHRoPSI4LjQiIGhlaWdodD0iMTkuMDQwMDAwMDAwMDAwMDAzIiByeD0iMi40IgogICAgICAgIGZpbGw9Im5vbmUiIHN0cm9rZT0iIzJFMjkyNiIgc3Ryb2tlLXdpZHRoPSIxLjUiIHN0cm9rZS1kYXNoYXJyYXk9IjIuNiAzIi8+CiAgCiAgPHJlY3QgeD0iMCIgeT0iODIiIHdpZHRoPSIxNSIgaGVpZ2h0PSIzMSIgcng9IjQuNSIgZmlsbD0iIzEyMTAxMCIvPgogIDxyZWN0IHg9IjMuMyIgeT0iODYuOTYiIHdpZHRoPSI4LjQiIGhlaWdodD0iMjEuMDgwMDAwMDAwMDAwMDAyIiByeD0iMi40IgogICAgICAgIGZpbGw9Im5vbmUiIHN0cm9rZT0iIzJFMjkyNiIgc3Ryb2tlLXdpZHRoPSIxLjUiIHN0cm9rZS1kYXNoYXJyYXk9IjIuNiAzIi8+CiAgPHJlY3QgeD0iNTciIHk9IjgyIiB3aWR0aD0iMTUiIGhlaWdodD0iMzEiIHJ4PSI0LjUiIGZpbGw9IiMxMjEwMTAiLz4KICA8cmVjdCB4PSI2MC4zIiB5PSI4Ni45NiIgd2lkdGg9IjguNCIgaGVpZ2h0PSIyMS4wODAwMDAwMDAwMDAwMDIiIHJ4PSIyLjQiCiAgICAgICAgZmlsbD0ibm9uZSIgc3Ryb2tlPSIjMkUyOTI2IiBzdHJva2Utd2lkdGg9IjEuNSIgc3Ryb2tlLWRhc2hhcnJheT0iMi42IDMiLz4KICA8cmVjdCB4PSI4IiB5PSI1IiB3aWR0aD0iNTYiIGhlaWdodD0iMTE4IiByeD0iMTYiIGZpbGw9InVybCgjYndpZGUpIiBzdHJva2U9IiMwMDAiIHN0cm9rZS13aWR0aD0iMi45Ii8+CiAgPGNsaXBQYXRoIGlkPSJrd2lkZSI+PHJlY3QgeD0iOCIgeT0iNSIgd2lkdGg9IjU2IiBoZWlnaHQ9IjExOCIgcng9IjE2Ii8+PC9jbGlwUGF0aD4KICA8ZyBjbGlwLXBhdGg9InVybCgja3dpZGUpIj4KICAgIDxyZWN0IHg9IjAiIHk9IjQ2IiB3aWR0aD0iNzIiIGhlaWdodD0iOSIgZmlsbD0iIzI0MUEwRSIvPgogICAgICA8cmVjdCB4PSIwIiB5PSI1OSIgd2lkdGg9IjcyIiBoZWlnaHQ9IjQuNSIgZmlsbD0iIzI0MUEwRSIgb3BhY2l0eT0iLjciLz4KICAgIAogIDxyZWN0IHg9IjAiIHk9IjAiIHdpZHRoPSIxMSIgaGVpZ2h0PSIxMjgiIGZpbGw9IiNGRkYiIG9wYWNpdHk9Ii4xMyIvPgogIDxyZWN0IHg9IjYxIiB5PSIwIiB3aWR0aD0iMTEiIGhlaWdodD0iMTI4IiBmaWxsPSIjMDAwIiBvcGFjaXR5PSIuMjIiLz4KICA8L2c+CiAgPHJlY3QgeD0iMjEiIHk9IjE1IiB3aWR0aD0iMzAiIGhlaWdodD0iMTUiIHJ4PSI0IiBmaWxsPSIjN2U0OTFjIiBzdHJva2U9IiMwMDAiIHN0cm9rZS13aWR0aD0iMS44Ii8+CiAgPHJlY3QgeD0iMjQuNSIgeT0iMTguNSIgd2lkdGg9IjIzIiBoZWlnaHQ9IjgiIHJ4PSIyLjQiIGZpbGw9IiMwNzA2MDUiLz4KICA8cGF0aCBkPSJNMjEgMzhMNTEgMzhMNTYgNTVMMTYgNTVaIiBmaWxsPSJ1cmwoI2d3aWRlKSIKICAgICAgICAgc3Ryb2tlPSIjMDAwIiBzdHJva2Utd2lkdGg9IjEuOSIgc3Ryb2tlLWxpbmVqb2luPSJyb3VuZCIvPgogIDxyZWN0IHg9IjE2IiB5PSI1NSIgd2lkdGg9IjQwIiBoZWlnaHQ9IjI4IiByeD0iNiIgZmlsbD0ibm9uZSIgc3Ryb2tlPSIjOWI1YTIyIiBzdHJva2Utd2lkdGg9IjEuNyIvPgogIDxwYXRoIGQ9Ik0xNyA4M0w1NSA4M0w1MSA5NUwyMSA5NVoiIGZpbGw9InVybCgjZ3dpZGUpIgogICAgICAgICBzdHJva2U9IiMwMDAiIHN0cm9rZS13aWR0aD0iMS45IiBzdHJva2UtbGluZWpvaW49InJvdW5kIi8+CiAgCiAgPHJlY3QgeD0iOSIgeT0iOTYiIHdpZHRoPSI4IiBoZWlnaHQ9IjE0IiByeD0iMi40IiBmaWxsPSIjNzQ0NDE5IiBzdHJva2U9IiMwMDAiIHN0cm9rZS13aWR0aD0iMS44Ii8+CiAgPHJlY3QgeD0iNTUiIHk9Ijk2IiB3aWR0aD0iOCIgaGVpZ2h0PSIxNCIgcng9IjIuNCIgZmlsbD0iIzc0NDQxOSIgc3Ryb2tlPSIjMDAwIiBzdHJva2Utd2lkdGg9IjEuOCIvPgogIDxyZWN0IHg9IjMiIHk9IjEwMyIgd2lkdGg9IjY2IiBoZWlnaHQ9IjEyIiByeD0iMy44IiBmaWxsPSIjOTE1NTIwIiBzdHJva2U9IiMwMDAiIHN0cm9rZS13aWR0aD0iMi45Ii8+CiAgPHJlY3QgeD0iNyIgeT0iMTA2LjQiIHdpZHRoPSI1OCIgaGVpZ2h0PSI0IiByeD0iMiIgZmlsbD0iIzI0MUEwRSIgb3BhY2l0eT0iLjkiLz4KICA8cmVjdCB4PSI3IiB5PSIxMDQuNiIgd2lkdGg9IjU4IiBoZWlnaHQ9IjIiIHJ4PSIxIiBmaWxsPSIjRkZGIiBvcGFjaXR5PSIuMyIvPgogIAogIDxyZWN0IHg9IjEwLjYiIHk9IjYuNiIgd2lkdGg9IjE5LjgiIGhlaWdodD0iOS4zOTk5OTk5OTk5OTk5OTkiIHJ4PSI0LjY5OTk5OTk5OTk5OTk5OSIgZmlsbD0iI0ZGRjZEQyIgb3BhY2l0eT0iLjMyIi8+CiAgPHJlY3QgeD0iMTIiIHk9IjgiIHdpZHRoPSIxNyIgaGVpZ2h0PSI2LjYiIHJ4PSIzLjE0Mjg1NzE0Mjg1NzE0MjMiIGZpbGw9IiNGRkY2REMiIHN0cm9rZT0iIzAwMCIgc3Ryb2tlLXdpZHRoPSIxLjIiLz4KICA8cmVjdCB4PSIxMy42IiB5PSI5LjEiIHdpZHRoPSIxMy44IiBoZWlnaHQ9IjIuMzU3MTQyODU3MTQyODU3IiByeD0iMS4wOTk5OTk5OTk5OTk5OTk5IiBmaWxsPSIjRkZGIiBvcGFjaXR5PSIuNiIvPgogIDxyZWN0IHg9IjQxLjYiIHk9IjYuNiIgd2lkdGg9IjE5LjgiIGhlaWdodD0iOS4zOTk5OTk5OTk5OTk5OTkiIHJ4PSI0LjY5OTk5OTk5OTk5OTk5OSIgZmlsbD0iI0ZGRjZEQyIgb3BhY2l0eT0iLjMyIi8+CiAgPHJlY3QgeD0iNDMiIHk9IjgiIHdpZHRoPSIxNyIgaGVpZ2h0PSI2LjYiIHJ4PSIzLjE0Mjg1NzE0Mjg1NzE0MjMiIGZpbGw9IiNGRkY2REMiIHN0cm9rZT0iIzAwMCIgc3Ryb2tlLXdpZHRoPSIxLjIiLz4KICA8cmVjdCB4PSI0NC42IiB5PSI5LjEiIHdpZHRoPSIxMy44IiBoZWlnaHQ9IjIuMzU3MTQyODU3MTQyODU3IiByeD0iMS4wOTk5OTk5OTk5OTk5OTk5IiBmaWxsPSIjRkZGIiBvcGFjaXR5PSIuNiIvPgogIAogIDxyZWN0IHg9IjEwLjYiIHk9IjExNC42IiB3aWR0aD0iMTkuOCIgaGVpZ2h0PSI5LjM5OTk5OTk5OTk5OTk5OSIgcng9IjQuNjk5OTk5OTk5OTk5OTk5IiBmaWxsPSIjRjA0MDJGIiBvcGFjaXR5PSIuMzIiLz4KICA8cmVjdCB4PSIxMiIgeT0iMTE2IiB3aWR0aD0iMTciIGhlaWdodD0iNi42IiByeD0iMy4xNDI4NTcxNDI4NTcxNDIzIiBmaWxsPSIjRjA0MDJGIiBzdHJva2U9IiMwMDAiIHN0cm9rZS13aWR0aD0iMS4yIi8+CiAgPHJlY3QgeD0iMTMuNiIgeT0iMTE3LjEiIHdpZHRoPSIxMy44IiBoZWlnaHQ9IjIuMzU3MTQyODU3MTQyODU3IiByeD0iMS4wOTk5OTk5OTk5OTk5OTk5IiBmaWxsPSIjRkZGIiBvcGFjaXR5PSIuNiIvPgogIDxyZWN0IHg9IjQxLjYiIHk9IjExNC42IiB3aWR0aD0iMTkuOCIgaGVpZ2h0PSI5LjM5OTk5OTk5OTk5OTk5OSIgcng9IjQuNjk5OTk5OTk5OTk5OTk5IiBmaWxsPSIjRjA0MDJGIiBvcGFjaXR5PSIuMzIiLz4KICA8cmVjdCB4PSI0MyIgeT0iMTE2IiB3aWR0aD0iMTciIGhlaWdodD0iNi42IiByeD0iMy4xNDI4NTcxNDI4NTcxNDIzIiBmaWxsPSIjRjA0MDJGIiBzdHJva2U9IiMwMDAiIHN0cm9rZS13aWR0aD0iMS4yIi8+CiAgPHJlY3QgeD0iNDQuNiIgeT0iMTE3LjEiIHdpZHRoPSIxMy44IiBoZWlnaHQ9IjIuMzU3MTQyODU3MTQyODU3IiByeD0iMS4wOTk5OTk5OTk5OTk5OTk5IiBmaWxsPSIjRkZGIiBvcGFjaXR5PSIuNiIvPgo8L3N2Zz4=");background-size:100% 100%;background-repeat:no-repeat;}
+.s-cantafford .screen{position:relative;width:393px;height:852px;overflow:hidden;background:var(--ink);}
+.s-cantafford .scan{position:absolute;inset:0;z-index:90;pointer-events:none;
+      background:repeating-linear-gradient(180deg,rgba(0,0,0,.22) 0 1px,rgba(0,0,0,0) 1px 3px);}
+.s-cantafford .vig{position:absolute;inset:0;z-index:91;pointer-events:none;
+      background:radial-gradient(125% 78% at 50% 46%,rgba(0,0,0,0) 38%,rgba(0,0,0,.62) 100%);}
+.s-cantafford .plate{background:rgba(10,8,6,.86);border:2px solid #000;border-radius:9px;
+      box-shadow:0 3px 0 #000, inset 0 1px 0 rgba(255,183,101,.18);}
+.s-cantafford .lbl{font-size:9.5px;font-weight:800;letter-spacing:2.3px;color:var(--muted);}
+.s-cantafford .num{font-weight:900;font-variant-numeric:tabular-nums;text-shadow:0 2px 0 rgba(0,0,0,.9);}
+.s-cantafford .btn{border-radius:13px;border:3px solid #000;display:flex;align-items:center;
+      justify-content:center;gap:10px;font-family:var(--display);letter-spacing:1.2px;}
+.s-cantafford .prim{background:linear-gradient(180deg,#FFC684,var(--orange) 42%,var(--hot));color:#1A0F04;
+      box-shadow:0 7px 0 #000, 0 12px 20px rgba(0,0,0,.5), inset 0 2px 0 rgba(255,255,255,.4);}
+.s-cantafford .sec{background:linear-gradient(180deg,#241E17,#171310);color:var(--cream);
+      box-shadow:0 6px 0 #000, inset 0 1px 0 rgba(255,183,101,.14);}
+.s-cantafford .dash{position:absolute;top:-60px;bottom:-60px;width:7px;margin-left:-3.5px;opacity:.88;
+      background:repeating-linear-gradient(180deg,var(--lane) 0 48px,rgba(0,0,0,0) 48px 112px);}
+.s-cantafford .rumble{position:absolute;top:-60px;bottom:-60px;width:11px;opacity:.8;
+      background:repeating-linear-gradient(180deg,var(--lane) 0 28px,#B8342C 28px 56px);}
+.s-cantafford .row{display:flex;align-items:center;justify-content:space-between;padding:13px 16px;
+      background:linear-gradient(180deg,#1C1712,#131009);border:2px solid #000;border-radius:12px;
+      box-shadow:0 4px 0 #000, inset 0 1px 0 rgba(255,183,101,.12);}
+.s-cantafford .burst{position:absolute;left:50%;top:50%;border-radius:50%;
+      background:repeating-conic-gradient(from 0deg,rgba(247,117,3,.5) 0deg 5deg,rgba(0,0,0,0) 5deg 11deg);
+      -webkit-mask-image:radial-gradient(circle,#000 20%,rgba(0,0,0,0) 62%);
+      mask-image:radial-gradient(circle,#000 20%,rgba(0,0,0,0) 62%);}
+
+.s-unlock .screen{position:relative;width:393px;height:852px;overflow:hidden;background:var(--ink);}
+.s-unlock .scan{position:absolute;inset:0;z-index:90;pointer-events:none;
+      background:repeating-linear-gradient(180deg,rgba(0,0,0,.22) 0 1px,rgba(0,0,0,0) 1px 3px);}
+.s-unlock .vig{position:absolute;inset:0;z-index:91;pointer-events:none;
+      background:radial-gradient(125% 78% at 50% 46%,rgba(0,0,0,0) 38%,rgba(0,0,0,.62) 100%);}
+.s-unlock .plate{background:rgba(10,8,6,.86);border:2px solid #000;border-radius:9px;
+      box-shadow:0 3px 0 #000, inset 0 1px 0 rgba(255,183,101,.18);}
+.s-unlock .lbl{font-size:9.5px;font-weight:800;letter-spacing:2.3px;color:var(--muted);}
+.s-unlock .num{font-weight:900;font-variant-numeric:tabular-nums;text-shadow:0 2px 0 rgba(0,0,0,.9);}
+.s-unlock .btn{border-radius:13px;border:3px solid #000;display:flex;align-items:center;
+      justify-content:center;gap:10px;font-family:var(--display);letter-spacing:1.2px;}
+.s-unlock .prim{background:linear-gradient(180deg,#FFC684,var(--orange) 42%,var(--hot));color:#1A0F04;
+      box-shadow:0 7px 0 #000, 0 12px 20px rgba(0,0,0,.5), inset 0 2px 0 rgba(255,255,255,.4);}
+.s-unlock .sec{background:linear-gradient(180deg,#241E17,#171310);color:var(--cream);
+      box-shadow:0 6px 0 #000, inset 0 1px 0 rgba(255,183,101,.14);}
+.s-unlock .dash{position:absolute;top:-60px;bottom:-60px;width:7px;margin-left:-3.5px;opacity:.88;
+      background:repeating-linear-gradient(180deg,var(--lane) 0 48px,rgba(0,0,0,0) 48px 112px);}
+.s-unlock .rumble{position:absolute;top:-60px;bottom:-60px;width:11px;opacity:.8;
+      background:repeating-linear-gradient(180deg,var(--lane) 0 28px,#B8342C 28px 56px);}
+.s-unlock .row{display:flex;align-items:center;justify-content:space-between;padding:13px 16px;
+      background:linear-gradient(180deg,#1C1712,#131009);border:2px solid #000;border-radius:12px;
+      box-shadow:0 4px 0 #000, inset 0 1px 0 rgba(255,183,101,.12);}
+.s-unlock .burst{position:absolute;left:50%;top:50%;border-radius:50%;
+      background:repeating-conic-gradient(from 0deg,rgba(247,117,3,.5) 0deg 5deg,rgba(0,0,0,0) 5deg 11deg);
+      -webkit-mask-image:radial-gradient(circle,#000 20%,rgba(0,0,0,0) 62%);
+      mask-image:radial-gradient(circle,#000 20%,rgba(0,0,0,0) 62%);}
+
+.s-daily .screen{position:relative;width:393px;height:852px;overflow:hidden;background:var(--ink);}
+.s-daily .scan{position:absolute;inset:0;z-index:90;pointer-events:none;
+      background:repeating-linear-gradient(180deg,rgba(0,0,0,.22) 0 1px,rgba(0,0,0,0) 1px 3px);}
+.s-daily .vig{position:absolute;inset:0;z-index:91;pointer-events:none;
+      background:radial-gradient(125% 78% at 50% 46%,rgba(0,0,0,0) 38%,rgba(0,0,0,.62) 100%);}
+.s-daily .plate{background:rgba(10,8,6,.86);border:2px solid #000;border-radius:9px;
+      box-shadow:0 3px 0 #000, inset 0 1px 0 rgba(255,183,101,.18);}
+.s-daily .lbl{font-size:9.5px;font-weight:800;letter-spacing:2.3px;color:var(--muted);}
+.s-daily .num{font-weight:900;font-variant-numeric:tabular-nums;text-shadow:0 2px 0 rgba(0,0,0,.9);}
+.s-daily .btn{border-radius:13px;border:3px solid #000;display:flex;align-items:center;
+      justify-content:center;gap:10px;font-family:var(--display);letter-spacing:1.2px;}
+.s-daily .prim{background:linear-gradient(180deg,#FFC684,var(--orange) 42%,var(--hot));color:#1A0F04;
+      box-shadow:0 7px 0 #000, 0 12px 20px rgba(0,0,0,.5), inset 0 2px 0 rgba(255,255,255,.4);}
+.s-daily .sec{background:linear-gradient(180deg,#241E17,#171310);color:var(--cream);
+      box-shadow:0 6px 0 #000, inset 0 1px 0 rgba(255,183,101,.14);}
+.s-daily .dash{position:absolute;top:-60px;bottom:-60px;width:7px;margin-left:-3.5px;opacity:.88;
+      background:repeating-linear-gradient(180deg,var(--lane) 0 48px,rgba(0,0,0,0) 48px 112px);}
+.s-daily .rumble{position:absolute;top:-60px;bottom:-60px;width:11px;opacity:.8;
+      background:repeating-linear-gradient(180deg,var(--lane) 0 28px,#B8342C 28px 56px);}
+.s-daily .row{display:flex;align-items:center;justify-content:space-between;padding:13px 16px;
+      background:linear-gradient(180deg,#1C1712,#131009);border:2px solid #000;border-radius:12px;
+      box-shadow:0 4px 0 #000, inset 0 1px 0 rgba(255,183,101,.12);}
+.s-daily .burst{position:absolute;left:50%;top:50%;border-radius:50%;
+      background:repeating-conic-gradient(from 0deg,rgba(247,117,3,.5) 0deg 5deg,rgba(0,0,0,0) 5deg 11deg);
+      -webkit-mask-image:radial-gradient(circle,#000 20%,rgba(0,0,0,0) 62%);
+      mask-image:radial-gradient(circle,#000 20%,rgba(0,0,0,0) 62%);}
+
+</style>
+</helmet>
+<div style="display:flex;gap:56px;padding:44px;background:#070605;align-items:flex-start;font-family:'Outfit','Avenir Next',system-ui,sans-serif;">
+<div style="display:flex;flex-direction:column;gap:12px;">
+<div style="font-size:9.5px;font-weight:900;letter-spacing:3px;color:#6A6058;">GARAGE · NOT ENOUGH COINS</div>
+<div class="s-cantafford" data-screen-label="Garage · not enough coins">
+<div class="screen">
+  <div style="position:absolute;left:50%;top:150px;width:620px;height:620px;margin-left:-310px;border-radius:50%;
+    background:radial-gradient(circle,rgba(242,141,53,.12) 0%,rgba(0,0,0,0) 62%);"></div>
+  <div style="position:absolute;inset:0;z-index:10;display:flex;flex-direction:column;align-items:center;">
+    <div style="height:66px;flex:none;"></div>
+    <div style="width:361px;flex:none;display:flex;align-items:center;gap:12px;">
+      <div style="width:48px;height:48px;flex:none;border-radius:11px;border:2px solid #000;
+    background:linear-gradient(180deg,#241E17,#171310);box-shadow:0 4px 0 #000;
+    display:flex;align-items:center;justify-content:center;">
+  <svg viewBox="0 0 24 24" width="21" height="21" fill="none" stroke="#F28D35" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M14.6 5.4 8 12l6.6 6.6"/></svg></div><div style="flex:1 1 auto;font-family:var(--display);font-size:36px;color:var(--lite);text-shadow:3px 4px 0 #000;">GARAGE</div>
+      <div class="plate" style="padding:8px 14px;display:flex;align-items:center;gap:8px;">
+        <svg viewBox="0 0 24 24" width="19" height="19">
+  <circle cx="12" cy="12" r="9.4" fill="#C98A0E"/><circle cx="12" cy="12" r="9.4" fill="none" stroke="#6B4708" stroke-width="1.6"/>
+  <circle cx="12" cy="12" r="6.4" fill="#FFC93C"/><path d="M9.4 12h5.2M12 9.4v5.2" stroke="#8A5B08" stroke-width="1.9" stroke-linecap="round"/></svg><span class="num" style="font-size:19px;color:var(--gold);">1,240</span></div>
+    </div>
+    <div style="height:30px;flex:none;"></div>
+
+    <div style="width:265px;flex:none;border:3px solid #000;border-radius:17px;padding:18px;
+      background:linear-gradient(180deg,#1F1A15,#120F0C);box-shadow:0 9px 0 #000;text-align:center;">
+      <span style="display:inline-flex;align-items:center;gap:5px;padding:5px 12px;border-radius:6px;
+        border:2px solid #000;background:#2E1512;color:#FF9A93;font-size:9px;font-weight:900;letter-spacing:1.9px;">LOCKED</span>
+      <div class="car-donkeywork" style="display:block;margin:16px auto 0;width:82px;height:171px;filter:drop-shadow(0 12px 12px rgba(0,0,0,.75)) grayscale(.6) brightness(.66);"></div>
+      <div style="margin-top:12px;font-family:var(--display);font-size:26px;line-height:1;color:var(--lite);text-shadow:2px 3px 0 #000;">DONKEY WORK</div>
+      <div style="margin-top:3px;font-size:10px;font-weight:800;letter-spacing:2.2px;color:var(--muted);">HAULER &middot; 68PT</div>
+    </div>
+
+    <div style="height:20px;flex:none;"></div>
+    <div style="width:361px;flex:none;" class="plate">
+      <div style="padding:14px 16px;">
+        <div style="display:flex;justify-content:space-between;align-items:baseline;">
+          <span class="lbl">YOUR COINS</span>
+          <span class="num" style="font-size:17px;color:var(--muted);">1,240 / 1,800</span></div>
+        <div style="margin-top:9px;height:9px;border-radius:5px;background:#0B0908;border:1px solid #000;overflow:hidden;">
+          <div style="width:68.9%;height:100%;background:linear-gradient(90deg,#FFE9A8,var(--gold));"></div></div>
+        <div style="margin-top:10px;text-align:center;font-size:12px;font-weight:900;letter-spacing:2px;color:var(--red);">
+          560 COINS SHORT</div>
+      </div>
+    </div>
+
+    <div style="flex:1 1 auto;"></div>
+    <div style="width:337px;flex:none;">
+      <div class="btn" style="height:74px;font-size:31px;color:#5A524A;
+        background:linear-gradient(180deg,#211D19,#171310);box-shadow:0 4px 0 #000;">BUY &middot; 1,800</div>
+      <div style="height:12px;"></div>
+      <div class="btn sec" style="height:58px;font-size:21px;">EARN COINS</div>
+    </div>
+    <div style="height:52px;flex:none;"></div>
+  </div>
+  <div class="scan"></div><div class="vig"></div>
+</div>
+</div>
+</div>
+<div style="display:flex;flex-direction:column;gap:12px;">
+<div style="font-size:9.5px;font-weight:900;letter-spacing:3px;color:#6A6058;">CAR UNLOCKED</div>
+<div class="s-unlock" data-screen-label="Car unlocked">
+<div class="screen">
+  <div class="burst" style="width:760px;height:760px;margin:-380px 0 0 -380px;top:44%;opacity:.42;"></div>
+  <div style="position:absolute;left:50%;top:44%;width:520px;height:520px;margin:-260px 0 0 -260px;border-radius:50%;
+    background:radial-gradient(circle,rgba(247,117,3,.32) 0%,rgba(0,0,0,0) 66%);"></div>
+
+  <div style="position:absolute;inset:0;z-index:10;display:flex;flex-direction:column;align-items:center;">
+    <div style="height:120px;flex:none;"></div>
+    <div style="flex:none;padding:7px 24px;border-radius:8px;transform:rotate(-3deg);
+      background:linear-gradient(180deg,var(--gold),#E09A0B);border:3px solid #000;
+      box-shadow:0 5px 0 #000, 0 0 30px rgba(255,201,60,.55);">
+      <span style="font-family:var(--display);font-size:24px;color:#2A1B02;letter-spacing:2px;">UNLOCKED!</span></div>
+
+    <div class="car-boarhound" style="margin-top:34px;width:126px;height:224px;flex:none;filter:drop-shadow(0 18px 20px rgba(0,0,0,.8));"></div>
+
+    <div style="margin-top:22px;flex:none;text-align:center;">
+      <div style="font-family:var(--display);font-size:46px;line-height:1;color:var(--lite);text-shadow:4px 5px 0 #000;">BOARHOUND</div>
+      <div style="margin-top:5px;font-size:11px;font-weight:800;letter-spacing:2.6px;color:var(--orange);">WIDEBODY &middot; 72PT</div>
+    </div>
+
+    <div style="margin-top:22px;width:337px;flex:none;display:flex;gap:9px;">
+      
+      <div class="plate" style="flex:1 1 0;padding:11px 8px;text-align:center;">
+        <div class="lbl" style="font-size:8.5px;">SPEED</div>
+        <div class="num" style="font-size:22px;color:var(--lite);margin-top:3px;">6</div></div>
+      <div class="plate" style="flex:1 1 0;padding:11px 8px;text-align:center;">
+        <div class="lbl" style="font-size:8.5px;">SLIMNESS</div>
+        <div class="num" style="font-size:22px;color:var(--lite);margin-top:3px;">2</div></div>
+      <div class="plate" style="flex:1 1 0;padding:11px 8px;text-align:center;">
+        <div class="lbl" style="font-size:8.5px;">GRIP</div>
+        <div class="num" style="font-size:22px;color:var(--lite);margin-top:3px;">4</div></div>
+    </div>
+    <div style="margin-top:12px;width:337px;flex:none;text-align:center;font-size:12px;line-height:1.5;color:var(--muted);">
+      Fastest car in the game &mdash; but at 72pt it leaves only
+      <b style="color:var(--cream);">26pt</b> of lane to spare.</div>
+
+    <div style="flex:1 1 auto;"></div>
+    <div style="width:337px;flex:none;">
+      <div class="btn prim" style="height:74px;font-size:31px;">EQUIP NOW</div>
+      <div style="height:12px;"></div>
+      <div class="btn sec" style="height:58px;font-size:21px;">BACK TO GARAGE</div>
+    </div>
+    <div style="height:52px;flex:none;"></div>
+  </div>
+  <div class="scan"></div><div class="vig"></div>
+</div>
+</div>
+</div>
+<div style="display:flex;flex-direction:column;gap:12px;">
+<div style="font-size:9.5px;font-weight:900;letter-spacing:3px;color:#6A6058;">DAILY CHALLENGE COMPLETE</div>
+<div class="s-daily" data-screen-label="Daily challenge complete">
+<div class="screen">
+  <div class="burst" style="width:640px;height:640px;margin:-320px 0 0 -320px;top:34%;opacity:.34;"></div>
+  <div style="position:absolute;inset:0;z-index:10;display:flex;flex-direction:column;align-items:center;">
+    <div style="height:90px;flex:none;"></div>
+    <div style="flex:none;font-size:10px;font-weight:900;letter-spacing:3.4px;color:var(--muted);">TODAY &middot; SEED 0826</div>
+    <div style="margin-top:10px;flex:none;text-align:center;transform:rotate(-2.5deg);">
+      <div style="font-family:var(--display);font-size:52px;line-height:1;color:#7FE59B;
+        text-shadow:5px 6px 0 #000, 0 0 32px rgba(127,229,155,.45);">CHALLENGE<br>COMPLETE</div></div>
+
+    <div style="margin-top:24px;width:337px;flex:none;" class="plate">
+      <div style="padding:16px;text-align:center;">
+        <div class="lbl">THREE LANES</div>
+        <div style="margin-top:7px;font-size:14px;line-height:1.5;color:var(--cream);">
+          Clear 2km without leaving lanes 1&ndash;3.</div>
+      </div>
+    </div>
+
+    <div style="margin-top:14px;width:337px;flex:none;display:flex;flex-direction:column;gap:10px;">
+      <div class="row"><span class="lbl">DISTANCE</span>
+        <span class="num" style="font-size:23px;color:var(--cream);">2.4<span style="font-size:11px;color:var(--muted);"> KM</span></span></div>
+      <div class="row"><span class="lbl">REWARD</span>
+        <span style="display:flex;align-items:center;gap:8px;"><svg viewBox="0 0 24 24" width="21" height="21">
+  <circle cx="12" cy="12" r="9.4" fill="#C98A0E"/><circle cx="12" cy="12" r="9.4" fill="none" stroke="#6B4708" stroke-width="1.6"/>
+  <circle cx="12" cy="12" r="6.4" fill="#FFC93C"/><path d="M9.4 12h5.2M12 9.4v5.2" stroke="#8A5B08" stroke-width="1.9" stroke-linecap="round"/></svg>
+          <span class="num" style="font-size:23px;color:var(--gold);">+250</span></span></div>
+      <div class="row"><span class="lbl">STREAK</span>
+        <span style="display:flex;align-items:center;gap:5px;">
+          <i style="display:block;width:13px;height:13px;border-radius:3px;border:1.5px solid #000;
+            background:linear-gradient(180deg,#FFB765,#f77503);"></i><i style="display:block;width:13px;height:13px;border-radius:3px;border:1.5px solid #000;
+            background:linear-gradient(180deg,#FFB765,#f77503);"></i><i style="display:block;width:13px;height:13px;border-radius:3px;border:1.5px solid #000;
+            background:linear-gradient(180deg,#FFB765,#f77503);"></i><i style="display:block;width:13px;height:13px;border-radius:3px;border:1.5px solid #000;
+            background:linear-gradient(180deg,#FFB765,#f77503);"></i><i style="display:block;width:13px;height:13px;border-radius:3px;border:1.5px solid #000;
+            background:#2B241D;"></i><i style="display:block;width:13px;height:13px;border-radius:3px;border:1.5px solid #000;
+            background:#2B241D;"></i><i style="display:block;width:13px;height:13px;border-radius:3px;border:1.5px solid #000;
+            background:#2B241D;"></i>
+          <span class="num" style="font-size:17px;color:var(--lite);margin-left:6px;">4</span></span></div>
+    </div>
+
+    <div style="flex:1 1 auto;"></div>
+    <div style="width:337px;flex:none;">
+      <div class="btn prim" style="height:74px;font-size:31px;">CLAIM 250</div>
+      <div style="height:12px;"></div>
+      <div style="text-align:center;font-size:11px;font-weight:800;letter-spacing:2px;color:var(--muted);">
+        NEXT CHALLENGE IN 9H 12M</div>
+    </div>
+    <div style="height:52px;flex:none;"></div>
+  </div>
+  <div class="scan"></div><div class="vig"></div>
+</div>
+</div>
+</div>
+</div>
+</x-dc>
+<script data-dc-script data-props='{"$preview":{"width":1435,"height":940}}'>
+class Component extends DCLogic {}
+</script>
+</body>
+</html>

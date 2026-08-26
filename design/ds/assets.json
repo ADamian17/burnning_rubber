@@ -1,0 +1,142 @@
+[
+  {
+    "name": "Color",
+    "path": "foundations/colors.html",
+    "subtitle": "Core palette, power-up hues, road surfaces",
+    "group": "Foundations",
+    "viewport": {
+      "width": 700,
+      "height": 460
+    }
+  },
+  {
+    "name": "Typography",
+    "path": "foundations/type.html",
+    "subtitle": "Underdog display + Outfit UI, with the numerals rule",
+    "group": "Foundations",
+    "viewport": {
+      "width": 700,
+      "height": 470
+    }
+  },
+  {
+    "name": "Primary button",
+    "path": "buttons/primary.html",
+    "subtitle": "Default, pressed, disabled",
+    "group": "Buttons",
+    "viewport": {
+      "width": 560,
+      "height": 400
+    }
+  },
+  {
+    "name": "Secondary button",
+    "path": "buttons/secondary.html",
+    "subtitle": "Default and pressed, inline and stacked",
+    "group": "Buttons",
+    "viewport": {
+      "width": 560,
+      "height": 340
+    }
+  },
+  {
+    "name": "Icon button",
+    "path": "buttons/icon.html",
+    "subtitle": "48×48 — default, pressed, locked",
+    "group": "Buttons",
+    "viewport": {
+      "width": 460,
+      "height": 260
+    }
+  },
+  {
+    "name": "Toggle",
+    "path": "controls/toggle.html",
+    "subtitle": "On / off, with row anatomy",
+    "group": "Controls",
+    "viewport": {
+      "width": 560,
+      "height": 340
+    }
+  },
+  {
+    "name": "Segmented picker",
+    "path": "controls/segmented.html",
+    "subtitle": "Steering scheme — one selected, rest inert",
+    "group": "Controls",
+    "viewport": {
+      "width": 560,
+      "height": 320
+    }
+  },
+  {
+    "name": "HUD plates",
+    "path": "hud/plates.html",
+    "subtitle": "Score, distance, coins — contrast over any road",
+    "group": "HUD",
+    "viewport": {
+      "width": 620,
+      "height": 400
+    }
+  },
+  {
+    "name": "Power-up pill",
+    "path": "hud/powerup-pill.html",
+    "subtitle": "Draining timer, one per active effect",
+    "group": "HUD",
+    "viewport": {
+      "width": 480,
+      "height": 320
+    }
+  },
+  {
+    "name": "Combo burst",
+    "path": "hud/combo.html",
+    "subtitle": "Mid-screen multiplier, above the thumb zone",
+    "group": "HUD",
+    "viewport": {
+      "width": 480,
+      "height": 380
+    }
+  },
+  {
+    "name": "Pickups",
+    "path": "game/pickups.html",
+    "subtitle": "World token → HUD icon, four types",
+    "group": "Game Objects",
+    "viewport": {
+      "width": 620,
+      "height": 430
+    }
+  },
+  {
+    "name": "Road surface",
+    "path": "game/road.html",
+    "subtitle": "4 lanes at 393pt — real footprints, real slack",
+    "group": "Game Objects",
+    "viewport": {
+      "width": 560,
+      "height": 470
+    }
+  },
+  {
+    "name": "Car card",
+    "path": "cards/car-card.html",
+    "subtitle": "Locked / owned / equipped, with stat meters",
+    "group": "Cards",
+    "viewport": {
+      "width": 640,
+      "height": 480
+    }
+  },
+  {
+    "name": "Stat meter & chips",
+    "path": "cards/stat-meter.html",
+    "subtitle": "Six-pip meter, three ownership states",
+    "group": "Cards",
+    "viewport": {
+      "width": 520,
+      "height": 330
+    }
+  }
+]

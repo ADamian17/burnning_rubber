@@ -1,0 +1,74 @@
+<!-- @dsCard group="Controls" -->
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Segmented picker — Burning Rubber</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Underdog&family=Outfit:wght@400;500;600;700;800;900&display=swap">
+<style>
+  :root{
+    --ink:#0A0806; --panel:#14100C; --panel2:#1E1813; --edge:#3A2E22;
+    --orange:#F28D35; --hot:#f77503; --lite:#FFB765;
+    --cream:#F5EFE4; --muted:#9C9184;
+    --red:#E4322B; --gold:#FFC93C; --cyan:#35D6F2; --magenta:#F2359B;
+    --asphalt:#26241F; --lane:#EFE9DC;
+    --display:'Underdog','Chalkboard SE','Comic Sans MS',cursive;
+    --ui:'Outfit','Avenir Next','Segoe UI',system-ui,sans-serif;
+  }
+  *{box-sizing:border-box;}
+  body{margin:0;padding:28px;background:var(--ink);color:var(--cream);font-family:var(--ui);
+       -webkit-font-smoothing:antialiased;}
+  a{color:var(--orange);} a:hover{color:var(--hot);}
+  .cap{font-size:8.5px;font-weight:900;letter-spacing:2.2px;color:#6A6058;margin-bottom:8px;}
+  .grp{display:flex;flex-direction:column;gap:22px;}
+  .rowx{display:flex;gap:14px;align-items:flex-start;}
+  .b{border-radius:12px;border:3px solid #000;display:flex;align-items:center;justify-content:center;
+     gap:10px;font-family:var(--display);letter-spacing:1.2px;}
+  .b-primary{background:linear-gradient(180deg,#FFC684,var(--orange) 42%,var(--hot));color:#1A0F04;
+     box-shadow:0 7px 0 #000, 0 12px 20px rgba(0,0,0,.5), inset 0 2px 0 rgba(255,255,255,.4);}
+  .b-sec{background:linear-gradient(180deg,#241E17,#171310);color:var(--cream);
+     box-shadow:0 6px 0 #000, inset 0 1px 0 rgba(255,183,101,.14);}
+  .plate{background:rgba(10,8,6,.86);border:2px solid #000;border-radius:9px;
+     box-shadow:0 3px 0 #000, inset 0 1px 0 rgba(255,183,101,.18);}
+  .lbl{font-size:9.5px;font-weight:800;letter-spacing:2.3px;color:var(--muted);}
+  .num{font-weight:900;font-variant-numeric:tabular-nums;color:var(--cream);text-shadow:0 2px 0 rgba(0,0,0,.9);}
+  .chip{display:inline-flex;align-items:center;gap:5px;padding:5px 12px;border-radius:6px;
+     border:2px solid #000;font-size:9px;font-weight:900;letter-spacing:1.9px;}
+  .meter{display:flex;gap:3px;}
+  .pip{width:12px;height:9px;border-radius:2px;background:#2B241D;border:1px solid #000;}
+  .pip-on{background:linear-gradient(180deg,var(--lite),var(--hot));}
+</style>
+</head>
+<body>
+
+      <div class="cap">SELECTED / UNSELECTED</div>
+      <div style="display:flex;gap:11px;max-width:380px;">
+        <div style="flex:1 1 0;height:78px;border-radius:11px;border:2px solid #000;display:flex;flex-direction:column;
+             align-items:center;justify-content:center;gap:7px;font-size:9.5px;font-weight:900;letter-spacing:1.6px;
+             background:linear-gradient(180deg,#FFC684,var(--orange) 46%,var(--hot));color:#1A0F04;
+             box-shadow:0 5px 0 #000, inset 0 2px 0 rgba(255,255,255,.4);">
+          <svg viewBox="0 0 24 24" width="26" height="26" fill="none" stroke="#1A0F04" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M12 21.4c3.6-1.6 5.4-4.4 5.4-7.6V9.4"/><circle cx="12" cy="6.6" r="3.2"/><path d="M6.6 13.8v-4.4"/>
+            <path d="M3.6 12.4 6.6 9.4l3 3"/><path d="M20.4 12.4l-3-3-3 3"/></svg><span>DRAG</span></div>
+        <div style="flex:1 1 0;height:78px;border-radius:11px;border:2px solid #000;display:flex;flex-direction:column;
+             align-items:center;justify-content:center;gap:7px;font-size:9.5px;font-weight:900;letter-spacing:1.6px;
+             background:linear-gradient(180deg,#1C1712,#131009);color:var(--muted);
+             box-shadow:0 5px 0 #000, inset 0 1px 0 rgba(255,183,101,.1);">
+          <svg viewBox="0 0 24 24" width="26" height="26" fill="none" stroke="#9C9184" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <rect x="3.4" y="3.4" width="7.2" height="17.2" rx="2"/><rect x="13.4" y="3.4" width="7.2" height="17.2" rx="2"/>
+            <path d="M7 14.4v-4.8M17 14.4v-4.8"/></svg><span>TAP LANES</span></div>
+        <div style="flex:1 1 0;height:78px;border-radius:11px;border:2px solid #000;display:flex;flex-direction:column;
+             align-items:center;justify-content:center;gap:7px;font-size:9.5px;font-weight:900;letter-spacing:1.6px;
+             background:linear-gradient(180deg,#1C1712,#131009);color:var(--muted);
+             box-shadow:0 5px 0 #000, inset 0 1px 0 rgba(255,183,101,.1);">
+          <svg viewBox="0 0 24 24" width="26" height="26" fill="none" stroke="#9C9184" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <rect x="6.6" y="2.6" width="10.8" height="18.8" rx="2.4" transform="rotate(-14 12 12)"/>
+            <path d="M2.6 18.4c1.4-.7 2.4-1.5 3-2.4"/><path d="M21.4 18.4c-1.4-.7-2.4-1.5-3-2.4"/></svg><span>TILT</span></div>
+      </div>
+      <div style="margin-top:18px;font-size:11px;color:var(--muted);max-width:380px;line-height:1.5;">
+        Selection is carried by fill, not by a check mark &mdash; readable at a glance mid-run.
+        Each segment is 78px tall so all three clear the 44pt minimum even at three-up.
+      </div>
+</body>
+</html>

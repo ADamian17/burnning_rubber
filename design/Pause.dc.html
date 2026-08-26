@@ -1,0 +1,125 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Underdog&family=Outfit:wght@400;500;600;700;800;900&display=swap">
+  <style>
+    :root{
+      --ink:#0A0806; --orange:#F28D35; --hot:#f77503; --lite:#FFB765;
+      --cream:#F5EFE4; --muted:#9C9184; --gold:#FFC93C; --cyan:#35D6F2; --red:#E4322B;
+      --lane:#EFE9DC;
+      --display:'Underdog','Chalkboard SE','Comic Sans MS',cursive;
+      --ui:'Outfit','Avenir Next','Segoe UI',system-ui,sans-serif;
+    }
+    *{box-sizing:border-box;}
+    body{margin:0;font-family:var(--ui);background:#000;color:var(--cream);-webkit-font-smoothing:antialiased;}
+    a{color:var(--orange);} a:hover{color:var(--hot);}
+    .screen{position:relative;width:393px;height:852px;overflow:hidden;background:var(--ink);}
+    .scan{position:absolute;inset:0;z-index:90;pointer-events:none;
+      background:repeating-linear-gradient(180deg,rgba(0,0,0,.22) 0 1px,rgba(0,0,0,0) 1px 3px);}
+    .vig{position:absolute;inset:0;z-index:91;pointer-events:none;
+      background:radial-gradient(125% 80% at 50% 50%,rgba(0,0,0,0) 40%,rgba(0,0,0,.6) 100%);}
+    .dash{position:absolute;top:-60px;bottom:-60px;width:7px;margin-left:-3.5px;opacity:.88;
+      background:repeating-linear-gradient(180deg,var(--lane) 0 48px,rgba(0,0,0,0) 48px 112px);}
+    .rumble{position:absolute;top:-60px;bottom:-60px;width:11px;opacity:.8;
+      background:repeating-linear-gradient(180deg,var(--lane) 0 28px,#B8342C 28px 56px);}
+    .btn{width:100%;height:62px;border-radius:13px;border:3px solid #000;
+      display:flex;align-items:center;justify-content:center;gap:11px;
+      font-family:var(--display);font-size:27px;letter-spacing:1.2px;}
+    .btn-primary{background:linear-gradient(180deg,#FFC684 0%,var(--orange) 42%,var(--hot) 100%);color:#1A0F04;
+      box-shadow:0 7px 0 #000, 0 12px 22px rgba(0,0,0,.55), inset 0 2px 0 rgba(255,255,255,.4);}
+    .btn-sec{background:linear-gradient(180deg,#241E17,#171310);color:var(--cream);
+      box-shadow:0 6px 0 #000, inset 0 1px 0 rgba(255,183,101,.14);}
+    .stat{flex:1 1 0;text-align:center;}
+    .stat-l{font-size:9px;font-weight:800;letter-spacing:2.2px;color:var(--muted);}
+    .stat-v{font-weight:900;font-size:22px;font-variant-numeric:tabular-nums;margin-top:3px;text-shadow:0 2px 0 #000;}
+  </style>
+</helmet>
+
+<div class="screen">
+
+  <!-- ---- live playfield, dimmed and blurred but still readable ---- -->
+  <div style="position:absolute;inset:0;filter:blur(3.5px) saturate(.7);transform:scale(1.04);">
+    <div style="position:absolute;inset:0;background:linear-gradient(180deg,#1C1A17 0%,#2B2823 18%,#26241F 60%,#221F1B 100%);">
+      <div class="dash" style="left:98.25px;"></div>
+      <div class="dash" style="left:196.5px;"></div>
+      <div class="dash" style="left:294.75px;"></div>
+      <div class="rumble" style="left:0;"></div>
+      <div class="rumble" style="right:0;"></div>
+    </div>
+    <img src="traffic-patrol.svg" alt="" style="position:absolute;left:214px;top:150px;width:62px;height:128px;transform:rotate(180deg);">
+    <img src="traffic-sedan.svg" alt="" style="position:absolute;left:18px;top:300px;width:62px;height:128px;transform:rotate(180deg);">
+    <img src="traffic-van.svg" alt="" style="position:absolute;left:309px;top:470px;width:70px;height:158px;transform:rotate(180deg);">
+    <img src="straycat.svg" alt="" style="position:absolute;left:117px;top:648px;width:60px;height:122px;">
+  </div>
+  <div style="position:absolute;inset:0;background:rgba(6,5,4,.68);"></div>
+
+  <!-- ---- panel ---- -->
+  <div style="position:absolute;inset:0;z-index:20;display:flex;flex-direction:column;align-items:center;">
+    <div style="height:172px;flex:none;"></div>
+
+    <div style="flex:none;text-align:center;transform:rotate(-2.5deg);">
+      <div style="font-family:var(--display);font-size:70px;line-height:1;color:var(--lite);
+                  text-shadow:5px 6px 0 #000, 0 0 34px rgba(247,117,3,.5);">PAUSED</div>
+      <div style="margin-top:6px;font-size:10px;font-weight:900;letter-spacing:3.6px;color:var(--orange);">ENGINE IDLING</div>
+    </div>
+
+    <div style="height:34px;flex:none;"></div>
+
+    <!-- current run -->
+    <div style="width:337px;flex:none;display:flex;padding:15px 8px;border-radius:13px;
+                background:rgba(10,8,6,.82);border:2px solid #000;
+                box-shadow:0 5px 0 #000, inset 0 1px 0 rgba(255,183,101,.14);">
+      <div class="stat"><div class="stat-l">SCORE</div><div class="stat-v" style="color:var(--lite);">08,420</div></div>
+      <div style="width:2px;background:#2A241E;"></div>
+      <div class="stat"><div class="stat-l">DIST</div><div class="stat-v">2.4<span style="font-size:11px;color:var(--muted);letter-spacing:1px;"> KM</span></div></div>
+      <div style="width:2px;background:#2A241E;"></div>
+      <div class="stat"><div class="stat-l">COINS</div><div class="stat-v" style="color:var(--gold);">128</div></div>
+    </div>
+
+    <div style="height:30px;flex:none;"></div>
+
+    <div style="width:337px;flex:none;display:flex;flex-direction:column;gap:13px;">
+      <div class="btn btn-primary">
+        <svg viewBox="0 0 24 24" width="23" height="23"><path d="M7 4.4 19.5 12 7 19.6z" fill="#1A0F04"/></svg>
+        <span>RESUME</span>
+      </div>
+      <div class="btn btn-sec">
+        <svg viewBox="0 0 24 24" width="21" height="21" fill="none" stroke="#F28D35" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M20.4 11.6a8.4 8.4 0 1 1-2.6-6"/><path d="M20.6 3.6v5.4h-5.4"/>
+        </svg>
+        <span>RESTART</span>
+      </div>
+      <div class="btn btn-sec">
+        <svg viewBox="0 0 24 24" width="21" height="21" fill="none" stroke="#F28D35" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+          <circle cx="12" cy="12" r="3.2"/><path d="M12 2.4v3M12 18.6v3M2.4 12h3M18.6 12h3M5.2 5.2l2.1 2.1M16.7 16.7l2.1 2.1M18.8 5.2l-2.1 2.1M7.3 16.7l-2.1 2.1"/>
+        </svg>
+        <span>SETTINGS</span>
+      </div>
+      <div class="btn btn-sec" style="color:#C9BEB2;">
+        <svg viewBox="0 0 24 24" width="21" height="21" fill="none" stroke="#8E8377" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M9.4 20.4H5.6a2 2 0 0 1-2-2V5.6a2 2 0 0 1 2-2h3.8"/><path d="M15.4 16.4 20.4 12l-5-4.4"/><path d="M20.4 12H9.6"/>
+        </svg>
+        <span>QUIT</span>
+      </div>
+    </div>
+
+    <div style="flex:1 1 auto;"></div>
+    <div style="font-size:10px;letter-spacing:2.6px;color:#6A6058;font-weight:800;flex:none;">TAP OUTSIDE TO RESUME</div>
+    <div style="height:52px;flex:none;"></div>
+  </div>
+
+  <div class="scan"></div>
+  <div class="vig"></div>
+</div>
+</x-dc>
+<script data-dc-script data-props='{"$preview":{"width":393,"height":852}}'>
+class Component extends DCLogic {}
+</script>
+</body>
+</html>

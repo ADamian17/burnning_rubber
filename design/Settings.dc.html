@@ -1,0 +1,159 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Underdog&family=Outfit:wght@400;500;600;700;800;900&display=swap">
+  <style>
+    :root{
+      --ink:#0A0806; --orange:#F28D35; --hot:#f77503; --lite:#FFB765;
+      --cream:#F5EFE4; --muted:#9C9184; --gold:#FFC93C; --red:#E4322B;
+      --display:'Underdog','Chalkboard SE','Comic Sans MS',cursive;
+      --ui:'Outfit','Avenir Next','Segoe UI',system-ui,sans-serif;
+    }
+    *{box-sizing:border-box;}
+    body{margin:0;font-family:var(--ui);background:#000;color:var(--cream);-webkit-font-smoothing:antialiased;}
+    a{color:var(--orange);} a:hover{color:var(--hot);}
+    .screen{position:relative;width:393px;height:852px;overflow:hidden;background:var(--ink);}
+    .scan{position:absolute;inset:0;z-index:90;pointer-events:none;
+      background:repeating-linear-gradient(180deg,rgba(0,0,0,.22) 0 1px,rgba(0,0,0,0) 1px 3px);}
+    .vig{position:absolute;inset:0;z-index:91;pointer-events:none;
+      background:radial-gradient(125% 78% at 50% 44%,rgba(0,0,0,0) 40%,rgba(0,0,0,.6) 100%);}
+    .sect{font-size:9.5px;font-weight:900;letter-spacing:3.2px;color:var(--orange);margin-bottom:11px;}
+    .row{display:flex;align-items:center;gap:13px;height:62px;padding:0 16px;
+      background:linear-gradient(180deg,#1C1712,#131009);border:2px solid #000;border-radius:12px;
+      box-shadow:0 4px 0 #000, inset 0 1px 0 rgba(255,183,101,.12);}
+    .row-t{flex:1 1 auto;font-size:15px;font-weight:800;letter-spacing:.6px;}
+    /* toggle */
+    .sw{width:62px;height:34px;border-radius:17px;border:2px solid #000;position:relative;flex:none;
+      box-shadow:inset 0 2px 5px rgba(0,0,0,.8);}
+    .sw-on{background:linear-gradient(180deg,var(--lite),var(--hot));}
+    .sw-off{background:#241E18;}
+    .knob{position:absolute;top:3px;width:24px;height:24px;border-radius:50%;border:2px solid #000;
+      background:linear-gradient(180deg,#FFFDF8,#CFC7BB);box-shadow:0 2px 0 rgba(0,0,0,.6);}
+    /* segmented control */
+    .seg{flex:1 1 0;height:78px;border-radius:11px;border:2px solid #000;display:flex;flex-direction:column;
+      align-items:center;justify-content:center;gap:7px;font-size:9.5px;font-weight:900;letter-spacing:1.6px;}
+    .seg-on{background:linear-gradient(180deg,#FFC684,var(--orange) 46%,var(--hot));color:#1A0F04;
+      box-shadow:0 5px 0 #000, inset 0 2px 0 rgba(255,255,255,.4);}
+    .seg-off{background:linear-gradient(180deg,#1C1712,#131009);color:var(--muted);
+      box-shadow:0 5px 0 #000, inset 0 1px 0 rgba(255,183,101,.1);}
+  </style>
+</helmet>
+
+<div class="screen">
+
+  <div style="position:absolute;left:50%;top:120px;width:600px;height:600px;margin-left:-300px;border-radius:50%;
+              background:radial-gradient(circle,rgba(242,141,53,.13) 0%,rgba(0,0,0,0) 62%);"></div>
+
+  <div style="position:absolute;inset:0;z-index:10;display:flex;flex-direction:column;align-items:center;">
+    <div style="height:66px;flex:none;"></div>
+
+    <div style="width:361px;flex:none;display:flex;align-items:center;gap:12px;">
+      <div style="width:48px;height:48px;flex:none;border-radius:11px;border:2px solid #000;
+                  background:linear-gradient(180deg,#241E17,#171310);box-shadow:0 4px 0 #000;
+                  display:flex;align-items:center;justify-content:center;">
+        <svg viewBox="0 0 24 24" width="21" height="21" fill="none" stroke="#F28D35" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M14.6 5.4 8 12l6.6 6.6"/>
+        </svg>
+      </div>
+      <div style="flex:1 1 auto;font-family:var(--display);font-size:36px;color:var(--lite);text-shadow:3px 4px 0 #000;">SETTINGS</div>
+    </div>
+
+    <div style="height:32px;flex:none;"></div>
+
+    <!-- AUDIO -->
+    <div style="width:361px;flex:none;">
+      <div class="sect">AUDIO &amp; FEEL</div>
+      <div style="display:flex;flex-direction:column;gap:11px;">
+        <div class="row">
+          <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="#F28D35" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M9.4 17.4V5.6l10-2v11.2"/><circle cx="6.6" cy="17.8" r="2.8"/><circle cx="16.6" cy="14.8" r="2.8"/>
+          </svg>
+          <span class="row-t">MUSIC</span>
+          <div class="sw sw-on"><div class="knob" style="right:3px;"></div></div>
+        </div>
+        <div class="row">
+          <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="#F28D35" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M4.6 9.4h3.4L13 5.2v13.6l-5-4.2H4.6z"/><path d="M16.6 9.2a4 4 0 0 1 0 5.6"/><path d="M19.2 6.6a7.6 7.6 0 0 1 0 10.8"/>
+          </svg>
+          <span class="row-t">SOUND FX</span>
+          <div class="sw sw-on"><div class="knob" style="right:3px;"></div></div>
+        </div>
+        <div class="row">
+          <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="#7E736A" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <rect x="8.4" y="3.4" width="7.2" height="17.2" rx="2.2"/><path d="M4.6 9.4v5.2M19.4 9.4v5.2"/>
+          </svg>
+          <span class="row-t" style="color:#8E8377;">HAPTICS</span>
+          <div class="sw sw-off"><div class="knob" style="left:3px;background:linear-gradient(180deg,#6E655C,#4A433C);"></div></div>
+        </div>
+      </div>
+    </div>
+
+    <div style="height:28px;flex:none;"></div>
+
+    <!-- CONTROLS -->
+    <div style="width:361px;flex:none;">
+      <div class="sect">STEERING</div>
+      <div style="display:flex;gap:11px;">
+        <div class="seg seg-on">
+          <svg viewBox="0 0 24 24" width="26" height="26" fill="none" stroke="#1A0F04" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M12 21.4c3.6-1.6 5.4-4.4 5.4-7.6V9.4"/><circle cx="12" cy="6.6" r="3.2"/><path d="M6.6 13.8v-4.4"/>
+            <path d="M3.6 12.4 6.6 9.4l3 3"/><path d="M20.4 12.4l-3-3-3 3"/>
+          </svg>
+          <span>DRAG</span>
+        </div>
+        <div class="seg seg-off">
+          <svg viewBox="0 0 24 24" width="26" height="26" fill="none" stroke="#9C9184" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <rect x="3.4" y="3.4" width="7.2" height="17.2" rx="2"/><rect x="13.4" y="3.4" width="7.2" height="17.2" rx="2"/>
+            <path d="M7 14.4v-4.8M17 14.4v-4.8"/>
+          </svg>
+          <span>TAP LANES</span>
+        </div>
+        <div class="seg seg-off">
+          <svg viewBox="0 0 24 24" width="26" height="26" fill="none" stroke="#9C9184" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <rect x="6.6" y="2.6" width="10.8" height="18.8" rx="2.4" transform="rotate(-14 12 12)"/>
+            <path d="M2.6 18.4c1.4-.7 2.4-1.5 3-2.4"/><path d="M21.4 18.4c-1.4-.7-2.4-1.5-3-2.4"/>
+          </svg>
+          <span>TILT</span>
+        </div>
+      </div>
+      <div style="margin-top:11px;font-size:12.5px;line-height:1.45;color:var(--muted);text-wrap:pretty;">
+        <b style="color:var(--lite);">Drag</b> &mdash; hold anywhere low on the screen and slide; the car tracks your thumb.
+      </div>
+    </div>
+
+    <div style="flex:1 1 auto;"></div>
+
+    <!-- destructive, deliberately set apart -->
+    <div style="width:361px;flex:none;">
+      <div style="height:2px;background:linear-gradient(90deg,rgba(58,46,34,0),#3A2E22,rgba(58,46,34,0));margin-bottom:20px;"></div>
+      <div style="height:58px;border-radius:12px;border:2px dashed var(--red);background:rgba(228,50,43,.07);
+                  display:flex;align-items:center;justify-content:center;gap:10px;">
+        <svg viewBox="0 0 24 24" width="19" height="19" fill="none" stroke="#E4322B" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M3.6 6.4h16.8"/><path d="M8.4 6.4V4.6a1.8 1.8 0 0 1 1.8-1.8h3.6a1.8 1.8 0 0 1 1.8 1.8v1.8"/>
+          <path d="M6.2 6.4l1 13a1.8 1.8 0 0 0 1.8 1.7h6a1.8 1.8 0 0 0 1.8-1.7l1-13"/>
+        </svg>
+        <span style="font-size:13px;font-weight:900;letter-spacing:2.2px;color:var(--red);">RESET PROGRESS</span>
+      </div>
+      <div style="margin-top:14px;text-align:center;font-size:10px;font-weight:700;letter-spacing:2px;color:#5F5750;">
+        BURNING RUBBER &nbsp;&middot;&nbsp; V2.0.0
+      </div>
+    </div>
+
+    <div style="height:46px;flex:none;"></div>
+  </div>
+
+  <div class="scan"></div>
+  <div class="vig"></div>
+</div>
+</x-dc>
+<script data-dc-script data-props='{"$preview":{"width":393,"height":852}}'>
+class Component extends DCLogic {}
+</script>
+</body>
+</html>

@@ -1,0 +1,32 @@
+node_modules/
+dist/
+dist-ssr/
+*.local
+
+# Capacitor native projects are committed (signing, Info.plist, icons live
+# there); only their build output is ignored.
+ios/App/build/
+ios/App/App/public/
+ios/DerivedData/
+android/app/build/
+android/build/
+android/.gradle/
+
+# macOS
+.DS_Store
+
+# editors
+.vscode/*
+!.vscode/extensions.json
+.idea/
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
+
+# logs
+logs/
+*.log
+npm-debug.log*
+pnpm-debug.log*

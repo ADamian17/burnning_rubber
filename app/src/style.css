@@ -1,0 +1,28 @@
+:root {
+  --ink: #0a0806;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  margin: 0;
+  height: 100%;
+  background: var(--ink);
+  overflow: hidden;
+  /* kill the rubber-band scroll that otherwise drags the whole game */
+  overscroll-behavior: none;
+  -webkit-user-select: none;
+  user-select: none;
+  -webkit-tap-highlight-color: transparent;
+}
+
+#stage {
+  display: block;
+  width: 100vw;
+  height: 100vh;
+  /* every touch belongs to the game, never to the scroller */
+  touch-action: none;
+}

@@ -1,0 +1,105 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Underdog&family=Outfit:wght@400;500;600;700;800;900&display=swap">
+  <style>
+    :root{
+      --ink:#0A0806; --orange:#F28D35; --hot:#f77503; --lite:#FFB765;
+      --cream:#F5EFE4; --muted:#9C9184; --gold:#FFC93C; --cyan:#35D6F2;
+      --magenta:#F2359B; --red:#E4322B; --lane:#EFE9DC;
+      --display:'Underdog','Chalkboard SE','Comic Sans MS',cursive;
+      --ui:'Outfit','Avenir Next','Segoe UI',system-ui,sans-serif;
+    }
+    *{box-sizing:border-box;}
+    body{margin:0;font-family:var(--ui);background:#000;color:var(--cream);-webkit-font-smoothing:antialiased;}
+    a{color:var(--orange);} a:hover{color:var(--hot);}
+    .screen{position:relative;width:393px;height:852px;overflow:hidden;background:var(--ink);}
+    .scan{position:absolute;inset:0;z-index:90;pointer-events:none;
+      background:repeating-linear-gradient(180deg,rgba(0,0,0,.22) 0 1px,rgba(0,0,0,0) 1px 3px);}
+    .vig{position:absolute;inset:0;z-index:91;pointer-events:none;
+      background:radial-gradient(125% 78% at 50% 46%,rgba(0,0,0,0) 38%,rgba(0,0,0,.62) 100%);}
+    .plate{background:rgba(10,8,6,.86);border:2px solid #000;border-radius:9px;
+      box-shadow:0 3px 0 #000, inset 0 1px 0 rgba(255,183,101,.18);}
+    .lbl{font-size:9.5px;font-weight:800;letter-spacing:2.3px;color:var(--muted);}
+    .num{font-weight:900;font-variant-numeric:tabular-nums;text-shadow:0 2px 0 rgba(0,0,0,.9);}
+    .btn{border-radius:13px;border:3px solid #000;display:flex;align-items:center;
+      justify-content:center;gap:10px;font-family:var(--display);letter-spacing:1.2px;}
+    .prim{background:linear-gradient(180deg,#FFC684,var(--orange) 42%,var(--hot));color:#1A0F04;
+      box-shadow:0 7px 0 #000, 0 12px 20px rgba(0,0,0,.5), inset 0 2px 0 rgba(255,255,255,.4);}
+    .sec{background:linear-gradient(180deg,#241E17,#171310);color:var(--cream);
+      box-shadow:0 6px 0 #000, inset 0 1px 0 rgba(255,183,101,.14);}
+    .dash{position:absolute;top:-60px;bottom:-60px;width:7px;margin-left:-3.5px;opacity:.88;
+      background:repeating-linear-gradient(180deg,var(--lane) 0 48px,rgba(0,0,0,0) 48px 112px);}
+    .rumble{position:absolute;top:-60px;bottom:-60px;width:11px;opacity:.8;
+      background:repeating-linear-gradient(180deg,var(--lane) 0 28px,#B8342C 28px 56px);}
+    .row{display:flex;align-items:center;justify-content:space-between;padding:13px 16px;
+      background:linear-gradient(180deg,#1C1712,#131009);border:2px solid #000;border-radius:12px;
+      box-shadow:0 4px 0 #000, inset 0 1px 0 rgba(255,183,101,.12);}
+    .burst{position:absolute;left:50%;top:50%;border-radius:50%;
+      background:repeating-conic-gradient(from 0deg,rgba(247,117,3,.5) 0deg 5deg,rgba(0,0,0,0) 5deg 11deg);
+      -webkit-mask-image:radial-gradient(circle,#000 20%,rgba(0,0,0,0) 62%);
+      mask-image:radial-gradient(circle,#000 20%,rgba(0,0,0,0) 62%);}
+</style>
+</helmet>
+
+<div class="screen">
+  <div class="burst" style="width:640px;height:640px;margin:-320px 0 0 -320px;top:34%;opacity:.34;"></div>
+  <div style="position:absolute;inset:0;z-index:10;display:flex;flex-direction:column;align-items:center;">
+    <div style="height:90px;flex:none;"></div>
+    <div style="flex:none;font-size:10px;font-weight:900;letter-spacing:3.4px;color:var(--muted);">TODAY &middot; SEED 0826</div>
+    <div style="margin-top:10px;flex:none;text-align:center;transform:rotate(-2.5deg);">
+      <div style="font-family:var(--display);font-size:52px;line-height:1;color:#7FE59B;
+        text-shadow:5px 6px 0 #000, 0 0 32px rgba(127,229,155,.45);">CHALLENGE<br>COMPLETE</div></div>
+
+    <div style="margin-top:24px;width:337px;flex:none;" class="plate">
+      <div style="padding:16px;text-align:center;">
+        <div class="lbl">THREE LANES</div>
+        <div style="margin-top:7px;font-size:14px;line-height:1.5;color:var(--cream);">
+          Clear 2km without leaving lanes 1&ndash;3.</div>
+      </div>
+    </div>
+
+    <div style="margin-top:14px;width:337px;flex:none;display:flex;flex-direction:column;gap:10px;">
+      <div class="row"><span class="lbl">DISTANCE</span>
+        <span class="num" style="font-size:23px;color:var(--cream);">2.4<span style="font-size:11px;color:var(--muted);"> KM</span></span></div>
+      <div class="row"><span class="lbl">REWARD</span>
+        <span style="display:flex;align-items:center;gap:8px;"><svg viewBox="0 0 24 24" width="21" height="21">
+  <circle cx="12" cy="12" r="9.4" fill="#C98A0E"/><circle cx="12" cy="12" r="9.4" fill="none" stroke="#6B4708" stroke-width="1.6"/>
+  <circle cx="12" cy="12" r="6.4" fill="#FFC93C"/><path d="M9.4 12h5.2M12 9.4v5.2" stroke="#8A5B08" stroke-width="1.9" stroke-linecap="round"/></svg>
+          <span class="num" style="font-size:23px;color:var(--gold);">+250</span></span></div>
+      <div class="row"><span class="lbl">STREAK</span>
+        <span style="display:flex;align-items:center;gap:5px;">
+          <i style="display:block;width:13px;height:13px;border-radius:3px;border:1.5px solid #000;
+            background:linear-gradient(180deg,#FFB765,#f77503);"></i><i style="display:block;width:13px;height:13px;border-radius:3px;border:1.5px solid #000;
+            background:linear-gradient(180deg,#FFB765,#f77503);"></i><i style="display:block;width:13px;height:13px;border-radius:3px;border:1.5px solid #000;
+            background:linear-gradient(180deg,#FFB765,#f77503);"></i><i style="display:block;width:13px;height:13px;border-radius:3px;border:1.5px solid #000;
+            background:linear-gradient(180deg,#FFB765,#f77503);"></i><i style="display:block;width:13px;height:13px;border-radius:3px;border:1.5px solid #000;
+            background:#2B241D;"></i><i style="display:block;width:13px;height:13px;border-radius:3px;border:1.5px solid #000;
+            background:#2B241D;"></i><i style="display:block;width:13px;height:13px;border-radius:3px;border:1.5px solid #000;
+            background:#2B241D;"></i>
+          <span class="num" style="font-size:17px;color:var(--lite);margin-left:6px;">4</span></span></div>
+    </div>
+
+    <div style="flex:1 1 auto;"></div>
+    <div style="width:337px;flex:none;">
+      <div class="btn prim" style="height:74px;font-size:31px;">CLAIM 250</div>
+      <div style="height:12px;"></div>
+      <div style="text-align:center;font-size:11px;font-weight:800;letter-spacing:2px;color:var(--muted);">
+        NEXT CHALLENGE IN 9H 12M</div>
+    </div>
+    <div style="height:52px;flex:none;"></div>
+  </div>
+  <div class="scan"></div><div class="vig"></div>
+</div>
+</x-dc>
+<script data-dc-script data-props='{"$preview":{"width":393,"height":852}}'>
+class Component extends DCLogic {}
+</script>
+</body>
+</html>

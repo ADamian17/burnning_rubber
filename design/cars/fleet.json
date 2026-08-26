@@ -1,0 +1,122 @@
+[
+  {
+    "slug": "straycat",
+    "name": "STRAY CAT",
+    "kind": "player",
+    "w": 60,
+    "len": 122,
+    "cost": 0,
+    "stats": {
+      "speed": 3,
+      "handling": 4,
+      "grip": 4
+    },
+    "note": "The starter. Balanced, forgiving, nothing special.",
+    "laneSlack": 38.3
+  },
+  {
+    "slug": "hatpin",
+    "name": "HATPIN",
+    "kind": "player",
+    "w": 46,
+    "len": 112,
+    "cost": 600,
+    "stats": {
+      "speed": 3,
+      "handling": 6,
+      "grip": 2
+    },
+    "note": "Skinniest car in the game. Slides through gaps that stop everything else.",
+    "laneSlack": 52.3
+  },
+  {
+    "slug": "boarhound",
+    "name": "BOARHOUND",
+    "kind": "player",
+    "w": 72,
+    "len": 128,
+    "cost": 1200,
+    "stats": {
+      "speed": 6,
+      "handling": 3,
+      "grip": 4
+    },
+    "note": "Fastest thing you can buy — and almost too wide for the gaps it reaches.",
+    "laneSlack": 26.3
+  },
+  {
+    "slug": "donkeywork",
+    "name": "DONKEY WORK",
+    "kind": "player",
+    "w": 68,
+    "len": 142,
+    "cost": 1800,
+    "stats": {
+      "speed": 2,
+      "handling": 3,
+      "grip": 6
+    },
+    "note": "Slow and heavy, but it holds a lane through anything.",
+    "laneSlack": 30.3
+  },
+  {
+    "slug": "traffic-compact",
+    "name": "FLEA",
+    "kind": "traffic",
+    "w": 46,
+    "len": 96,
+    "threat": 1,
+    "note": "Leaves real room. You can take the same lane if your car is narrow enough.",
+    "laneSlack": 52.3
+  },
+  {
+    "slug": "traffic-sedan",
+    "name": "COMMUTER",
+    "kind": "traffic",
+    "w": 62,
+    "len": 128,
+    "threat": 2,
+    "note": "The baseline. Everything else is measured against this.",
+    "laneSlack": 36.3
+  },
+  {
+    "slug": "traffic-patrol",
+    "name": "PATROL",
+    "kind": "traffic",
+    "w": 62,
+    "len": 128,
+    "threat": 2,
+    "note": "Same footprint as a commuter. Reads as a bigger deal than it is — deliberately.",
+    "laneSlack": 36.3
+  },
+  {
+    "slug": "traffic-van",
+    "name": "PARCEL",
+    "kind": "traffic",
+    "w": 70,
+    "len": 158,
+    "threat": 3,
+    "note": "Wide. Leaves 28pt of lane — a Hatpin fits, a Boarhound does not.",
+    "laneSlack": 28.3
+  },
+  {
+    "slug": "traffic-box",
+    "name": "COLD STORE",
+    "kind": "traffic",
+    "w": 74,
+    "len": 182,
+    "threat": 4,
+    "note": "Long. Committing to a lane beside it is a long commitment.",
+    "laneSlack": 24.3
+  },
+  {
+    "slug": "traffic-semi",
+    "name": "LEVIATHAN",
+    "kind": "traffic",
+    "w": 76,
+    "len": 234,
+    "threat": 5,
+    "note": "The wall. Two lanes of it and the run is over.",
+    "laneSlack": 22.3
+  }
+]
