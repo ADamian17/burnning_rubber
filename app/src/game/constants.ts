@@ -15,6 +15,20 @@ export const THUMB_ZONE_TOP = DESIGN_HEIGHT * 0.65;
 /** Centre x of a lane, 0-indexed from the left. */
 export const laneCentre = (lane: number): number => LANE_WIDTH * (lane + 0.5);
 
+/** Every lane centre, left to right. */
+export const LANE_CENTRES: readonly number[] = Array.from({ length: LANE_COUNT }, (_, i) =>
+  laneCentre(i)
+);
+
+/**
+ * Where the player starts.
+ *
+ * Named rather than inlined because DESIGN_WIDTH / 2 looks like the obvious
+ * answer and is wrong: on an even lane count the road's centre is a divider,
+ * not a lane. A test asserts this stays a lane centre.
+ */
+export const START_X = laneCentre(1);
+
 /**
  * Hitboxes are inset from the artwork, because a sprite's box includes wheel
  * overhang and transparent padding. Clipping a wing mirror should not end a run.

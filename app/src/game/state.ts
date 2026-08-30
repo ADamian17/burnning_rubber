@@ -42,7 +42,7 @@ const FRESH: SaveState = {
 };
 
 /** Narrow unknown JSON to a SaveState, discarding anything that no longer exists. */
-const revive = (raw: unknown): SaveState => {
+export const revive = (raw: unknown): SaveState => {
   if (typeof raw !== 'object' || raw === null) return { ...FRESH };
   const value = raw as Partial<SaveState>;
   const owned = (Array.isArray(value.owned) ? value.owned : []).filter((id): id is PlayerId =>

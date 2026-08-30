@@ -9,12 +9,14 @@
     "preview": "vite preview",
     "ios": "pnpm build && cap sync ios && cap open ios",
     "ios:sync": "pnpm build && cap sync ios",
-    "typecheck": "tsc --noEmit"
+    "typecheck": "tsc --noEmit",
+    "test": "vitest run"
   },
   "devDependencies": {
     "@capacitor/cli": "^8.5.0",
     "typescript": "~6.0.2",
-    "vite": "^8.2.2"
+    "vite": "^8.2.2",
+    "vitest": "^4.1.11"
   },
   "dependencies": {
     "@capacitor/core": "^8.5.0",

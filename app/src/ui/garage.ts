@@ -93,12 +93,13 @@ export const garage: ScreenDef = {
 
           <article class="garage__card">
             <span class="chip chip--${owns}">${owns.toUpperCase()}</span>
-            <img
-              class="garage__art${owns === 'locked' ? ' garage__art--locked' : ''}"
-              src="${car.url}"
-              alt="${car.name}"
-              style="aspect-ratio:${car.width} / ${car.length};"
-            />
+            <div class="garage__art-box">
+              <img
+                class="garage__art${owns === 'locked' ? ' garage__art--locked' : ''}"
+                src="${car.url}"
+                alt="${car.name}"
+              />
+            </div>
             <h1 class="garage__name">${car.name}</h1>
             <p class="garage__class">${car.klass} &middot; ${car.width}PT</p>
 

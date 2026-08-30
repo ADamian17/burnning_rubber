@@ -23,12 +23,14 @@ const run: ScreenDef = {
   },
   view: () => `
     <div class="run-layer">
+      <div class="run-layer__frame">
       <button class="icon-btn run-layer__pause" data-pause aria-label="Pause">
         <svg viewBox="0 0 24 24" width="21" height="21" aria-hidden="true">
           <rect x="6.5" y="4.5" width="4.2" height="15" rx="1.6" fill="#F5EFE4"/>
           <rect x="13.3" y="4.5" width="4.2" height="15" rx="1.6" fill="#F5EFE4"/>
         </svg>
       </button>
+      </div>
     </div>`
 };
 

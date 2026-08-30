@@ -8,6 +8,7 @@ import {
   FONT_UI,
   HITBOX_INSET,
   LANE_WIDTH,
+  START_X,
   THUMB_ZONE_TOP,
   laneCentre
 } from './constants';
@@ -30,6 +31,17 @@ const RAMP_METRES = 2400;
 /** Design points per in-game metre. */
 const POINTS_PER_METRE = 26;
 
+/**
+ * Grace period before traffic starts, in seconds.
+ *
+ * Without it a car can already be bearing down the instant the run begins —
+ * observed twice while verifying, ending runs at 0.03km through no fault of
+ * the player. The road still scrolls and steering is live; only spawning and
+ * collision are held back, so the opening reads as rolling up to speed rather
+ * than a frozen screen.
+ */
+const COUNTDOWN = 3;
+
 export interface GameOptions {
   readonly car: PlayerId;
   /** Fired once, the frame the run ends. */
@@ -42,11 +54,11 @@ export const createGame = ({ car, onCrash, sprites, stage }: GameOptions) => {
   const player = PLAYERS[car];
 
   let coins = 0;
+  let countdown = COUNTDOWN;
   let crashed = false;
   let distance = 0;
   let obstacles: Obstacle[] = [];
-  // road centre is a lane BOUNDARY on a 4-lane road; start in a lane
-  let playerX = laneCentre(1);
+  let playerX = START_X;
   let roadOffset = 0;
   let score = 0;
   let spawnTimer = 0;
@@ -126,15 +138,8 @@ export const createGame = ({ car, onCrash, sprites, stage }: GameOptions) => {
     return Math.abs(playerX - o.x) < halfW && Math.abs(playerY - o.y) < halfH;
   };
 
-  const update = (step: number): void => {
-    if (crashed) return;
-
-    const v = speed();
-    distance += (v * step) / POINTS_PER_METRE;
-    roadOffset = (roadOffset + v * step) % 112;
-    score += v * step * 0.05;
-
-    // steering: chase the finger, rate-limited by handling
+  /** Chase the finger, rate-limited by handling so the stat is felt. */
+  const steer = (step: number): void => {
     if (targetX !== null) {
       const rate = 260 + player.handling * 130;
       const delta = targetX - playerX;
@@ -142,6 +147,24 @@ export const createGame = ({ car, onCrash, sprites, stage }: GameOptions) => {
     }
     const halfCar = player.width / 2;
     playerX = Math.max(halfCar, Math.min(DESIGN_WIDTH - halfCar, playerX));
+  };
+
+  const update = (step: number): void => {
+    if (crashed) return;
+
+    const v = speed();
+    if (countdown > 0) {
+      // world moves, player steers, nothing can hit them yet
+      countdown -= step;
+      roadOffset = (roadOffset + v * step) % 112;
+      steer(step);
+      return;
+    }
+    distance += (v * step) / POINTS_PER_METRE;
+    roadOffset = (roadOffset + v * step) % 112;
+    score += v * step * 0.05;
+
+    steer(step);
 
     spawnTimer -= step;
     if (spawnTimer <= 0) {
@@ -232,6 +255,18 @@ export const createGame = ({ car, onCrash, sprites, stage }: GameOptions) => {
     ctx.font = `800 12px ${FONT_UI}`;
     ctx.fillText(`${fps.toFixed(0)} fps · ${obstacles.length} cars`, 18, 156);
 
+    if (countdown > 0) {
+      const n = Math.ceil(countdown);
+      ctx.textAlign = 'center';
+      ctx.fillStyle = COLORS.lite;
+      ctx.font = `170px ${FONT_DISPLAY}`;
+      ctx.fillText(n > 0 ? String(n) : 'GO', DESIGN_WIDTH / 2, DESIGN_HEIGHT * 0.46);
+      ctx.fillStyle = COLORS.orange;
+      ctx.font = `900 12px ${FONT_UI}`;
+      ctx.fillText('GET READY', DESIGN_WIDTH / 2, DESIGN_HEIGHT * 0.46 + 34);
+      ctx.textAlign = 'left';
+    }
+
     if (crashed) {
       ctx.fillStyle = 'rgba(6,5,4,0.72)';
       ctx.fillRect(0, 0, DESIGN_WIDTH, DESIGN_HEIGHT);
@@ -269,10 +304,11 @@ export const createGame = ({ car, onCrash, sprites, stage }: GameOptions) => {
 
   const restart = (): void => {
     coins = 0;
+    countdown = COUNTDOWN;
     crashed = false;
     distance = 0;
     obstacles = [];
-    playerX = laneCentre(1);
+    playerX = START_X;
     score = 0;
     spawnTimer = 0;
   };
@@ -281,6 +317,9 @@ export const createGame = ({ car, onCrash, sprites, stage }: GameOptions) => {
     bind,
     get coins() {
       return coins;
+    },
+    get counting() {
+      return countdown > 0;
     },
     get crashed() {
       return crashed;
