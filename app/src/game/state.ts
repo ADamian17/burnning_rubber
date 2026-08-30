@@ -3,14 +3,43 @@ import { PLAYER_IDS, type PlayerId } from './fleet';
 
 const KEY = 'burning-rubber:save';
 
+/** How the car is steered. Drag is the default the HUD layout assumes. */
+export type ControlScheme = 'drag' | 'tapLanes' | 'tilt';
+
+/** Result of the most recent run, so the summary survives a reload. */
+export interface RunResult {
+  coins: number;
+  distance: number;
+  isBest: boolean;
+  score: number;
+}
+
 export interface SaveState {
   best: number;
   coins: number;
+  control: ControlScheme;
   equipped: PlayerId;
+  haptics: boolean;
+  lastRun: RunResult | null;
+  music: boolean;
+  /** False until onboarding has been dismissed once. */
+  onboarded: boolean;
   owned: PlayerId[];
+  sfx: boolean;
 }
 
-const FRESH: SaveState = { best: 0, coins: 0, equipped: 'straycat', owned: ['straycat'] };
+const FRESH: SaveState = {
+  best: 0,
+  coins: 0,
+  control: 'drag',
+  equipped: 'straycat',
+  haptics: true,
+  lastRun: null,
+  music: true,
+  onboarded: false,
+  owned: ['straycat'],
+  sfx: true
+};
 
 /** Narrow unknown JSON to a SaveState, discarding anything that no longer exists. */
 const revive = (raw: unknown): SaveState => {
@@ -22,11 +51,20 @@ const revive = (raw: unknown): SaveState => {
   if (!owned.includes('straycat')) owned.push('straycat');
   const equipped =
     value.equipped && owned.includes(value.equipped) ? value.equipped : 'straycat';
+  const controls: ControlScheme[] = ['drag', 'tapLanes', 'tilt'];
   return {
     best: Number.isFinite(value.best) ? Number(value.best) : 0,
     coins: Number.isFinite(value.coins) ? Number(value.coins) : 0,
+    control: controls.includes(value.control as ControlScheme)
+      ? (value.control as ControlScheme)
+      : 'drag',
     equipped,
-    owned
+    haptics: value.haptics !== false,
+    lastRun: value.lastRun ?? null,
+    music: value.music !== false,
+    onboarded: value.onboarded === true,
+    owned,
+    sfx: value.sfx !== false
   };
 };
 

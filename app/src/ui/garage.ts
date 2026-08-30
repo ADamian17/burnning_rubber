@@ -1,6 +1,7 @@
 import { LANE_WIDTH } from '../game/constants';
 import { PLAYERS, PLAYER_IDS, slimness, type PlayerCar, type PlayerId } from '../game/fleet';
 import { html, on, raw } from './dom';
+import type { Ctx, ScreenDef } from './router';
 import type { SaveState } from '../game/state';
 
 const COIN = `<svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true">
@@ -30,11 +31,13 @@ type Ownership = 'equipped' | 'locked' | 'owned';
 const ownership = (id: PlayerId, state: SaveState): Ownership =>
   state.equipped === id ? 'equipped' : state.owned.includes(id) ? 'owned' : 'locked';
 
-export interface GarageHandlers {
-  onBack: () => void;
-  onBuy: (id: PlayerId) => void;
-  onEquip: (id: PlayerId) => void;
-}
+/** Which car the carousel is showing. Module-level so it survives a re-render. */
+let index = 0;
+
+/** Jump the carousel to a specific car, e.g. the one just equipped. */
+export const showCar = (id: PlayerId): void => {
+  index = Math.max(0, PLAYER_IDS.indexOf(id));
+};
 
 /**
  * Car select.
@@ -45,10 +48,9 @@ export interface GarageHandlers {
  * in a 98pt lane. A wide car is genuinely harder to drive, and this is where
  * the player is told so before they spend coins finding out.
  */
-export const createGarage = (handlers: GarageHandlers) => {
-  let index = 0;
-
-  const render = (root: HTMLElement, state: SaveState): void => {
+export const garage: ScreenDef = {
+  view: (ctx: Ctx): string => {
+    const state: SaveState = ctx.state;
     const id = PLAYER_IDS[index];
     const car: PlayerCar = PLAYERS[id];
     const owns = ownership(id, state);
@@ -69,7 +71,7 @@ export const createGarage = (handlers: GarageHandlers) => {
                 BUY ${raw(COIN)} ${car.cost.toLocaleString()}
               </div>`;
 
-    root.innerHTML = html`
+    return html`
       <div class="screen">
         <div class="glow"></div>
 
@@ -136,17 +138,30 @@ export const createGarage = (handlers: GarageHandlers) => {
         <div class="scan"></div>
       </div>
     `;
+  },
+
+  bind: (root: HTMLElement, ctx: Ctx): void => {
+    const id = PLAYER_IDS[index];
+    const car = PLAYERS[id];
 
     const step = (delta: number): void => {
       index = (index + delta + PLAYER_IDS.length) % PLAYER_IDS.length;
-      render(root, state);
+      ctx.refresh();
     };
 
     on(root, '[data-prev]', 'click', () => step(-1));
     on(root, '[data-next]', 'click', () => step(1));
-    on(root, '[data-back]', 'click', handlers.onBack);
-    on(root, '[data-equip]', 'click', () => handlers.onEquip(id));
-    on(root, '[data-buy]', 'click', () => handlers.onBuy(id));
+    on(root, '[data-back]', 'click', ctx.back);
+    on(root, '[data-equip]', 'click', () => ctx.save({ equipped: id }));
+    on(root, '[data-buy]', 'click', () => {
+      if (ctx.state.coins < car.cost) return;
+      ctx.save({
+        coins: ctx.state.coins - car.cost,
+        equipped: id,
+        owned: [...ctx.state.owned, id]
+      });
+      ctx.open('unlock');
+    });
 
     // swipe the card, not just the arrows
     let startX = 0;
@@ -158,7 +173,5 @@ export const createGarage = (handlers: GarageHandlers) => {
       const dx = e.clientX - startX;
       if (Math.abs(dx) > 40) step(dx < 0 ? 1 : -1);
     });
-  };
-
-  return { render, show: (id: PlayerId) => (index = Math.max(0, PLAYER_IDS.indexOf(id))) };
+  }
 };

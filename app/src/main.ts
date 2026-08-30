@@ -1,12 +1,14 @@
 import './style.css';
 import './ui/ui.css';
-import { PLAYERS, SPRITE_MANIFEST, type VehicleId } from './game/fleet';
-import { loadState, saveState, type SaveState } from './game/state';
-import { createGame } from './game/game';
-import { createGarage } from './ui/garage';
+import * as screens from './ui/screens';
+import { SPRITE_MANIFEST, type VehicleId } from './game/fleet';
+import { createGame, type Game } from './game/game';
 import { createLoop } from './engine/loop';
+import { createRouter, type Route, type ScreenDef } from './ui/router';
 import { createStage } from './engine/canvas';
+import { garage, showCar } from './ui/garage';
 import { loadSprites } from './engine/sprites';
+import { loadState, saveState } from './game/state';
 
 const canvas = document.querySelector<HTMLCanvasElement>('#stage');
 const ui = document.querySelector<HTMLElement>('#ui');
@@ -14,52 +16,97 @@ if (!canvas || !ui) throw new Error('#stage or #ui missing from the document');
 
 const stage = createStage(canvas);
 
+/** During a run the UI layer is transparent and only the pause button is live. */
+const run: ScreenDef = {
+  bind: (root, ctx) => {
+    root.querySelector('[data-pause]')?.addEventListener('click', () => ctx.open('pause'));
+  },
+  view: () => `
+    <div class="run-layer">
+      <button class="icon-btn run-layer__pause" data-pause aria-label="Pause">
+        <svg viewBox="0 0 24 24" width="21" height="21" aria-hidden="true">
+          <rect x="6.5" y="4.5" width="4.2" height="15" rx="1.6" fill="#F5EFE4"/>
+          <rect x="13.3" y="4.5" width="4.2" height="15" rx="1.6" fill="#F5EFE4"/>
+        </svg>
+      </button>
+    </div>`
+};
+
 const boot = async (): Promise<void> => {
-  const [sprites, loaded] = await Promise.all([
+  const [sprites, initial] = await Promise.all([
     loadSprites<VehicleId>(SPRITE_MANIFEST, stage.dpr),
     loadState()
   ]);
-  let state: SaveState = loaded;
 
-  const game = createGame({ car: state.equipped, sprites, stage });
-  game.bind(canvas);
+  let game: Game | null = null;
+  let loop: ReturnType<typeof createLoop> | null = null;
 
-  const persist = async (next: SaveState): Promise<void> => {
-    state = next;
-    await saveState(state);
-    garage.render(ui, state);
+  const router = createRouter({
+    initial: 'splash',
+    onRoute: (route) => onRoute(route),
+    overlays: {
+      pause: screens.pause,
+      resetConfirm: screens.resetConfirm,
+      unlock: screens.unlock
+    },
+    persist: saveState,
+    root: ui,
+    screens: {
+      credits: screens.credits,
+      daily: screens.daily,
+      garage,
+      menu: screens.menu,
+      onboarding: screens.onboarding,
+      run,
+      settings: screens.settings,
+      shop: screens.shop,
+      splash: screens.splash,
+      summary: screens.summary
+    },
+    state: initial
+  });
+
+  /** Tear down the previous run and start a fresh one with the equipped car. */
+  const startRun = (): void => {
+    loop?.stop();
+    game = createGame({
+      car: router.state.equipped,
+      onCrash: () => finishRun(),
+      sprites,
+      stage
+    });
+    game.bind(canvas);
+    const active = game;
+    loop = createLoop(active.update, () => active.render(loop?.fps() ?? 0));
+    loop.start();
   };
 
-  const garage = createGarage({
-    onBack: () => ui.removeAttribute('data-open'),
-    onBuy: (id) => {
-      const cost = PLAYERS[id].cost;
-      if (state.coins < cost) return;
-      void persist({
-        ...state,
-        coins: state.coins - cost,
-        equipped: id,
-        owned: [...state.owned, id]
-      });
-    },
-    onEquip: (id) => void persist({ ...state, equipped: id })
-  });
+  const finishRun = (): void => {
+    if (!game) return;
+    loop?.stop();
+    const score = Math.floor(game.score);
+    const isBest = score > router.state.best;
+    router.save({
+      best: Math.max(router.state.best, score),
+      coins: router.state.coins + game.coins,
+      lastRun: { coins: game.coins, distance: game.distance, isBest, score }
+    });
+    router.go('summary');
+  };
 
-  // temporary: the garage is the only screen wired up, so open it on load
-  garage.show(state.equipped);
-  garage.render(ui, state);
-  ui.setAttribute('data-open', '');
+  const onRoute = (route: Route): void => {
+    ui.dataset.route = route;
+    if (route === 'run') startRun();
+    else loop?.stop();
+    if (route === 'garage') showCar(router.state.equipped);
+  };
 
-  canvas.addEventListener('pointerdown', () => {
-    if (game.crashed) game.restart();
-  });
+  router.start();
 
-  const loop = createLoop(game.update, () => game.render(loop.fps()));
-  loop.start();
-
+  // backgrounding stops rAF; resume only if a run is actually in progress
   document.addEventListener('visibilitychange', () => {
-    if (document.hidden) loop.stop();
-    else loop.start();
+    if (document.hidden) loop?.stop();
+    else if (router.route === 'run' && !router.overlay) loop?.start();
   });
 };
 

@@ -32,11 +32,13 @@ const POINTS_PER_METRE = 26;
 
 export interface GameOptions {
   readonly car: PlayerId;
+  /** Fired once, the frame the run ends. */
+  readonly onCrash?: () => void;
   readonly sprites: SpriteSheet<VehicleId>;
   readonly stage: Stage;
 }
 
-export const createGame = ({ car, sprites, stage }: GameOptions) => {
+export const createGame = ({ car, onCrash, sprites, stage }: GameOptions) => {
   const player = PLAYERS[car];
 
   let coins = 0;
@@ -150,6 +152,7 @@ export const createGame = ({ car, sprites, stage }: GameOptions) => {
     for (const o of obstacles) {
       if (hits(o)) {
         crashed = true;
+        onCrash?.();
         return;
       }
     }
@@ -280,6 +283,12 @@ export const createGame = ({ car, sprites, stage }: GameOptions) => {
     },
     get crashed() {
       return crashed;
+    },
+    get distance() {
+      return distance;
+    },
+    get score() {
+      return score;
     },
     render,
     restart,
