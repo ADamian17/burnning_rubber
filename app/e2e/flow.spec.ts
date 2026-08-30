@@ -1,4 +1,5 @@
 import { expect, test, type Page } from '@playwright/test';
+import type { DebugState } from '../src/game/debug';
 
 /**
  * End-to-end tests, run at 393x852 — the viewport the game was designed for.
@@ -48,7 +49,8 @@ const boot = async (page: Page, state: Partial<Save> = {}): Promise<void> => {
   await page.goto('/');
 };
 
-const state = (page: Page) => page.evaluate(() => window.__br);
+const state = (page: Page): Promise<DebugState | undefined> =>
+  page.evaluate(() => window.__br);
 
 test.describe('first launch', () => {
   test('splash leads to onboarding, which shows the car it describes', async ({ page }) => {

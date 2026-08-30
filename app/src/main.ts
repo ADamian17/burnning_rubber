@@ -6,6 +6,7 @@ import { createGame, type Game } from './game/game';
 import { createLoop } from './engine/loop';
 import { createRouter, type Route, type ScreenDef } from './ui/router';
 import { createStage } from './engine/canvas';
+import { exposeDebugState } from './game/debug';
 import { garage, showCar } from './ui/garage';
 import { loadSprites } from './engine/sprites';
 import { loadState, saveState } from './game/state';
@@ -112,20 +113,14 @@ const boot = async (): Promise<void> => {
 
   router.start();
 
-  if (import.meta.env.DEV) {
-    // Simulation state lives on the canvas, which end-to-end tests cannot read.
-    // This is the seam they assert through — dev-only, so it never ships.
-    Object.defineProperty(window, '__br', {
-      get: () => ({
-        counting: game?.counting ?? false,
-        crashed: game?.crashed ?? false,
-        distance: game?.distance ?? 0,
-        overlay: router.overlay,
-        route: router.route,
-        score: game?.score ?? 0
-      })
-    });
-  }
+  exposeDebugState(() => ({
+    counting: game?.counting ?? false,
+    crashed: game?.crashed ?? false,
+    distance: game?.distance ?? 0,
+    overlay: router.overlay,
+    route: router.route,
+    score: game?.score ?? 0
+  }));
 
   // backgrounding stops rAF; resume only if a run is actually in progress
   document.addEventListener('visibilitychange', () => {
