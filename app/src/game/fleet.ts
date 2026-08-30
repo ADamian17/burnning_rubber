@@ -29,9 +29,13 @@ export interface Vehicle {
 }
 
 export interface PlayerCar extends Vehicle {
+  /** Coin price. 0 means owned from the start. */
+  readonly cost: number;
   readonly grip: number;
   /** Points per second of lateral travel at full tilt. */
   readonly handling: number;
+  /** Short class label shown under the name in the garage. */
+  readonly klass: string;
   readonly speed: number;
 }
 
@@ -41,10 +45,10 @@ export interface TrafficCar extends Vehicle {
 }
 
 export const PLAYERS: Readonly<Record<PlayerId, PlayerCar>> = {
-  boarhound: { grip: 4, handling: 3, length: 128, name: 'BOARHOUND', speed: 6, url: boarhound, width: 72 },
-  donkeywork: { grip: 6, handling: 3, length: 142, name: 'DONKEY WORK', speed: 2, url: donkeywork, width: 68 },
-  hatpin: { grip: 2, handling: 6, length: 112, name: 'HATPIN', speed: 3, url: hatpin, width: 46 },
-  straycat: { grip: 4, handling: 4, length: 122, name: 'STRAY CAT', speed: 3, url: straycat, width: 60 }
+  boarhound: { cost: 1200, grip: 4, handling: 3, klass: 'WIDEBODY', length: 128, name: 'BOARHOUND', speed: 6, url: boarhound, width: 72 },
+  donkeywork: { cost: 1800, grip: 6, handling: 3, klass: 'HAULER', length: 142, name: 'DONKEY WORK', speed: 2, url: donkeywork, width: 68 },
+  hatpin: { cost: 600, grip: 2, handling: 6, klass: 'NEEDLE', length: 112, name: 'HATPIN', speed: 3, url: hatpin, width: 46 },
+  straycat: { cost: 0, grip: 4, handling: 4, klass: 'MUSCLE', length: 122, name: 'STRAY CAT', speed: 3, url: straycat, width: 60 }
 };
 
 export const TRAFFIC: Readonly<Record<TrafficId, TrafficCar>> = {
@@ -63,3 +67,15 @@ export const SPRITE_MANIFEST: ReadonlyArray<readonly [VehicleId, string, number,
   ...(Object.entries(PLAYERS) as [PlayerId, PlayerCar][]),
   ...(Object.entries(TRAFFIC) as [TrafficId, TrafficCar][])
 ].map(([id, v]) => [id, v.url, v.width, v.length] as const);
+
+/** Player car ids in showroom order. */
+export const PLAYER_IDS = Object.keys(PLAYERS) as PlayerId[];
+
+/**
+ * Width expressed as a comparable 1-6 stat.
+ *
+ * Width decides whether a gap is passable, so it belongs beside speed and grip
+ * rather than buried in a spec line. Inverted because narrower is better.
+ */
+export const slimness = (width: number): number =>
+  Math.max(1, Math.min(6, Math.round(6 - (width - 46) * (4 / 26))));
