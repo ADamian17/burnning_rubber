@@ -43,6 +43,13 @@ const boot = async (): Promise<void> => {
 
   const router = createRouter({
     initial: 'splash',
+    // an overlay over a run must stop the clock — otherwise you can crash
+    // while the pause menu is up, which is what shipped before
+    onOverlay: (overlay) => {
+      if (router.route !== 'run') return;
+      if (overlay) loop?.stop();
+      else loop?.start();
+    },
     onRoute: (route) => onRoute(route),
     overlays: {
       pause: screens.pause,

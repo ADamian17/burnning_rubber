@@ -46,6 +46,8 @@ export interface ScreenDef {
 
 export interface RouterOptions {
   readonly initial: Route;
+  /** Fired whenever an overlay opens or closes, so the caller can halt a run. */
+  readonly onOverlay?: (overlay: Overlay) => void;
   readonly onRoute?: (route: Route, previous: Route | null) => void;
   readonly overlays: Readonly<Partial<Record<NonNullable<Overlay>, ScreenDef>>>;
   readonly persist: (state: SaveState) => Promise<void>;
@@ -55,7 +57,7 @@ export interface RouterOptions {
 }
 
 export const createRouter = (options: RouterOptions) => {
-  const { onRoute, overlays, persist, root, screens } = options;
+  const { onOverlay, onRoute, overlays, persist, root, screens } = options;
   let overlay: Overlay = null;
   let route: Route = options.initial;
   let state = options.state;
@@ -69,11 +71,13 @@ export const createRouter = (options: RouterOptions) => {
     close: () => {
       overlay = null;
       draw();
+      onOverlay?.(null);
     },
     go: (next) => swap(next, true),
     open: (next) => {
       overlay = next;
       draw();
+      onOverlay?.(next);
     },
     refresh: () => draw(),
     save: (patch) => {
@@ -105,8 +109,11 @@ export const createRouter = (options: RouterOptions) => {
     const previous = route;
     route = next;
     overlay = null;
-    draw();
+    // onRoute runs FIRST: it is where a screen readies itself (which car the
+    // garage should show, starting a run). Drawing before it meant those
+    // decisions landed one render too late and never repainted.
     onRoute?.(next, previous);
+    draw();
   };
 
   return {
@@ -130,8 +137,8 @@ export const createRouter = (options: RouterOptions) => {
       draw();
     },
     start: (): void => {
-      draw();
       onRoute?.(route, null);
+      draw();
     }
   };
 };

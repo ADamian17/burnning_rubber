@@ -45,7 +45,8 @@ export const createGame = ({ car, onCrash, sprites, stage }: GameOptions) => {
   let crashed = false;
   let distance = 0;
   let obstacles: Obstacle[] = [];
-  let playerX = DESIGN_WIDTH / 2;
+  // road centre is a lane BOUNDARY on a 4-lane road; start in a lane
+  let playerX = laneCentre(1);
   let roadOffset = 0;
   let score = 0;
   let spawnTimer = 0;
@@ -271,7 +272,7 @@ export const createGame = ({ car, onCrash, sprites, stage }: GameOptions) => {
     crashed = false;
     distance = 0;
     obstacles = [];
-    playerX = DESIGN_WIDTH / 2;
+    playerX = laneCentre(1);
     score = 0;
     spawnTimer = 0;
   };

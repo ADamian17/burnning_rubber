@@ -1,4 +1,5 @@
 import { PLAYERS } from '../game/fleet';
+import straycatUrl from '../assets/cars/straycat.svg';
 import { html, on, raw } from './dom';
 import type { Ctx, ScreenDef } from './router';
 import type { ControlScheme } from '../game/state';
@@ -123,6 +124,7 @@ export const onboarding: ScreenDef = {
         <div class="onboard__lane"></div>
         <div class="onboard__lane" style="left:50%;"></div>
         <div class="onboard__lane" style="left:75%;"></div>
+        <img class="onboard__car" src="${straycatUrl}" alt="" />
         <div class="onboard__finger"></div>
         <div class="onboard__zone">THUMB ZONE &mdash; BOTTOM 35%</div>
       </div>

@@ -16,10 +16,13 @@ export const THUMB_ZONE_TOP = DESIGN_HEIGHT * 0.65;
 export const laneCentre = (lane: number): number => LANE_WIDTH * (lane + 0.5);
 
 /**
- * Hitboxes are inset from the artwork. Clipping a wing mirror should not end a
- * run — a collision that looks unfair is worse than one that is slightly lenient.
+ * Hitboxes are inset from the artwork, because a sprite's box includes wheel
+ * overhang and transparent padding. Clipping a wing mirror should not end a run.
+ *
+ * 0.86 was too generous: two cars overlapped by ~8pt on screen with no crash,
+ * which reads as a broken collision rather than a forgiving one.
  */
-export const HITBOX_INSET = 0.86;
+export const HITBOX_INSET = 0.92;
 
 export const COLORS = {
   asphalt: '#26241F',

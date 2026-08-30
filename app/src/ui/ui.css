@@ -864,3 +864,14 @@
   color: var(--muted);
   text-wrap: pretty;
 }
+
+/* the demo has to show the thing it describes: a car following the finger */
+.onboard__car {
+  position: absolute;
+  left: 50%;
+  bottom: 128px;
+  width: 46px;
+  margin-left: -23px;
+  filter: drop-shadow(0 8px 9px rgba(0, 0, 0, 0.7));
+  animation: sweep 3.4s ease-in-out infinite;
+}
