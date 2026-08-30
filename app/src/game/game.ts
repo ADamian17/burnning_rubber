@@ -240,15 +240,18 @@ export const createGame = ({ car, onCrash, sprites, stage }: GameOptions) => {
     ctx.font = `900 30px ${FONT_UI}`;
     ctx.fillText(Math.floor(score).toLocaleString(), 28, 120);
 
+    // the pause button is a DOM element occupying the top-right corner; the
+    // distance readout stacks beneath it rather than fighting it for the space
+    const distTop = 124;
     ctx.fillStyle = 'rgba(10,8,6,0.86)';
-    ctx.fillRect(DESIGN_WIDTH - 148, 68, 132, 62);
-    ctx.strokeRect(DESIGN_WIDTH - 148, 68, 132, 62);
+    ctx.fillRect(DESIGN_WIDTH - 148, distTop, 132, 56);
+    ctx.strokeRect(DESIGN_WIDTH - 148, distTop, 132, 56);
     ctx.fillStyle = COLORS.muted;
     ctx.font = `800 10px ${FONT_UI}`;
-    ctx.fillText('DIST', DESIGN_WIDTH - 136, 88);
+    ctx.fillText('DIST', DESIGN_WIDTH - 136, distTop + 20);
     ctx.fillStyle = COLORS.cream;
     ctx.font = `900 22px ${FONT_UI}`;
-    ctx.fillText(`${(distance / 1000).toFixed(2)} km`, DESIGN_WIDTH - 136, 116);
+    ctx.fillText(`${(distance / 1000).toFixed(2)} km`, DESIGN_WIDTH - 136, distTop + 46);
 
     // scaffold instrumentation, not shipping HUD
     ctx.fillStyle = fps < 50 ? COLORS.red : COLORS.muted;
