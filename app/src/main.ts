@@ -2,6 +2,7 @@ import './style.css';
 import './ui/ui.css';
 import * as screens from './ui/screens';
 import { SPRITE_MANIFEST, type VehicleId } from './game/fleet';
+import { SplashScreen } from '@capacitor/splash-screen';
 import { createGame, type Game } from './game/game';
 import { createLoop } from './engine/loop';
 import { createRouter, type Route, type ScreenDef } from './ui/router';
@@ -127,6 +128,18 @@ const boot = async (): Promise<void> => {
     if (document.hidden) loop?.stop();
     else if (router.route === 'run' && !router.overlay) loop?.start();
   });
+
+  /*
+   * capacitor.config.ts sets launchAutoHide: false, so the native splash covers
+   * the webview until something hides it. Nothing did, and the game was
+   * unreachable on device — neither test suite can see this, because no native
+   * splash exists in a browser.
+   *
+   * Hidden last, once the first route is painted and the listeners are live, so
+   * the reveal never lands on a half-wired app. The handoff to the in-app splash
+   * route is seamless: both are --ink.
+   */
+  await SplashScreen.hide();
 };
 
 void boot();
