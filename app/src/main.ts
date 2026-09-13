@@ -88,7 +88,7 @@ const boot = async (): Promise<void> => {
     });
     game.bind(canvas);
     const active = game;
-    loop = createLoop(active.update, () => active.render(loop?.fps() ?? 0));
+    loop = createLoop(active.update, (alpha) => active.render(alpha, loop?.fps() ?? 0));
     loop.start();
   };
 

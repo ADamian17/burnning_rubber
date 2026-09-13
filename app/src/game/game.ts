@@ -1,4 +1,5 @@
 import type { SpriteSheet } from '../engine/sprites';
+import { STEP } from '../engine/loop';
 import type { Stage } from '../engine/canvas';
 import {
   COLORS,
@@ -7,6 +8,8 @@ import {
   FONT_DISPLAY,
   FONT_UI,
   HITBOX_INSET,
+  LANE_CENTRES,
+  LANE_COUNT,
   LANE_WIDTH,
   START_X,
   THUMB_ZONE_TOP,
@@ -25,8 +28,29 @@ interface Obstacle {
 /** World scroll speed in points/second, ramping with distance survived. */
 const BASE_SPEED = 420;
 const MAX_SPEED = 980;
-/** Distance in metres over which speed climbs from base to max. */
-const RAMP_METRES = 2400;
+/**
+ * Distance in metres over which speed climbs from base to max.
+ *
+ * Also gates group size, spawn cadence and which traffic types appear, so it is
+ * the single knob that decides the whole difficulty curve. Was 2400, which no
+ * run ever reached: a good run on device tops out around 1.27km, so more than
+ * half the curve was unreachable and the game sat near its easiest setting.
+ */
+const RAMP_METRES = 1400;
+
+/** Lane dash repeat, in design points. */
+const LANE_CYCLE = 112;
+
+/** Height of one rumble-strip block; the cream/red cycle is twice this. */
+const RUMBLE_BLOCK = 80;
+
+/**
+ * Where roadOffset wraps: the lowest common multiple of the lane cycle (112)
+ * and the rumble cycle (160). Each pattern derives its own phase below, so this
+ * only keeps the running number small — but a wrap that is not a multiple of
+ * both would make one of the two patterns jump every time it reset.
+ */
+const ROAD_CYCLE = 1120;
 
 /** Design points per in-game metre. */
 const POINTS_PER_METRE = 26;
@@ -62,30 +86,47 @@ export const createGame = ({ car, onCrash, sprites, stage }: GameOptions) => {
   let roadOffset = 0;
   let score = 0;
   let spawnTimer = 0;
+  /** Lane the last group left open; the next gap walks from here. */
+  let gapLane = Math.floor(Math.random() * LANE_COUNT);
   /** Where the finger wants the car; null means hold position. */
   let targetX: number | null = null;
 
   /* ---------------- input ---------------- */
 
   /**
-   * Steering maps the finger's x directly onto the car, but the car chases it
-   * at a capped rate so handling still means something — a Hatpin closes the
-   * gap faster than a Donkey Work.
+   * Steering is relative: the car moves by however far the finger has dragged
+   * since it went down, not to wherever the finger is.
+   *
+   * Absolute steering put the car's x under the finger's x, and the car sits at
+   * 83.5% of the height — inside the THUMB_ZONE_TOP band the design reserves for
+   * the hand. Playing it on an iPhone XS, the thumb covered the car and the road
+   * immediately ahead of it. Relative dragging lets the hand rest low and wide
+   * of the car while still steering it.
+   *
+   * The car still chases the target at a capped rate, so handling keeps meaning
+   * something — a Hatpin closes the gap faster than a Donkey Work.
    */
   const scale = (): number => Math.min(stage.width / DESIGN_WIDTH, stage.height / DESIGN_HEIGHT);
   const originX = (): number => (stage.width - DESIGN_WIDTH * scale()) / 2;
 
   const pointerTo = (clientX: number): number => (clientX - originX()) / scale();
 
+  /** Finger x when the drag started, and the car's x at that moment. */
+  let dragFrom = 0;
+  let dragCarFrom = START_X;
+
   const onPointer = (event: PointerEvent): void => {
     if (event.buttons === 0 && event.type === 'pointermove') return;
-    targetX = pointerTo(event.clientX);
+    targetX = dragCarFrom + (pointerTo(event.clientX) - dragFrom);
   };
 
   const bind = (canvas: HTMLCanvasElement): (() => void) => {
     const down = (e: PointerEvent): void => {
       canvas.setPointerCapture(e.pointerId);
-      onPointer(e);
+      // anchor on the car's current x so the first touch never jerks it
+      dragFrom = pointerTo(e.clientX);
+      dragCarFrom = playerX;
+      targetX = playerX;
     };
     const up = (): void => {
       targetX = null;
@@ -108,29 +149,66 @@ export const createGame = ({ car, onCrash, sprites, stage }: GameOptions) => {
     Math.min(MAX_SPEED, BASE_SPEED + (MAX_SPEED - BASE_SPEED) * (distance / RAMP_METRES)) *
     (0.9 + player.speed * 0.035);
 
-  /** Picks a lane and a vehicle, biasing toward heavier traffic as speed climbs. */
+  /**
+   * Spawns a group of cars across the road with exactly one lane left open, so
+   * the player threads a moving hole rather than sidestepping a lone car.
+   *
+   * Single random cars read as too easy on a device: with four lanes and one
+   * car per spawn, most groups needed no reaction at all.
+   */
   const spawn = (): void => {
     const pressure = Math.min(1, distance / RAMP_METRES);
     const pool = TRAFFIC_IDS.filter((id) => TRAFFIC[id].threat <= 1 + Math.round(pressure * 4));
-    const id = pool[Math.floor(Math.random() * pool.length)];
-    const spec = TRAFFIC[id];
-    const lane = Math.floor(Math.random() * 4);
 
-    // never wall off every lane at once — leave the player somewhere to go
-    const blocked = obstacles.filter((o) => o.y > -spec.length * 2 && o.y < 260).length;
-    if (blocked >= 3) return;
+    /*
+     * The gap walks at most one lane per group. At full pressure the groups are
+     * 0.34s apart and the slowest car steers 260pt/s — barely over half a lane —
+     * so a gap that jumped further would be unreachable rather than difficult.
+     */
+    const reachable = [gapLane - 1, gapLane, gapLane + 1].filter(
+      (lane) => lane >= 0 && lane < LANE_COUNT
+    );
 
-    obstacles.push({
-      id,
-      length: spec.length,
-      width: spec.width,
-      x: laneCentre(lane),
-      y: -spec.length
-    });
+    /*
+     * The hole must be empty the whole way down to the player, not merely clear
+     * at the spawn line. Checking only the top of the road let a car left behind
+     * by an earlier group sit in the "open" lane, turning the gap into a dead end.
+     */
+    const open = reachable.filter((lane) => !laneBusy(lane));
+    if (open.length === 0) return;
+    gapLane = open[Math.floor(Math.random() * open.length)];
+
+    // two cars from the off, three once the road is at pressure: opening with a
+    // single car left the first stretch with nothing to steer around
+    const count = 2 + Math.round(pressure);
+    const lanes = LANE_CENTRES.map((_, lane) => lane)
+      // a lane already holding a car cannot take another — two cars stacked in
+      // one lane is the same defect seen from the other side
+      .filter((lane) => lane !== gapLane && !laneBusy(lane))
+      .map((lane) => ({ lane, order: Math.random() }))
+      .sort((a, b) => a.order - b.order)
+      .map(({ lane }) => lane)
+      .slice(0, count);
+
+    for (const lane of lanes) {
+      const id = pool[Math.floor(Math.random() * pool.length)];
+      const spec = TRAFFIC[id];
+      obstacles.push({
+        id,
+        length: spec.length,
+        width: spec.width,
+        x: laneCentre(lane),
+        y: -spec.length
+      });
+    }
   };
 
   /** The car sits low on screen; the road comes to it. */
   const playerY = DESIGN_HEIGHT - 140;
+
+  /** True while a lane still holds a car anywhere on the player's approach. */
+  const laneBusy = (lane: number): boolean =>
+    obstacles.some((o) => o.x === laneCentre(lane) && o.y < playerY);
 
   const hits = (o: Obstacle): boolean => {
     const halfW = ((player.width + o.width) / 2) * HITBOX_INSET;
@@ -156,12 +234,12 @@ export const createGame = ({ car, onCrash, sprites, stage }: GameOptions) => {
     if (countdown > 0) {
       // world moves, player steers, nothing can hit them yet
       countdown -= step;
-      roadOffset = (roadOffset + v * step) % 112;
+      roadOffset = (roadOffset + v * step) % ROAD_CYCLE;
       steer(step);
       return;
     }
     distance += (v * step) / POINTS_PER_METRE;
-    roadOffset = (roadOffset + v * step) % 112;
+    roadOffset = (roadOffset + v * step) % ROAD_CYCLE;
     score += v * step * 0.05;
 
     steer(step);
@@ -187,26 +265,40 @@ export const createGame = ({ car, onCrash, sprites, stage }: GameOptions) => {
 
   /* ---------------- rendering ---------------- */
 
-  const drawRoad = (ctx: CanvasRenderingContext2D): void => {
+  const drawRoad = (ctx: CanvasRenderingContext2D, offset: number): void => {
     ctx.fillStyle = COLORS.asphalt;
     ctx.fillRect(0, 0, DESIGN_WIDTH, DESIGN_HEIGHT);
 
     ctx.fillStyle = COLORS.lane;
+    const lanePhase = offset % LANE_CYCLE;
     for (let lane = 1; lane < 4; lane += 1) {
       const x = LANE_WIDTH * lane - 3.5;
-      for (let y = roadOffset - 112; y < DESIGN_HEIGHT; y += 112) {
+      for (let y = lanePhase - LANE_CYCLE; y < DESIGN_HEIGHT; y += LANE_CYCLE) {
         ctx.fillRect(x, y, 7, 48);
       }
     }
 
-    // rumble strips: the edges of the world
-    for (let y = roadOffset - 56; y < DESIGN_HEIGHT; y += 56) {
+    /*
+     * Rumble strips: the edges of the world.
+     *
+     * Blocks are 80pt rather than 28. At 28 the cream/red cycle was 56pt, which
+     * against a 980pt/s scroll strobes at 17.5Hz down both edges — inside the
+     * 15-20Hz band that causes visual discomfort, at the highest contrast on
+     * screen, in peripheral vision. It read as tired eyes after a few runs.
+     * At 80pt the same cycle lands near 6Hz.
+     */
+    const rumbleCycle = RUMBLE_BLOCK * 2;
+    for (
+      let y = (offset % rumbleCycle) - rumbleCycle;
+      y < DESIGN_HEIGHT;
+      y += rumbleCycle
+    ) {
       ctx.fillStyle = COLORS.lane;
-      ctx.fillRect(0, y, 11, 28);
-      ctx.fillRect(DESIGN_WIDTH - 11, y, 11, 28);
+      ctx.fillRect(0, y, 11, RUMBLE_BLOCK);
+      ctx.fillRect(DESIGN_WIDTH - 11, y, 11, RUMBLE_BLOCK);
       ctx.fillStyle = COLORS.rumble;
-      ctx.fillRect(0, y + 28, 11, 28);
-      ctx.fillRect(DESIGN_WIDTH - 11, y + 28, 11, 28);
+      ctx.fillRect(0, y + RUMBLE_BLOCK, 11, RUMBLE_BLOCK);
+      ctx.fillRect(DESIGN_WIDTH - 11, y + RUMBLE_BLOCK, 11, RUMBLE_BLOCK);
     }
   };
 
@@ -284,9 +376,19 @@ export const createGame = ({ car, onCrash, sprites, stage }: GameOptions) => {
     }
   };
 
-  const render = (fps: number): void => {
+  /**
+   * `alpha` is how far the render sits between two fixed simulation steps.
+   *
+   * Without it the world only moves in whole 1/60 jumps while the display
+   * refreshes on its own schedule, so some frames advance twice and some not at
+   * all — which reads as the road shaking. Felt on an iPhone XS; the loop
+   * computed this factor from the start and it was being dropped on the floor.
+   */
+  const render = (alpha: number, fps: number): void => {
     const { ctx } = stage;
     const s = scale();
+    // everything that scrolls does so at world speed, so one lead covers it all
+    const lead = crashed ? 0 : speed() * STEP * alpha;
 
     ctx.fillStyle = COLORS.ink;
     ctx.fillRect(0, 0, stage.width, stage.height);
@@ -295,9 +397,9 @@ export const createGame = ({ car, onCrash, sprites, stage }: GameOptions) => {
     ctx.translate(originX(), (stage.height - DESIGN_HEIGHT * s) / 2);
     ctx.scale(s, s);
 
-    drawRoad(ctx);
+    drawRoad(ctx, roadOffset + lead);
     for (const o of obstacles) {
-      drawSprite(ctx, o.id, o.x, o.y, o.width, o.length, true);
+      drawSprite(ctx, o.id, o.x, o.y + lead, o.width, o.length, true);
     }
     drawSprite(ctx, car, playerX, playerY, player.width, player.length, false);
     drawHud(ctx, fps);
