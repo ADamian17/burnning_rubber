@@ -6,6 +6,11 @@
     "types": ["vite/client"],
     "allowArbitraryExtensions": true,
     "skipLibCheck": true,
+    "jsx": "react-jsx",
+
+    /* The codebase already passed --strict before it was turned on; this pins
+       that rather than granting it. New React code cannot quietly regress it. */
+    "strict": true,
 
     /* Bundler mode */
     "moduleResolution": "bundler",

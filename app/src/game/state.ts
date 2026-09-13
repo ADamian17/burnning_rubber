@@ -8,7 +8,8 @@ import {
   type UpgradeLevels
 } from './upgrades';
 
-const KEY = 'burning-rubber:save';
+/** Storage key. Exported so the store's persist adapter names the same slot. */
+export const SAVE_KEY = 'burning-rubber:save';
 
 /**
  * How the car is steered.
@@ -153,7 +154,7 @@ export const revive = (raw: unknown): SaveState => {
 
 export const loadState = async (): Promise<SaveState> => {
   try {
-    const { value } = await Preferences.get({ key: KEY });
+    const { value } = await Preferences.get({ key: SAVE_KEY });
     return value ? revive(JSON.parse(value)) : { ...FRESH };
   } catch {
     // a corrupt or unreadable save should cost the player their progress, not
@@ -163,10 +164,10 @@ export const loadState = async (): Promise<SaveState> => {
 };
 
 export const saveState = async (state: SaveState): Promise<void> => {
-  await Preferences.set({ key: KEY, value: JSON.stringify(state) });
+  await Preferences.set({ key: SAVE_KEY, value: JSON.stringify(state) });
 };
 
 export const resetState = async (): Promise<SaveState> => {
-  await Preferences.remove({ key: KEY });
+  await Preferences.remove({ key: SAVE_KEY });
   return { ...FRESH };
 };

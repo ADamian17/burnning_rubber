@@ -1,0 +1,128 @@
+import { create } from "zustand";
+import { persist } from "zustand/middleware";
+import { challengeFor, met, streakAfter } from "../../game/daily";
+import { PLAYERS } from "../../game/fleet";
+import { revive, SAVE_KEY, type SaveState } from "../../game/state";
+import { nextCost } from "../../game/upgrades";
+import { playerStorage } from "./storage";
+import type { PlayerState, PlayerStore } from "./usePlayerStore.types";
+
+/**
+ * Everything about this player that outlives a run, and the rules that change it.
+ *
+ * Named for the player rather than for storage: `save` described the mechanism,
+ * not the contents. What is in here is progress (best, coins), what they own
+ * (cars, upgrade levels), what they have chosen (audio and feel switches), and
+ * where they are in the daily — all of it theirs, none of it about a file.
+ *
+ * Zustand holds only this. Navigation belongs to react-router, and the running
+ * game to neither — it mutates sixty times a second and lives outside React.
+ *
+ * Persistence is the `persist` middleware over a hand-written storage engine
+ * (`./storage.ts`), so no action has to remember to write.
+ *
+ * `skipHydration` is on, and boot awaits `hydrate()` before mounting React.
+ * Capacitor Preferences is async, so letting persist hydrate on its own schedule
+ * would paint a fresh save and swap in the real numbers a frame later — BEST 0
+ * becoming BEST 12,480 in front of the player. Awaiting it keeps the first paint
+ * correct, which is the one property worth preserving from the old boot.
+ *
+ * See `./usePlayerStore.types.ts` for what it holds and what each action promises.
+ */
+export const usePlayerStore = create<PlayerStore>()(
+	persist(
+		(set, get) => {
+			/** Merge and publish. Persist does the writing. */
+			const commit = (patch: Partial<SaveState>): void => {
+				set((state) => ({ save: { ...state.save, ...patch } }));
+			};
+
+			return {
+				// a real, valid save from the start. revive(null) is the existing way
+				// to ask for defaults, so "fresh" is not defined in two places
+				save: revive(null),
+
+				buyCar: (id) => {
+					const { coins, owned } = get().save;
+					const cost = PLAYERS[id].cost;
+					// re-checked here, not trusted from the view that drew the button:
+					// the render that offered it may be a frame behind the coins
+					if (owned.includes(id) || cost > coins) return;
+					commit({ coins: coins - cost, equipped: id, owned: [...owned, id] });
+				},
+
+				buyUpgrade: (id) => {
+					const { coins, upgrades } = get().save;
+					const cost = nextCost(id, upgrades[id]);
+					if (cost === null || cost > coins) return;
+					commit({
+						coins: coins - cost,
+						upgrades: { ...upgrades, [id]: upgrades[id] + 1 },
+					});
+				},
+
+				completeOnboarding: () => commit({ onboarded: true }),
+
+				equip: (id) => {
+					if (!get().save.owned.includes(id)) return;
+					commit({ equipped: id });
+				},
+
+				recordRun: (run, day) => {
+					const { best, coins, daily } = get().save;
+
+					/*
+					 * A daily pays out only the first time it is met on its day,
+					 * checked against `lastDone` rather than a flag set here — so a
+					 * save carried across a reinstall cannot claim the same day twice.
+					 */
+					const earned =
+						day !== null &&
+						daily.lastDone !== day &&
+						met(challengeFor(day), run)
+							? challengeFor(day).reward
+							: 0;
+
+					commit({
+						best: Math.max(best, run.score),
+						coins: coins + run.coins + earned,
+						daily:
+							earned > 0 && day !== null
+								? { lastDone: day, streak: streakAfter(daily, day) }
+								: daily,
+						lastRun: run,
+					});
+				},
+
+				reset: () => {
+					/*
+					 * Everything a fresh save has, except `onboarded` and the settings
+					 * flags. Built from revive(null) so a field added to SaveState
+					 * later is wiped by default rather than silently surviving a reset
+					 * nobody remembered to update.
+					 */
+					const { haptics, music, onboarded, sfx } = get().save;
+					commit({ ...revive(null), haptics, music, onboarded, sfx });
+				},
+
+				toggle: (flag) => commit({ [flag]: !get().save[flag] }),
+			};
+		},
+		{
+			name: SAVE_KEY,
+			// only `save` is written; the actions are not state
+			partialize: (state): PlayerState => ({ save: state.save }),
+			skipHydration: true,
+			storage: playerStorage,
+		},
+	),
+);
+
+/**
+ * Load the save before anything renders.
+ *
+ * Call once, awaited, in boot — ahead of `createRoot().render()`.
+ */
+export const hydrate = async (): Promise<void> => {
+	await usePlayerStore.persist.rehydrate();
+};
