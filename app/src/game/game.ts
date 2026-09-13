@@ -167,7 +167,16 @@ export const createGame = ({
    * The car still chases the target at a capped rate, so handling keeps meaning
    * something — a Hatpin closes the gap faster than a Donkey Work.
    */
-  const scale = (): number => Math.min(stage.width / DESIGN_WIDTH, stage.height / DESIGN_HEIGHT);
+  /*
+   * Never larger than the design size.
+   *
+   * The canvas would otherwise keep growing on a desktop window while the DOM
+   * screens stop at 852, and the two halves of the app would disagree about
+   * how big the game is. Below 393x852 nothing is capped — the XS at 375x812
+   * scales to 0.95 as it always did.
+   */
+  const scale = (): number =>
+    Math.min(1, stage.width / DESIGN_WIDTH, stage.height / DESIGN_HEIGHT);
   const originX = (): number => (stage.width - DESIGN_WIDTH * scale()) / 2;
 
   const pointerTo = (clientX: number): number => (clientX - originX()) / scale();

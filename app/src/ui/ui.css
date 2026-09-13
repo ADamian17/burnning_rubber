@@ -36,9 +36,39 @@
   display: block;
 }
 
+/*
+ * Screens letterbox to the design aspect and never exceed it.
+ *
+ * With `inset: 0` a screen stretched to whatever the window was, while the
+ * canvas beside it letterboxed to 393:852 — so on a desktop the two halves of
+ * the app disagreed about their own shape.
+ *
+ * The 393x852 ceiling is the important half. Without it a tall window still
+ * grew the box past the design height, and `margin-top: auto` went on pushing
+ * the buttons to the floor of whatever it was given: the void was the window
+ * being tall, not the screen being stretched sideways.
+ *
+ * Centred with `inset: 0; margin: auto` rather than a translate. A
+ * translate(-50%, -50%) on a 393pt box offsets by 196.5pt, and that half pixel
+ * re-antialiases every glyph on the screen — it moved 10% of the pixels in the
+ * snapshots while changing nothing anybody could see.
+ *
+ * A plain cap on each axis, with no aspect term. The aspect version shaved a
+ * fraction of a point off any viewport that is not exactly 393:852 — which
+ * includes both real phones here, the XS at 375x812 and Playwright's iPhone 13
+ * Pro at 390x844 — and re-centred every screen on a half pixel for nothing.
+ * Capping both axes gives the design aspect on a desktop, where both are
+ * clamped, and leaves a phone exactly as it was.
+ *
+ * The canvas frame below still needs the aspect maths, because it has to track
+ * where the canvas actually draws.
+ */
 .screen {
   position: absolute;
   inset: 0;
+  margin: auto;
+  width: min(100vw, 393px);
+  height: min(100vh, 852px);
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -763,8 +793,10 @@
 
 /* ---------- overlays ---------- */
 
+/* covers the window, not the letterbox: a backdrop that stopped at the black
+   bars would look like a panel floating on a lit strip */
 .overlay {
-  position: absolute;
+  position: fixed;
   inset: 0;
   z-index: 95;
   display: flex;
@@ -884,8 +916,8 @@
 
 .run-layer__frame {
   position: relative;
-  width: min(100vw, calc(100vh * 393 / 852));
-  height: min(100vh, calc(100vw * 852 / 393));
+  width: min(100vw, calc(100vh * 393 / 852), 393px);
+  height: min(100vh, calc(100vw * 852 / 393), 852px);
 }
 
 /* both plates share the row evenly instead of BEST eating the space */

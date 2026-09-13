@@ -6,7 +6,13 @@ import { defineConfig, devices } from '@playwright/test';
  * The viewport is the point. Everything about this game is designed against
  * 393x852 — lane widths, the thumb zone, safe-area padding — and running it
  * at a desktop window silently hides whether any of that holds. These tests
- * run at the size the design assumes.
+ * run at phone sizes.
+ *
+ * Note that neither project is exactly 393x852: Playwright's iPhone 13 Pro is
+ * 390x844 and the XS is 375x812. Nothing should assume the design numbers are
+ * the viewport numbers — a layout rule that clamped to the design aspect
+ * shaved a fraction of a point off both and re-centred every screen on a half
+ * pixel.
  */
 export default defineConfig({
   testDir: './e2e',
