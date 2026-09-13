@@ -1,6 +1,8 @@
 import { describe, expect, it } from 'vitest';
 import { DESIGN_WIDTH, LANE_CENTRES, LANE_COUNT, LANE_WIDTH, START_X } from './constants';
-import { PLAYERS, PLAYER_IDS, TRAFFIC, TRAFFIC_IDS, slimness } from './fleet';
+import { HITBOX_INSET } from './constants';
+import { PICKUPS, PICKUP_IDS } from './pickups';
+import { PLAYERS, PLAYER_IDS, SPRITE_MANIFEST, TRAFFIC, TRAFFIC_IDS, slimness } from './fleet';
 import { revive } from './state';
 
 /**
@@ -95,5 +97,38 @@ describe('save narrowing', () => {
     // silently mutes a returning player
     expect(revive({}).music).toBe(true);
     expect(revive({ music: false }).music).toBe(false);
+  });
+});
+
+describe('pickups', () => {
+  it('keeps every pickup far smaller than the narrowest car', () => {
+    // a pickup the size of traffic costs the player a swerve they never needed
+    // to make; it has to read as "collect", not "avoid", in peripheral vision
+    const narrowest = Math.min(...TRAFFIC_IDS.map((id) => TRAFFIC[id].width));
+    for (const id of PICKUP_IDS) {
+      expect(PICKUPS[id].size).toBeLessThan(narrowest * 0.8);
+    }
+  });
+
+  it('gives every pickup something to be worth', () => {
+    // a pickup worth nothing is scenery the player wastes a lane change on
+    for (const id of PICKUP_IDS) {
+      expect(PICKUPS[id].value).toBeGreaterThan(0);
+    }
+  });
+
+  it('hands every pickup to the rasteriser', () => {
+    // sprites are pre-rasterised from this manifest; a pickup missing from it
+    // spawns into the world and throws on the first frame that draws it
+    const drawable = new Set(SPRITE_MANIFEST.map(([id]) => id));
+    for (const id of PICKUP_IDS) {
+      expect(drawable).toContain(id);
+    }
+  });
+
+  it('forgives collection while punishing collision', () => {
+    // the two hitboxes lean opposite ways on purpose: clipping a wing mirror
+    // should not end a run, and brushing a coin should still bank it
+    expect(HITBOX_INSET).toBeLessThan(1);
   });
 });

@@ -15,7 +15,23 @@ import {
   THUMB_ZONE_TOP,
   laneCentre
 } from './constants';
-import { PLAYERS, TRAFFIC, TRAFFIC_IDS, type PlayerId, type TrafficId, type VehicleId } from './fleet';
+import { PICKUPS, type PickupId } from './pickups';
+import {
+  PLAYERS,
+  TRAFFIC,
+  TRAFFIC_IDS,
+  type PlayerId,
+  type SpriteId,
+  type TrafficId
+} from './fleet';
+
+/** Something lying on the road to be collected rather than avoided. */
+interface Pickup {
+  id: PickupId;
+  size: number;
+  x: number;
+  y: number;
+}
 
 interface Obstacle {
   id: TrafficId;
@@ -70,7 +86,7 @@ export interface GameOptions {
   readonly car: PlayerId;
   /** Fired once, the frame the run ends. */
   readonly onCrash?: () => void;
-  readonly sprites: SpriteSheet<VehicleId>;
+  readonly sprites: SpriteSheet<SpriteId>;
   readonly stage: Stage;
 }
 
@@ -82,6 +98,8 @@ export const createGame = ({ car, onCrash, sprites, stage }: GameOptions) => {
   let crashed = false;
   let distance = 0;
   let obstacles: Obstacle[] = [];
+  let pickups: Pickup[] = [];
+  let pickupTimer = 0;
   let playerX = START_X;
   let roadOffset = 0;
   let score = 0;
@@ -206,6 +224,35 @@ export const createGame = ({ car, onCrash, sprites, stage }: GameOptions) => {
   /** The car sits low on screen; the road comes to it. */
   const playerY = DESIGN_HEIGHT - 140;
 
+  /** Seconds between coins. Slower than traffic: a coin should be worth taking. */
+  const PICKUP_EVERY = 1.6;
+
+  /**
+   * Drops a coin into a lane with nothing in it.
+   *
+   * Never shares a lane with traffic already on the road, because a coin the
+   * player cannot reach without crashing is not a choice, it is a trap. That
+   * still leaves real tension: the clear lane holding the coin is often not the
+   * gap the next group will leave.
+   */
+  const dropPickup = (): void => {
+    const spec = PICKUPS.coin;
+    const free = LANE_CENTRES.map((_, lane) => lane).filter((lane) => !laneBusy(lane));
+    if (free.length === 0) return;
+    const lane = free[Math.floor(Math.random() * free.length)];
+    pickups.push({ id: 'coin', size: spec.size, x: laneCentre(lane), y: -spec.size });
+  };
+
+  /**
+   * Generous on purpose: a coin is a reward, so it should forgive a near miss
+   * the way HITBOX_INSET deliberately does not.
+   */
+  const takes = (p: Pickup): boolean => {
+    const reach = (player.width + p.size) / 2 + 10;
+    const halfH = (player.length + p.size) / 2;
+    return Math.abs(playerX - p.x) < reach && Math.abs(playerY - p.y) < halfH;
+  };
+
   /** True while a lane still holds a car anywhere on the player's approach. */
   const laneBusy = (lane: number): boolean =>
     obstacles.some((o) => o.x === laneCentre(lane) && o.y < playerY);
@@ -250,6 +297,12 @@ export const createGame = ({ car, onCrash, sprites, stage }: GameOptions) => {
       spawnTimer = Math.max(0.34, 1.05 - distance / RAMP_METRES);
     }
 
+    pickupTimer -= step;
+    if (pickupTimer <= 0) {
+      dropPickup();
+      pickupTimer = PICKUP_EVERY;
+    }
+
     for (const o of obstacles) o.y += v * step;
     for (const o of obstacles) {
       if (hits(o)) {
@@ -258,9 +311,25 @@ export const createGame = ({ car, onCrash, sprites, stage }: GameOptions) => {
         return;
       }
     }
-    const before = obstacles.length;
     obstacles = obstacles.filter((o) => o.y - o.length < DESIGN_HEIGHT + 60);
-    coins += before - obstacles.length;
+
+    /*
+     * Coins are banked the instant they are touched.
+     *
+     * They used to be counted as traffic scrolled off the bottom, which made
+     * the currency a side effect of surviving long enough for the screen to
+     * move: a run that ended early paid nothing at all, so the weakest players
+     * earned least and could never reach the garage. Taking a coin is now an
+     * act, and a short run still pays for what it collected.
+     */
+    for (const p of pickups) p.y += v * step;
+    pickups = pickups.filter((p) => {
+      if (takes(p)) {
+        coins += PICKUPS[p.id].value;
+        return false;
+      }
+      return p.y - p.size < DESIGN_HEIGHT + 60;
+    });
   };
 
   /* ---------------- rendering ---------------- */
@@ -304,7 +373,7 @@ export const createGame = ({ car, onCrash, sprites, stage }: GameOptions) => {
 
   const drawSprite = (
     ctx: CanvasRenderingContext2D,
-    id: VehicleId,
+    id: SpriteId,
     x: number,
     y: number,
     w: number,
@@ -398,6 +467,10 @@ export const createGame = ({ car, onCrash, sprites, stage }: GameOptions) => {
     ctx.scale(s, s);
 
     drawRoad(ctx, roadOffset + lead);
+    // under the traffic: a car crossing a coin should cover it, not sit behind it
+    for (const p of pickups) {
+      drawSprite(ctx, p.id, p.x, p.y + lead, p.size, p.size, false);
+    }
     for (const o of obstacles) {
       drawSprite(ctx, o.id, o.x, o.y + lead, o.width, o.length, true);
     }
@@ -416,6 +489,8 @@ export const createGame = ({ car, onCrash, sprites, stage }: GameOptions) => {
     playerX = START_X;
     score = 0;
     spawnTimer = 0;
+    pickups = [];
+    pickupTimer = PICKUP_EVERY;
   };
 
   return {

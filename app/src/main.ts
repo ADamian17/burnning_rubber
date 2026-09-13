@@ -1,7 +1,7 @@
 import './style.css';
 import './ui/ui.css';
 import * as screens from './ui/screens';
-import { SPRITE_MANIFEST, type VehicleId } from './game/fleet';
+import { SPRITE_MANIFEST, type SpriteId } from './game/fleet';
 import { SplashScreen } from '@capacitor/splash-screen';
 import { createGame, type Game } from './game/game';
 import { createLoop } from './engine/loop';
@@ -38,7 +38,7 @@ const run: ScreenDef = {
 
 const boot = async (): Promise<void> => {
   const [sprites, initial] = await Promise.all([
-    loadSprites<VehicleId>(SPRITE_MANIFEST, stage.dpr),
+    loadSprites<SpriteId>(SPRITE_MANIFEST, stage.dpr),
     loadState()
   ]);
 

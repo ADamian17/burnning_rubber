@@ -8,6 +8,7 @@ import trafficPatrol from '../assets/cars/traffic-patrol.svg';
 import trafficSedan from '../assets/cars/traffic-sedan.svg';
 import trafficSemi from '../assets/cars/traffic-semi.svg';
 import trafficVan from '../assets/cars/traffic-van.svg';
+import { PICKUP_MANIFEST, type PickupId } from './pickups';
 
 export type PlayerId = 'boarhound' | 'donkeywork' | 'hatpin' | 'straycat';
 export type TrafficId =
@@ -62,11 +63,16 @@ export const TRAFFIC: Readonly<Record<TrafficId, TrafficCar>> = {
 
 export const TRAFFIC_IDS = Object.keys(TRAFFIC) as TrafficId[];
 
+/** Anything the rasteriser draws: vehicles, plus everything lying on the road. */
+export type SpriteId = VehicleId | PickupId;
+
 /** Every sprite the game draws, as [id, url, width, height] for the rasteriser. */
-export const SPRITE_MANIFEST: ReadonlyArray<readonly [VehicleId, string, number, number]> = [
-  ...(Object.entries(PLAYERS) as [PlayerId, PlayerCar][]),
-  ...(Object.entries(TRAFFIC) as [TrafficId, TrafficCar][])
-].map(([id, v]) => [id, v.url, v.width, v.length] as const);
+export const SPRITE_MANIFEST: ReadonlyArray<readonly [SpriteId, string, number, number]> = [
+  ...([...Object.entries(PLAYERS), ...Object.entries(TRAFFIC)] as [VehicleId, PlayerCar][]).map(
+    ([id, v]) => [id, v.url, v.width, v.length] as const
+  ),
+  ...PICKUP_MANIFEST
+];
 
 /** Player car ids in showroom order. */
 export const PLAYER_IDS = Object.keys(PLAYERS) as PlayerId[];
