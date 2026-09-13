@@ -46,6 +46,29 @@ vehicles run 46pt to 76pt wide. `design/cars/fleet.json` is the source of truth;
 so the garage is a strategic choice rather than a cosmetic one. Hatpin (46pt)
 leaves 52pt of slack in a lane; Boarhound (72pt) leaves 26pt.
 
+## Tests
+
+```
+pnpm test        invariants — the rules the game is built on
+pnpm test:e2e    behaviour and visual snapshots, in WebKit
+pnpm test:all    both
+```
+
+Snapshots run at two sizes: **393x852**, the canvas everything is designed
+against, and **375x812**, the iPhone XS the game is actually played on.
+Baselines live beside the spec and are committed; a change that alters a screen
+fails until they are re-recorded:
+
+```
+pnpm exec playwright test snapshots --update-snapshots
+```
+
+Review the new images before committing them. The point of a baseline is that
+someone looked at it — regenerating on a failure without looking is the same as
+not having the test. It has already happened once: the run snapshot silently
+recorded the summary screen twice, because an unattended car crashes before the
+screenshot is taken, and `--update-snapshots` writes whatever it is shown.
+
 ## Design
 
 Screens are designed before they are built. The artboards in `design/` are the

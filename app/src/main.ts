@@ -5,13 +5,13 @@ import { SPRITE_MANIFEST, type SpriteId } from './game/fleet';
 import { Haptics, ImpactStyle } from '@capacitor/haptics';
 import { SplashScreen } from '@capacitor/splash-screen';
 import { createGame, type Game } from './game/game';
-import { createLoop } from './engine/loop';
+import { STEP, createLoop } from './engine/loop';
 import { createRouter, type Route, type ScreenDef } from './ui/router';
 import { challengeFor, met, seedForDay, streakAfter } from './game/daily';
 import { createStage } from './engine/canvas';
 import { randomSeed } from './engine/rng';
 import { takeDaily } from './game/session';
-import { exposeDebugState } from './game/debug';
+import { exposeDebugState, forcedSeed, frozenFrame } from './game/debug';
 import { garage, showCar } from './ui/garage';
 import { loadSprites } from './engine/sprites';
 import { loadState, saveState } from './game/state';
@@ -103,7 +103,7 @@ const boot = async (): Promise<void> => {
       onNearMiss: router.state.haptics
         ? () => void Haptics.impact({ style: ImpactStyle.Light })
         : undefined,
-      seed: runningDay === null ? randomSeed() : seedForDay(runningDay),
+      seed: runningDay === null ? (forcedSeed() ?? randomSeed()) : seedForDay(runningDay),
       sprites,
       stage,
       upgrades: router.state.upgrades
@@ -111,7 +111,17 @@ const boot = async (): Promise<void> => {
     game.bind(canvas);
     const active = game;
     loop = createLoop(active.update, (alpha) => active.render(alpha, loop?.fps() ?? 0));
-    loop.start();
+
+    const frozen = frozenFrame();
+    if (frozen === null) {
+      loop.start();
+    } else {
+      // stepped by hand and never started, so the run cannot advance — or crash
+      // — while a screenshot is being taken. alpha 0 and a fixed fps because a
+      // live value would differ by whatever the machine managed that second.
+      for (let i = 0; i < frozen; i += 1) active.update(STEP);
+      active.render(0, 60);
+    }
   };
 
   const finishRun = (): void => {

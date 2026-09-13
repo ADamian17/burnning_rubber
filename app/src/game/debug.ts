@@ -26,8 +26,38 @@ declare global {
      * of production, so treat this as undefined in any shipped code.
      */
     __br?: DebugState;
+    /** Set before boot to fix a run's seed, so its road is reproducible. */
+    __brSeed?: number;
+    /** Set before boot to start every run frozen on this frame. */
+    __brFreezeAt?: number;
   }
 }
+
+/**
+ * A seed forced by a test, or null to let the run be random.
+ *
+ * Snapshots of the run screen are otherwise impossible: the road is different
+ * every time, so every comparison fails for a reason that is not a regression.
+ */
+export const forcedSeed = (): number | null =>
+  import.meta.env.DEV && typeof window.__brSeed === 'number' ? window.__brSeed : null;
+
+/**
+ * The frame a run should be frozen on, or null to play it live.
+ *
+ * requestAnimationFrame fires on the display's schedule, so "wait a moment,
+ * then screenshot" lands somewhere different every time. Stepping the
+ * simulation a fixed number of times and rendering once is reproducible to the
+ * pixel.
+ *
+ * Read when the run starts rather than offered as a function to call after it:
+ * the first version was a callback, and an unattended car crashes in about six
+ * seconds, which is less time than the round-trips took. The snapshot came back
+ * showing the summary screen. A run that never starts its loop cannot lose that
+ * race.
+ */
+export const frozenFrame = (): number | null =>
+  import.meta.env.DEV && typeof window.__brFreezeAt === 'number' ? window.__brFreezeAt : null;
 
 /**
  * Publishes `window.__br` in development builds and does nothing otherwise.

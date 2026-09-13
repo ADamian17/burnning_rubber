@@ -40,10 +40,21 @@ const save = (patch: Partial<Save> = {}): Save => ({
   ...patch
 });
 
-/** Seed storage before the app boots, so the first render already sees it. */
+/**
+ * Seed storage before the app boots, so the first render already sees it.
+ *
+ * Only on a cold start. addInitScript runs again on every navigation, so
+ * writing unconditionally would put the seed back on reload and quietly undo
+ * whatever the app had saved — which is exactly what a persistence test is
+ * trying to observe.
+ */
 const boot = async (page: Page, state: Partial<Save> = {}): Promise<void> => {
   await page.addInitScript(
-    ([key, value]) => window.localStorage.setItem(key as string, value as string),
+    ([key, value]) => {
+      if (window.localStorage.getItem(key as string) === null) {
+        window.localStorage.setItem(key as string, value as string);
+      }
+    },
     [SAVE_KEY, JSON.stringify(save(state))] as const
   );
   await page.goto('/');
@@ -51,6 +62,18 @@ const boot = async (page: Page, state: Partial<Save> = {}): Promise<void> => {
 
 const state = (page: Page): Promise<DebugState | undefined> =>
   page.evaluate(() => window.__br);
+
+/** The save as written by the app, including fields `Save` does not seed. */
+interface StoredSave extends Save {
+  daily: { lastDone: string | null; streak: number };
+  upgrades: Record<string, number>;
+}
+
+/** The save as it actually sits in storage, not as the screen renders it. */
+const stored = async (page: Page): Promise<StoredSave> =>
+  JSON.parse(
+    (await page.evaluate((key) => window.localStorage.getItem(key), SAVE_KEY)) ?? '{}'
+  ) as StoredSave;
 
 test.describe('first launch', () => {
   test('splash leads to onboarding, which shows the car it describes', async ({ page }) => {
@@ -253,5 +276,41 @@ test.describe('layout at 393x852', () => {
     expect((play?.y ?? 0) + (play?.height ?? 0)).toBeLessThanOrEqual(viewport?.height ?? 0);
     // and hit at least the 44pt minimum
     expect(play?.height ?? 0).toBeGreaterThanOrEqual(44);
+  });
+});
+
+test.describe('shop', () => {
+  test('an upgrade survives a reload, and the coins are gone', async ({ page }) => {
+    // ADO-46 asked for this and it was not written at the time: the whole point
+    // of a shop is that what you bought is still there tomorrow
+    await boot(page, { coins: 500 });
+    await page.locator('.screen--centred').click();
+    await page.locator('[data-go="shop"]').click();
+
+    const first = page.locator('[data-upgrade]').first();
+    const id = await first.getAttribute('data-upgrade');
+    await first.click();
+
+    const afterBuy = await stored(page);
+    expect(afterBuy.upgrades[id ?? '']).toBe(1);
+    expect(afterBuy.coins).toBeLessThan(500);
+
+    await page.reload();
+    await page.locator('.screen--centred').click();
+    await page.locator('[data-go="shop"]').click();
+
+    const afterReload = await stored(page);
+    expect(afterReload.upgrades[id ?? '']).toBe(1);
+    expect(afterReload.coins).toBe(afterBuy.coins);
+  });
+
+  test('will not sell what the player cannot afford', async ({ page }) => {
+    await boot(page, { coins: 0 });
+    await page.locator('.screen--centred').click();
+    await page.locator('[data-go="shop"]').click();
+
+    // nothing is buyable, so the shortfall is named instead of a dead button
+    await expect(page.locator('[data-upgrade]')).toHaveCount(0);
+    await expect(page.locator('.shop__card').first()).toContainText('SHORT');
   });
 });
