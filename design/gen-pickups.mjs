@@ -25,9 +25,11 @@ const shade = (hex, amt) => {
 };
 
 const GOLD = '#FFC93C';
+/* Straight off PowerUpActive.dc.html: the shield bubble and the SHIELD pill's
+ * glow are both #35D6F2, and the SLOW-MO pill glows the paler #8BE9FA. */
 const CYAN = '#35D6F2';
+const PALE = '#8BE9FA';
 const MAGENTA = '#F2359B';
-const CREAM = '#F5EFE4';
 const OUTLINE = 2.9;
 const INK = '#0A0806';
 
@@ -122,15 +124,15 @@ export const PICKUPS = [
     slug: 'shield',
     name: 'SHIELD',
     size: 36,
-    svg: token(36, CREAM, GLYPHS.shield),
-    note: 'Eats one crash. Cream so it reads as armour rather than as a hazard.'
+    svg: token(36, CYAN, GLYPHS.shield),
+    note: 'Eats one crash. Cyan to match the bubble it puts around the car.'
   },
   {
     slug: 'slowmo',
     name: 'SLOW-MO',
     size: 36,
-    svg: token(36, CYAN, GLYPHS.slowmo),
-    note: 'Cyan, matching the screen tint the artboard puts over a slowed road.'
+    svg: token(36, PALE, GLYPHS.slowmo),
+    note: 'The paler cyan of its pill; the real cue is the full-screen wash.'
   },
   {
     slug: 'magnet',

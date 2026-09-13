@@ -9,13 +9,13 @@
     "slug": "shield",
     "name": "SHIELD",
     "size": 36,
-    "note": "Eats one crash. Cream so it reads as armour rather than as a hazard."
+    "note": "Eats one crash. Cyan to match the bubble it puts around the car."
   },
   {
     "slug": "slowmo",
     "name": "SLOW-MO",
     "size": 36,
-    "note": "Cyan, matching the screen tint the artboard puts over a slowed road."
+    "note": "The paler cyan of its pill; the real cue is the full-screen wash."
   },
   {
     "slug": "magnet",

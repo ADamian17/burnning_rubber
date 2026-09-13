@@ -458,8 +458,79 @@ export const createGame = ({ car, onCrash, sprites, stage }: GameOptions) => {
 
   const POWER_TINT: Readonly<Record<PowerId, string>> = {
     magnet: '#F2359B',
-    shield: '#F5EFE4',
-    slowmo: '#35D6F2'
+    shield: '#35D6F2',
+    slowmo: '#8BE9FA'
+  };
+
+  /**
+   * The bubble the artboard puts around a shielded car.
+   *
+   * This is the only cue the player can read without looking away from the car,
+   * which is the whole point: the HUD pill says how long is left, the bubble
+   * says you are currently safe. Its disappearance is how a spent shield
+   * announces itself.
+   *
+   * Proportions are taken from PowerUpActive.dc.html: a 172x196 ellipse around
+   * the car, an inner hairline at 150x174, and a hex-facet hint from two sets
+   * of thin lines at plus and minus 60 degrees.
+   */
+  const drawShieldBubble = (ctx: CanvasRenderingContext2D): void => {
+    const rx = 86;
+    const ry = 98;
+    // the last moment fades rather than vanishing, so it reads as running out
+    const fade = Math.min(1, powers.shield / 1.2);
+
+    ctx.save();
+    ctx.globalAlpha = fade;
+    ctx.translate(playerX, playerY);
+
+    const wash = ctx.createRadialGradient(0, 0, ry * 0.1, 0, 0, ry);
+    wash.addColorStop(0, 'rgba(53,214,242,0.10)');
+    wash.addColorStop(0.62, 'rgba(53,214,242,0.30)');
+    wash.addColorStop(0.78, 'rgba(53,214,242,0.06)');
+    wash.addColorStop(1, 'rgba(53,214,242,0)');
+
+    ctx.beginPath();
+    ctx.ellipse(0, 0, rx, ry, 0, 0, Math.PI * 2);
+    ctx.fillStyle = wash;
+    ctx.fill();
+
+    // facets are clipped to the bubble, or the lines run across the whole road
+    ctx.save();
+    ctx.clip();
+    ctx.globalAlpha = fade * 0.45;
+    ctx.strokeStyle = 'rgba(139,233,250,0.4)';
+    ctx.lineWidth = 1;
+    for (const angle of [Math.PI / 3, -Math.PI / 3]) {
+      ctx.save();
+      ctx.rotate(angle);
+      for (let y = -ry * 2; y < ry * 2; y += 17) {
+        ctx.beginPath();
+        ctx.moveTo(-rx * 2, y);
+        ctx.lineTo(rx * 2, y);
+        ctx.stroke();
+      }
+      ctx.restore();
+    }
+    ctx.restore();
+
+    ctx.globalAlpha = fade;
+    ctx.shadowColor = 'rgba(53,214,242,0.55)';
+    ctx.shadowBlur = 34;
+    ctx.strokeStyle = 'rgba(139,233,250,0.95)';
+    ctx.lineWidth = 3;
+    ctx.beginPath();
+    ctx.ellipse(0, 0, rx, ry, 0, 0, Math.PI * 2);
+    ctx.stroke();
+    ctx.shadowBlur = 0;
+
+    ctx.strokeStyle = 'rgba(255,255,255,0.4)';
+    ctx.lineWidth = 1.5;
+    ctx.beginPath();
+    ctx.ellipse(0, 0, rx * 0.87, ry * 0.89, 0, 0, Math.PI * 2);
+    ctx.stroke();
+
+    ctx.restore();
   };
 
   /**
@@ -593,6 +664,8 @@ export const createGame = ({ car, onCrash, sprites, stage }: GameOptions) => {
       drawSprite(ctx, o.id, o.x, o.y + lead, o.width, o.length, true);
     }
     drawSprite(ctx, car, playerX, playerY, player.width, player.length, false);
+    // over the car, so the bubble contains it rather than sitting behind it
+    if (powers.shield > 0) drawShieldBubble(ctx);
 
     // the artboard washes a slowed road in cyan; it is also the only cue that
     // reads without looking away from the car
