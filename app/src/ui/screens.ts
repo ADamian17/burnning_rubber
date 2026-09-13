@@ -2,7 +2,6 @@ import { PLAYERS } from '../game/fleet';
 import straycatUrl from '../assets/cars/straycat.svg';
 import { html, on, raw } from './dom';
 import type { Ctx, ScreenDef } from './router';
-import type { ControlScheme } from '../game/state';
 
 /* ---------------- shared fragments ---------------- */
 
@@ -140,12 +139,6 @@ export const onboarding: ScreenDef = {
   `
 };
 
-const CONTROLS: ReadonlyArray<readonly [ControlScheme, string]> = [
-  ['drag', 'DRAG'],
-  ['tapLanes', 'TAP LANES'],
-  ['tilt', 'TILT']
-];
-
 const toggleRow = (key: 'haptics' | 'music' | 'sfx', label: string, on_: boolean): string => html`
   <div class="row">
     <span class="row__label${on_ ? '' : ' row__label--off'}">${label}</span>
@@ -168,9 +161,6 @@ export const settings: ScreenDef = {
       const key = el.dataset.toggle as 'haptics' | 'music' | 'sfx';
       ctx.save({ [key]: !ctx.state[key] });
     });
-    on(root, '[data-control]', 'click', (el) =>
-      ctx.save({ control: el.dataset.control as ControlScheme })
-    );
     on(root, '[data-reset]', 'click', () => ctx.open('resetConfirm'));
   },
   view: (ctx) => html`
@@ -190,17 +180,9 @@ export const settings: ScreenDef = {
 
       <div class="section">
         <div class="section__title">STEERING</div>
-        <div class="seg">
-          ${raw(
-            CONTROLS.map(
-              ([value, label]) => `<button class="seg__item${
-                ctx.state.control === value ? ' seg__item--on' : ''
-              }" data-control="${value}">${label}</button>`
-            ).join('')
-          )}
-        </div>
         <p class="section__note">
-          Only <b>drag</b> is implemented. The other two are recorded but not yet wired to the game.
+          Touch anywhere and drag. The car moves as far as your thumb does, so you
+          can hold low and wide of it and still see the road ahead.
         </p>
       </div>
 

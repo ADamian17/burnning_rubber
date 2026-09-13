@@ -89,8 +89,12 @@ describe('save narrowing', () => {
     expect(save.owned).toContain(save.equipped);
   });
 
-  it('defaults an unknown control scheme rather than storing it', () => {
-    expect(revive({ control: 'telepathy' }).control).toBe('drag');
+  it('brings every old control scheme back as drag', () => {
+    // tap-lanes and tilt were offered in settings and never implemented, so a
+    // save holding one describes a player who was getting drag regardless
+    for (const control of ['telepathy', 'tapLanes', 'tilt', undefined]) {
+      expect(revive({ control }).control).toBe('drag');
+    }
   });
 
   it('treats a missing audio flag as on, not off', () => {

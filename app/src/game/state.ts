@@ -3,8 +3,18 @@ import { PLAYER_IDS, type PlayerId } from './fleet';
 
 const KEY = 'burning-rubber:save';
 
-/** How the car is steered. Drag is the default the HUD layout assumes. */
-export type ControlScheme = 'drag' | 'tapLanes' | 'tilt';
+/**
+ * How the car is steered.
+ *
+ * Tap-lanes and tilt were dropped rather than built. Both were offered in
+ * settings and neither was ever implemented, so choosing one silently gave you
+ * drag under a different name — a setting that lies is worse than a setting
+ * that is absent.
+ *
+ * Left as a union of one rather than collapsed away: re-adding a scheme should
+ * be a type change the compiler walks you through, not a rediscovery.
+ */
+export type ControlScheme = 'drag';
 
 /** Result of the most recent run, so the summary survives a reload. */
 export interface RunResult {
@@ -71,13 +81,12 @@ export const revive = (raw: unknown): SaveState => {
   if (!owned.includes('straycat')) owned.push('straycat');
   const equipped =
     value.equipped && owned.includes(value.equipped) ? value.equipped : 'straycat';
-  const controls: ControlScheme[] = ['drag', 'tapLanes', 'tilt'];
   return {
     best: Number.isFinite(value.best) ? Number(value.best) : 0,
     coins: Number.isFinite(value.coins) ? Number(value.coins) : 0,
-    control: controls.includes(value.control as ControlScheme)
-      ? (value.control as ControlScheme)
-      : 'drag',
+    // a save from when tap-lanes or tilt could be chosen comes back as drag,
+    // which is what those players were getting anyway
+    control: 'drag',
     equipped,
     haptics: value.haptics !== false,
     lastRun: reviveRun(value.lastRun),
