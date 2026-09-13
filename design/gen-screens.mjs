@@ -33,8 +33,44 @@ const FILES = {
     ['CantAfford.dc.html', 'cantafford', 'Garage · not enough coins'],
     ['Unlock.dc.html', 'unlock', 'Car unlocked'],
     ['DailyResult.dc.html', 'daily', 'Daily challenge complete']
+  ],
+  /*
+   * Every phone-sized screen on one canvas, as an index.
+   *
+   * The other three canvases group screens by where they sit in the game, which
+   * is the right shape for designing but means no single place shows the whole
+   * thing. This is that place — one grid, one name under each.
+   *
+   * Fleet and Sprites are left out on purpose: they are 900x1000 and 786x852
+   * reference sheets, not screens, and putting them in a grid of 393x852 phones
+   * would only make the grid wrong.
+   */
+  'Index.dc.html': [
+    ['Splash.dc.html', 'i_splash', 'Splash'],
+    ['MainMenu.dc.html', 'i_menu', 'Main menu'],
+    ['Onboarding.dc.html', 'i_onboard', 'Onboarding'],
+    ['Countdown.dc.html', 'i_countdown', 'Countdown'],
+    ['Main.dc.html', 'i_hud', 'In-run HUD'],
+    ['PowerUpActive.dc.html', 'i_power', 'HUD · power-ups active'],
+    ['Pause.dc.html', 'i_pause', 'Pause'],
+    ['RunSummary.dc.html', 'i_summary', 'Run summary'],
+    ['Garage.dc.html', 'i_garage', 'Garage'],
+    ['CantAfford.dc.html', 'i_cantafford', 'Garage · not enough coins'],
+    ['Unlock.dc.html', 'i_unlock', 'Car unlocked'],
+    ['DailyResult.dc.html', 'i_daily', 'Daily challenge complete'],
+    ['Settings.dc.html', 'i_settings', 'Settings'],
+    ['ResetConfirm.dc.html', 'i_reset', 'Reset confirm'],
+    ['Credits.dc.html', 'i_credits', 'Credits']
   ]
 };
+
+/**
+ * Screens per row before a canvas wraps. A single row of 15 is 6.8k wide.
+ *
+ * Six, not five, so the three original canvases keep the single-row layout they
+ * were designed in — Menu is exactly six. Only Index is large enough to wrap.
+ */
+const COLUMNS = 6;
 
 /* ---------- css scoping ---------- */
 /** Split a stylesheet into top-level blocks, keeping @keyframes intact. */
@@ -109,6 +145,8 @@ ${body}
 /* ---------- emit ---------- */
 for (const [outFile, members] of Object.entries(FILES)) {
   const parts = members.map(([f, s, l]) => build(f, s, l));
+  const cols = Math.min(members.length, COLUMNS);
+  const rows = Math.ceil(members.length / cols);
   const seen = new Set(); let hoist = '';
   for (const p of parts) for (const line of p.hoisted.split(/\n(?=[.@:*a-z])/)) {
     const k = line.trim(); if (k && !seen.has(k)) { seen.add(k); hoist += k + '\n'; }
@@ -132,16 +170,16 @@ ${[...sprites.values()].join('\n')}
 ${parts.map((p) => p.css).join('\n')}
 </style>
 </helmet>
-<div style="display:flex;gap:56px;padding:44px;background:#070605;align-items:flex-start;font-family:'Outfit','Avenir Next',system-ui,sans-serif;">
+<div style="display:flex;flex-wrap:wrap;gap:56px;padding:44px;background:#070605;align-items:flex-start;width:${cols * 449 + 88}px;box-sizing:border-box;font-family:'Outfit','Avenir Next',system-ui,sans-serif;">
 ${parts.map((p) => p.html).join('\n')}
 </div>
 </x-dc>
-<script data-dc-script data-props='{"$preview":{"width":${members.length * 449 + 88},"height":940}}'>
+<script data-dc-script data-props='{"$preview":{"width":${cols * 449 + 88},"height":${rows * 940}}}'>
 class Component extends DCLogic {}
 </script>
 </body>
 </html>
 `);
-  console.log(`${outFile}: ${members.length} screens, ${(readFileSync(OUT + outFile).length / 1024).toFixed(0)}KB`);
+  console.log(`${outFile}: ${members.length} screens in ${rows}x${cols}, ${(readFileSync(OUT + outFile).length / 1024).toFixed(0)}KB`);
   sprites.clear();
 }
