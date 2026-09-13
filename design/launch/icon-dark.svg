@@ -1,0 +1,49 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1024" height="1024" viewBox="0 0 1024 1024">
+  <defs>
+    <!-- hot at the tyre, cooling to the corners: the heat has a source -->
+    <radialGradient id="ground" cx="50%" cy="40%" r="76%">
+      <stop offset="0%"   stop-color="#FFC93C"/>
+      <stop offset="34%"  stop-color="#f77503"/>
+      <stop offset="76%"  stop-color="#E4322B"/>
+      <stop offset="100%" stop-color="#6E1410"/>
+    </radialGradient>
+    <!-- marks fade out rather than stopping, so they recede instead of ending -->
+    <linearGradient id="mark" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%"   stop-color="#000000" stop-opacity="0.95"/>
+      <stop offset="58%"  stop-color="#0A0806" stop-opacity="0.72"/>
+      <stop offset="100%" stop-color="#0A0806" stop-opacity="0.12"/>
+    </linearGradient>
+    <linearGradient id="rubber" x1="0" y1="0" x2="0.35" y2="1">
+      <stop offset="0%"   stop-color="#3A3431"/>
+      <stop offset="46%"  stop-color="#131110"/>
+      <stop offset="100%" stop-color="#000000"/>
+    </linearGradient>
+  </defs>
+
+  <rect width="1024" height="1024" fill="url(#ground)"/>
+  <rect width="1024" height="1024" fill="#0A0806" opacity="0.34"/>
+
+  <!-- the rubber it is laying, behind and below -->
+  <path d="M312.27904 430.08
+                   L711.72096 430.08
+                   L655.27808 1024
+                   L368.72192 1024 Z" fill="url(#mark)"/>
+
+  <!-- the tyre, straight from the tagline glyph -->
+  <circle cx="512" cy="430.08" r="217.088" fill="url(#rubber)"/>
+  <circle cx="512" cy="430.08" r="182.35392" fill="none" stroke="#46403A" stroke-width="56.44288"
+           stroke-dasharray="54.70617599999999 80.2357248" stroke-linecap="butt"/>
+  <!-- hub kept dark and small: a pale one turns the tyre into a target, and at
+       60px the eye needs one dark disc rather than a ring around a bullseye -->
+  <circle cx="512" cy="430.08" r="69.46816" fill="#39332C"/>
+  <g stroke="#544E45" stroke-width="10.420224" stroke-linecap="round">
+    <line x1="512" y1="380.0629248" x2="512" y2="480.09707519999995"/>
+    <line x1="461.9829248" y1="430.08" x2="562.0170752" y2="430.08"/>
+    <line x1="476.6325869509625" y1="394.7125869509625" x2="547.3674130490375" y2="465.4474130490375"/>
+    <line x1="547.3674130490375" y1="394.7125869509625" x2="476.6325869509625" y2="465.4474130490375"/>
+  </g>
+
+  <!-- rim highlight, so the tyre does not read as a flat hole -->
+  <circle cx="512" cy="430.08" r="217.088" fill="none"
+          stroke="#40382F" stroke-width="8.192" opacity="0.8"/>
+</svg>
