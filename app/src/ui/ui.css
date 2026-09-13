@@ -14,6 +14,10 @@
   --ui: 'Outfit', 'Avenir Next', system-ui, sans-serif;
 
   /* real numbers inside a webview thanks to viewport-fit=cover */
+  /* One gap between a screen's header and whatever it shows first. It was 22px
+     on .section, 26px on .stub, 24px on the shop and 0 in the garage, which
+     made moving between screens feel like the title shifted. */
+  --gap-head: 24px;
   --safe-top: env(safe-area-inset-top, 0px);
   --safe-bottom: env(safe-area-inset-bottom, 0px);
 }
@@ -236,6 +240,7 @@
   flex: 1 1 auto;
   width: 100%;
   max-width: 361px;
+  margin-top: var(--gap-head);
   display: flex;
   align-items: center;
   gap: 10px;
@@ -458,10 +463,15 @@
   width: 100%;
   max-width: 361px;
   flex: none;
-  margin-top: 22px;
+  margin-top: var(--gap-head);
   display: flex;
   flex-direction: column;
   gap: 10px;
+}
+
+/* only the first one clears the header; stacked sections sit closer together */
+.section + .section {
+  margin-top: 14px;
 }
 
 .section__title {
@@ -838,7 +848,7 @@
   flex: 1 1 auto;
   width: 100%;
   max-width: 361px;
-  margin: 26px 0;
+  margin: var(--gap-head) 0;
   padding: 28px 22px;
   border: 2px dashed #3a2e22;
   border-radius: 14px;
@@ -925,4 +935,81 @@
 .menu__strip .garage__coins {
   flex: 1 1 0;
   justify-content: center;
+}
+
+/* ---- shop ---- */
+
+/*
+ * Both take their width from .garage__head rather than adding padding of their
+ * own. .screen already insets 16px, so a further 20px here left the cards 36px
+ * from each edge — narrower than the header above them, which reads as a
+ * mistake on a 375pt screen where every point counts.
+ */
+.shop__intro {
+  width: 100%;
+  max-width: 361px;
+  /* top margin rather than a header rule: .garage__head is shared with the
+     garage, which wants its card tight under the title */
+  margin: var(--gap-head) 0 16px;
+  font-size: 12px;
+  line-height: 1.5;
+  color: var(--muted);
+}
+
+.shop__grid {
+  width: 100%;
+  max-width: 361px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.shop__card {
+  padding: 13px 15px 15px;
+  border: 2px solid #000;
+  border-radius: 11px;
+  background: rgba(10, 8, 6, 0.72);
+  box-shadow:
+    0 3px 0 #000,
+    inset 0 1px 0 rgba(255, 183, 101, 0.14);
+}
+
+.shop__head {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 10px;
+}
+
+.shop__name {
+  font-size: 11px;
+  font-weight: 900;
+  letter-spacing: 2.2px;
+  color: var(--cream);
+}
+
+.shop__value {
+  font-size: 20px;
+  color: var(--lite);
+}
+
+.shop__note {
+  margin: 5px 0 10px;
+  font-size: 11.5px;
+  line-height: 1.45;
+  color: var(--muted);
+}
+
+.shop__foot {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 11px;
+}
+
+.shop__level {
+  font-size: 10px;
+  font-weight: 800;
+  letter-spacing: 1.8px;
+  color: var(--muted);
 }

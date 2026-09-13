@@ -17,9 +17,9 @@ import {
   THUMB_ZONE_TOP,
   laneCentre
 } from './constants';
+import { magnetReach, powerSeconds, type UpgradeLevels } from './upgrades';
 import {
   MAGNET_PULL,
-  MAGNET_REACH,
   PICKUPS,
   POWER_IDS,
   SLOWMO_SCALE,
@@ -98,11 +98,20 @@ export interface GameOptions {
   readonly onCrash?: () => void;
   /** Fired on each near miss, so the shell can buzz without the game importing haptics. */
   readonly onNearMiss?: () => void;
+  /** Shop levels, which lengthen powers and widen the magnet. */
+  readonly upgrades: UpgradeLevels;
   readonly sprites: SpriteSheet<SpriteId>;
   readonly stage: Stage;
 }
 
-export const createGame = ({ car, onCrash, onNearMiss, sprites, stage }: GameOptions) => {
+export const createGame = ({
+  car,
+  onCrash,
+  onNearMiss,
+  sprites,
+  stage,
+  upgrades
+}: GameOptions) => {
   const player = PLAYERS[car];
 
   let coins = 0;
@@ -427,7 +436,7 @@ export const createGame = ({ car, onCrash, onNearMiss, sprites, stage }: GameOpt
         const dx = playerX - p.x;
         const dy = playerY - p.y;
         const away = Math.hypot(dx, dy);
-        if (away > MAGNET_REACH || away < 1) continue;
+        if (away > magnetReach(upgrades) || away < 1) continue;
         const move = Math.min(away, MAGNET_PULL * step);
         p.x += (dx / away) * move;
         p.y += (dy / away) * move;
@@ -439,7 +448,7 @@ export const createGame = ({ car, onCrash, onNearMiss, sprites, stage }: GameOpt
         const spec = PICKUPS[p.id];
         // taking a second one refreshes the clock rather than stacking a
         // second copy, or two shields would mean two crashes absorbed
-        if (spec.kind === 'power') powers[p.id as PowerId] = spec.seconds;
+        if (spec.kind === 'power') powers[p.id as PowerId] = powerSeconds(p.id as PowerId, upgrades);
         else coins += spec.value;
         return false;
       }
@@ -591,7 +600,10 @@ export const createGame = ({ car, onCrash, onNearMiss, sprites, stage }: GameOpt
     for (const id of running) {
       const spec = PICKUPS[id];
       if (spec.kind !== 'power') continue;
-      const left = spec.seconds > 0 ? powers[id] / spec.seconds : 0;
+      // against the upgraded duration, or a bought level would draw a bar that
+      // starts over-full and sits pinned at 100%
+      const full = powerSeconds(id, upgrades);
+      const left = full > 0 ? powers[id] / full : 0;
 
       ctx.fillStyle = 'rgba(10,8,6,0.85)';
       ctx.strokeStyle = '#000';

@@ -1,5 +1,11 @@
 import { Preferences } from '@capacitor/preferences';
 import { PLAYER_IDS, type PlayerId } from './fleet';
+import {
+  FRESH_UPGRADES,
+  UPGRADE_IDS,
+  maxLevel,
+  type UpgradeLevels
+} from './upgrades';
 
 const KEY = 'burning-rubber:save';
 
@@ -38,6 +44,8 @@ export interface SaveState {
   onboarded: boolean;
   owned: PlayerId[];
   sfx: boolean;
+  /** Levels bought in the shop, per upgrade. */
+  upgrades: UpgradeLevels;
 }
 
 const FRESH: SaveState = {
@@ -50,7 +58,27 @@ const FRESH: SaveState = {
   music: true,
   onboarded: false,
   owned: ['straycat'],
-  sfx: true
+  sfx: true,
+  upgrades: { ...FRESH_UPGRADES }
+};
+
+/**
+ * Clamp stored upgrade levels to what the shop can actually sell.
+ *
+ * A level above the maximum would quietly hand out an effect no price was ever
+ * paid for, and a fractional or negative one would feed NaN into a power's
+ * duration. Anything unrecognised drops to zero rather than throwing — a broken
+ * save should cost the player their upgrades, not the ability to play.
+ */
+const reviveUpgrades = (raw: unknown): UpgradeLevels => {
+  const value = (typeof raw === 'object' && raw !== null ? raw : {}) as Partial<UpgradeLevels>;
+  const levels = { ...FRESH_UPGRADES };
+  for (const id of UPGRADE_IDS) {
+    const level = Number(value[id]);
+    if (!Number.isFinite(level)) continue;
+    levels[id] = Math.max(0, Math.min(maxLevel(id), Math.floor(level)));
+  }
+  return levels;
 };
 
 /**
@@ -93,7 +121,8 @@ export const revive = (raw: unknown): SaveState => {
     music: value.music !== false,
     onboarded: value.onboarded === true,
     owned,
-    sfx: value.sfx !== false
+    sfx: value.sfx !== false,
+    upgrades: reviveUpgrades(value.upgrades)
   };
 };
 

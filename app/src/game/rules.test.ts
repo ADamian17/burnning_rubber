@@ -3,6 +3,16 @@ import { DESIGN_WIDTH, LANE_CENTRES, LANE_COUNT, LANE_WIDTH, START_X } from './c
 import { HITBOX_INSET } from './constants';
 import { MAGNET_REACH, PICKUPS, PICKUP_IDS, POWER_IDS, SLOWMO_SCALE } from './pickups';
 import { COMBO_WINDOW, NEAR_MISS_MARGIN } from './constants';
+import {
+  FRESH_UPGRADES,
+  UPGRADES,
+  UPGRADE_IDS,
+  effectOf,
+  magnetReach,
+  maxLevel,
+  nextCost,
+  powerSeconds
+} from './upgrades';
 import { PLAYERS, PLAYER_IDS, SPRITE_MANIFEST, TRAFFIC, TRAFFIC_IDS, slimness } from './fleet';
 import { revive } from './state';
 
@@ -227,5 +237,66 @@ describe('near-miss combo', () => {
 
   it('keeps a junk run summary from reaching the screen', () => {
     expect(revive({ lastRun: 'nope' }).lastRun).toBeNull();
+  });
+});
+
+describe('shop upgrades', () => {
+  it('charges more for each level than the one before', () => {
+    // a flat or falling curve makes the last level the cheapest, so a player
+    // buys top-down and the early levels never sell
+    for (const id of UPGRADE_IDS) {
+      const costs = UPGRADES[id].costs;
+      for (let i = 1; i < costs.length; i += 1) {
+        expect(costs[i]).toBeGreaterThan(costs[i - 1]);
+      }
+    }
+  });
+
+  it('prices every upgrade below the cheapest unlockable car', () => {
+    // upgrades are the near-term sink and cars the long goal; if a level cost
+    // more than a car, coins would only ever go one way
+    const cheapest = Math.min(...PLAYER_IDS.map((id) => PLAYERS[id].cost).filter((c) => c > 0));
+    for (const id of UPGRADE_IDS) {
+      expect(Math.max(...UPGRADES[id].costs)).toBeLessThan(cheapest);
+    }
+  });
+
+  it('stops selling at the top level', () => {
+    for (const id of UPGRADE_IDS) {
+      expect(nextCost(id, maxLevel(id))).toBeNull();
+      expect(nextCost(id, 0)).toBe(UPGRADES[id].costs[0]);
+    }
+  });
+
+  it('makes every level strictly better than the last', () => {
+    // an upgrade that changes nothing is a coin sink that lies
+    for (const id of UPGRADE_IDS) {
+      for (let level = 1; level <= maxLevel(id); level += 1) {
+        const before = effectOf(id, { ...FRESH_UPGRADES, [id]: level - 1 });
+        const after = effectOf(id, { ...FRESH_UPGRADES, [id]: level });
+        expect(after).toBeGreaterThan(before);
+      }
+    }
+  });
+
+  it('buys the magnet reach rather than magnet time', () => {
+    // its upgrade widens the pull; the duration is whatever the pickup says
+    const maxed = { ...FRESH_UPGRADES, magnet: maxLevel('magnet') };
+    expect(magnetReach(maxed)).toBeGreaterThan(magnetReach(FRESH_UPGRADES));
+    expect(powerSeconds('magnet', maxed)).toBe(powerSeconds('magnet', FRESH_UPGRADES));
+  });
+
+  it('clamps a tampered save to levels the shop can sell', () => {
+    // a level above the cap would hand out an effect nobody paid for, and a
+    // fractional one feeds NaN into a power's duration
+    const save = revive({ upgrades: { shield: 99, magnet: -4, slowmo: 1.7 } });
+    expect(save.upgrades.shield).toBe(maxLevel('shield'));
+    expect(save.upgrades.magnet).toBe(0);
+    expect(save.upgrades.slowmo).toBe(1);
+  });
+
+  it('gives a save with no upgrades a full set at zero', () => {
+    expect(revive({}).upgrades).toEqual(FRESH_UPGRADES);
+    expect(revive({ upgrades: 'nope' }).upgrades).toEqual(FRESH_UPGRADES);
   });
 });

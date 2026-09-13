@@ -1,15 +1,19 @@
 import { PLAYERS } from '../game/fleet';
 import straycatUrl from '../assets/cars/straycat.svg';
+import { COIN, meter } from './bits';
+import {
+  UPGRADES,
+  UPGRADE_IDS,
+  effectOf,
+  maxLevel,
+  nextCost,
+  type UpgradeId,
+  type UpgradeLevels
+} from '../game/upgrades';
 import { html, on, raw } from './dom';
 import type { Ctx, ScreenDef } from './router';
 
 /* ---------------- shared fragments ---------------- */
-
-const COIN = `<svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true">
-  <circle cx="12" cy="12" r="9.4" fill="#C98A0E"/>
-  <circle cx="12" cy="12" r="9.4" fill="none" stroke="#6B4708" stroke-width="1.6"/>
-  <circle cx="12" cy="12" r="6.4" fill="#FFC93C"/>
-  <path d="M9.4 12h5.2M12 9.4v5.2" stroke="#8A5B08" stroke-width="1.9" stroke-linecap="round"/></svg>`;
 
 const BACK_ICON = `<svg viewBox="0 0 24 24" width="21" height="21" fill="none" stroke="#F28D35"
   stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M14.6 5.4 8 12l6.6 6.6"/></svg>`;
@@ -227,17 +231,90 @@ export const credits: ScreenDef = {
   `
 };
 
+/**
+ * One upgrade, priced at its next level.
+ *
+ * Borrows the garage's three-way action — owned, affordable, or short — because
+ * the player has already learnt what those buttons mean there, and an
+ * insufficient-coins state that is merely a greyed button teaches nothing. The
+ * shortfall is named instead.
+ */
+const upgradeCard = (id: UpgradeId, levels: UpgradeLevels, coins: number): string => {
+  const spec = UPGRADES[id];
+  const level = levels[id];
+  const cost = nextCost(id, level);
+  const value = effectOf(id, levels);
+  const maxed = cost === null;
+  const short = cost === null ? 0 : cost - coins;
+
+  const action = maxed
+    ? html`<div class="btn btn--primary btn--disabled">MAXED</div>`
+    : short <= 0
+      ? html`<button class="btn btn--primary" data-upgrade="${id}">
+          BUY ${raw(COIN)} ${cost.toLocaleString()}
+        </button>`
+      : html`<div class="btn btn--primary btn--disabled">
+          ${raw(COIN)} ${short.toLocaleString()} SHORT
+        </div>`;
+
+  return html`
+    <article class="shop__card">
+      <div class="shop__head">
+        <span class="shop__name">${spec.label}</span>
+        <span class="num shop__value">
+          ${value % 1 === 0 ? value : value.toFixed(1)}${spec.unit}
+        </span>
+      </div>
+      <p class="shop__note">${spec.note}</p>
+      <div class="shop__foot">
+        ${raw(meter(level))}
+        <span class="shop__level">LV ${level}/${maxLevel(id)}</span>
+      </div>
+      ${raw(action)}
+    </article>
+  `;
+};
+
 export const shop: ScreenDef = {
-  bind: bindBack,
-  view: () => html`
+  bind: (root, ctx) => {
+    bindBack(root, ctx);
+    on(root, '[data-upgrade]', 'click', (el) => {
+      const id = el.dataset.upgrade as UpgradeId;
+      const level = ctx.state.upgrades[id];
+      const cost = nextCost(id, level);
+      // re-checked here rather than trusting the button: the view that drew it
+      // may be a render behind the coins
+      if (cost === null || cost > ctx.state.coins) return;
+      ctx.save({
+        coins: ctx.state.coins - cost,
+        upgrades: { ...ctx.state.upgrades, [id]: level + 1 }
+      });
+    });
+  },
+  view: (ctx) => html`
     <div class="screen">
       <div class="glow"></div>
-      ${raw(header('SHOP'))}
-      ${raw(
-        placeholder(
-          'Designed in Claude Design as part of Garage.dc.html — power-up bundles bought with coins: shield, slow-mo, magnet. Not implemented, because none of those power-ups exist in the game loop yet.'
-        )
-      )}
+      <header class="garage__head">
+        <button class="icon-btn" data-back aria-label="Back">${raw(BACK_ICON)}</button>
+        <div class="garage__title">SHOP</div>
+        <div class="plate garage__coins">
+          ${raw(COIN)}
+          <span class="num" style="font-size:19px;color:var(--gold);">
+            ${ctx.state.coins.toLocaleString()}
+          </span>
+        </div>
+      </header>
+
+      <p class="shop__intro">
+        Power-ups are found on the road. These make the ones you find worth more.
+      </p>
+
+      <div class="shop__grid">
+        ${raw(
+          UPGRADE_IDS.map((id) => upgradeCard(id, ctx.state.upgrades, ctx.state.coins)).join('')
+        )}
+      </div>
+
       <div class="scan"></div>
     </div>
   `

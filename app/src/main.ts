@@ -95,7 +95,8 @@ const boot = async (): Promise<void> => {
         ? () => void Haptics.impact({ style: ImpactStyle.Light })
         : undefined,
       sprites,
-      stage
+      stage,
+      upgrades: router.state.upgrades
     });
     game.bind(canvas);
     const active = game;
