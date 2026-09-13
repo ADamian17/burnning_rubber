@@ -1,5 +1,6 @@
 import type { SpriteSheet } from '../engine/sprites';
 import { STEP } from '../engine/loop';
+import { createRng, pick } from '../engine/rng';
 import type { Stage } from '../engine/canvas';
 import {
   COLORS,
@@ -98,6 +99,14 @@ export interface GameOptions {
   readonly onCrash?: () => void;
   /** Fired on each near miss, so the shell can buzz without the game importing haptics. */
   readonly onNearMiss?: () => void;
+  /**
+   * Seeds every random decision in the run.
+   *
+   * Required rather than optional: an optional seed invites a silent fallback
+   * somewhere inside, and then the daily's road is only mostly reproducible.
+   * The caller decides — a date hash for a daily, a throwaway for a normal run.
+   */
+  readonly seed: number;
   /** Shop levels, which lengthen powers and widen the magnet. */
   readonly upgrades: UpgradeLevels;
   readonly sprites: SpriteSheet<SpriteId>;
@@ -108,10 +117,17 @@ export const createGame = ({
   car,
   onCrash,
   onNearMiss,
+  seed,
   sprites,
   stage,
   upgrades
 }: GameOptions) => {
+  /*
+   * Every random decision below draws from here. Two games built with the same
+   * seed must lay out the same road, or a daily challenge is not the same
+   * challenge for two people.
+   */
+  const rng = createRng(seed);
   const player = PLAYERS[car];
 
   let coins = 0;
@@ -132,7 +148,7 @@ export const createGame = ({
   let score = 0;
   let spawnTimer = 0;
   /** Lane the last group left open; the next gap walks from here. */
-  let gapLane = Math.floor(Math.random() * LANE_COUNT);
+  let gapLane = pick(rng, LANE_COUNT);
   /** Where the finger wants the car; null means hold position. */
   let targetX: number | null = null;
 
@@ -232,7 +248,7 @@ export const createGame = ({
      */
     const open = reachable.filter((lane) => !laneBusy(lane));
     if (open.length === 0) return;
-    gapLane = open[Math.floor(Math.random() * open.length)];
+    gapLane = open[pick(rng, open.length)];
 
     // two cars from the off, three once the road is at pressure: opening with a
     // single car left the first stretch with nothing to steer around
@@ -241,13 +257,13 @@ export const createGame = ({
       // a lane already holding a car cannot take another — two cars stacked in
       // one lane is the same defect seen from the other side
       .filter((lane) => lane !== gapLane && !laneBusy(lane))
-      .map((lane) => ({ lane, order: Math.random() }))
+      .map((lane) => ({ lane, order: rng() }))
       .sort((a, b) => a.order - b.order)
       .map(({ lane }) => lane)
       .slice(0, count);
 
     for (const lane of lanes) {
-      const id = pool[Math.floor(Math.random() * pool.length)];
+      const id = pool[pick(rng, pool.length)];
       const spec = TRAFFIC[id];
       obstacles.push({
         id,
@@ -284,10 +300,10 @@ export const createGame = ({
       return spec.kind === 'power' && pressure() >= spec.from;
     });
     const id: PickupId =
-      unlocked.length > 0 && Math.random() < POWER_CHANCE
-        ? unlocked[Math.floor(Math.random() * unlocked.length)]
+      unlocked.length > 0 && rng() < POWER_CHANCE
+        ? unlocked[pick(rng, unlocked.length)]
         : 'coin';
-    const lane = free[Math.floor(Math.random() * free.length)];
+    const lane = free[pick(rng, free.length)];
     pickups.push({ id, size: PICKUPS[id].size, x: laneCentre(lane), y: -PICKUPS[id].size });
   };
 
@@ -797,12 +813,19 @@ export const createGame = ({
     combo = 1;
     bestCombo = 1;
     comboTimer = 0;
+    // redrawn from the stream, so a restarted run is a fresh road rather than
+    // a repeat of the one just crashed on
+    gapLane = pick(rng, LANE_COUNT);
   };
 
   return {
     bind,
     get bestCombo() {
       return bestCombo;
+    },
+    /** Traffic currently on the road. The HUD reads it; so does the seed test. */
+    get cars() {
+      return obstacles.length;
     },
     get coins() {
       return coins;

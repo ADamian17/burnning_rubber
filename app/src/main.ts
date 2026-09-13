@@ -7,7 +7,10 @@ import { SplashScreen } from '@capacitor/splash-screen';
 import { createGame, type Game } from './game/game';
 import { createLoop } from './engine/loop';
 import { createRouter, type Route, type ScreenDef } from './ui/router';
+import { challengeFor, met, seedForDay, streakAfter } from './game/daily';
 import { createStage } from './engine/canvas';
+import { randomSeed } from './engine/rng';
+import { takeDaily } from './game/session';
 import { exposeDebugState } from './game/debug';
 import { garage, showCar } from './ui/garage';
 import { loadSprites } from './engine/sprites';
@@ -79,8 +82,14 @@ const boot = async (): Promise<void> => {
   });
 
   /** Tear down the previous run and start a fresh one with the equipped car. */
+  /** The day this run is scored against, or null for an ordinary run. */
+  let runningDay: string | null = null;
+
   const startRun = (): void => {
     loop?.stop();
+    // consumed here rather than read: a retry from the summary is a fresh
+    // ordinary run, not a second attempt at the daily under the same seed
+    runningDay = takeDaily();
     game = createGame({
       car: router.state.equipped,
       onCrash: () => finishRun(),
@@ -94,6 +103,7 @@ const boot = async (): Promise<void> => {
       onNearMiss: router.state.haptics
         ? () => void Haptics.impact({ style: ImpactStyle.Light })
         : undefined,
+      seed: runningDay === null ? randomSeed() : seedForDay(runningDay),
       sprites,
       stage,
       upgrades: router.state.upgrades
@@ -109,16 +119,33 @@ const boot = async (): Promise<void> => {
     loop?.stop();
     const score = Math.floor(game.score);
     const isBest = score > router.state.best;
+    const run = {
+      bestCombo: game.bestCombo,
+      coins: game.coins,
+      distance: game.distance,
+      isBest,
+      score
+    };
+
+    /*
+     * A daily pays out only the first time it is met on its day. The check is
+     * against lastDone rather than a flag set here, so a save carried across a
+     * reinstall cannot claim the same day twice.
+     */
+    const day = runningDay;
+    const earned =
+      day !== null && router.state.daily.lastDone !== day && met(challengeFor(day), run)
+        ? challengeFor(day).reward
+        : 0;
+
     router.save({
       best: Math.max(router.state.best, score),
-      coins: router.state.coins + game.coins,
-      lastRun: {
-        bestCombo: game.bestCombo,
-        coins: game.coins,
-        distance: game.distance,
-        isBest,
-        score
-      }
+      coins: router.state.coins + game.coins + earned,
+      daily:
+        earned > 0
+          ? { lastDone: day, streak: streakAfter(router.state.daily, day as string) }
+          : router.state.daily,
+      lastRun: run
     });
     router.go('summary');
   };

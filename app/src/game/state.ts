@@ -1,4 +1,5 @@
 import { Preferences } from '@capacitor/preferences';
+import { FRESH_DAILY, type DailyState } from './daily';
 import { PLAYER_IDS, type PlayerId } from './fleet';
 import {
   FRESH_UPGRADES,
@@ -34,6 +35,8 @@ export interface RunResult {
 
 export interface SaveState {
   best: number;
+  /** Daily challenge progress: last day completed, and the run of them. */
+  daily: DailyState;
   coins: number;
   control: ControlScheme;
   equipped: PlayerId;
@@ -50,6 +53,7 @@ export interface SaveState {
 
 const FRESH: SaveState = {
   best: 0,
+  daily: { ...FRESH_DAILY },
   coins: 0,
   control: 'drag',
   equipped: 'straycat',
@@ -60,6 +64,26 @@ const FRESH: SaveState = {
   owned: ['straycat'],
   sfx: true,
   upgrades: { ...FRESH_UPGRADES }
+};
+
+/**
+ * Narrow the daily record.
+ *
+ * A streak is a count of days, so a fractional or negative one is meaningless;
+ * a lastDone that is not a date string would silently break the streak
+ * arithmetic rather than throw, which is the harder kind of bug to find.
+ */
+const reviveDaily = (raw: unknown): DailyState => {
+  const value = (typeof raw === 'object' && raw !== null ? raw : {}) as Partial<DailyState>;
+  const streak = Number(value.streak);
+  const lastDone =
+    typeof value.lastDone === 'string' && /^\d{4}-\d{2}-\d{2}$/.test(value.lastDone)
+      ? value.lastDone
+      : null;
+  return {
+    lastDone,
+    streak: Number.isFinite(streak) ? Math.max(0, Math.floor(streak)) : 0
+  };
 };
 
 /**
@@ -112,6 +136,7 @@ export const revive = (raw: unknown): SaveState => {
   return {
     best: Number.isFinite(value.best) ? Number(value.best) : 0,
     coins: Number.isFinite(value.coins) ? Number(value.coins) : 0,
+    daily: reviveDaily(value.daily),
     // a save from when tap-lanes or tilt could be chosen comes back as drag,
     // which is what those players were getting anyway
     control: 'drag',

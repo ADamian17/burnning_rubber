@@ -2,6 +2,13 @@ import { PLAYERS } from '../game/fleet';
 import straycatUrl from '../assets/cars/straycat.svg';
 import { COIN, meter } from './bits';
 import {
+  challengeFor,
+  dayKey,
+  secondsUntilNextDay,
+  seedForDay
+} from '../game/daily';
+import { queueDaily } from '../game/session';
+import {
   UPGRADES,
   UPGRADE_IDS,
   effectOf,
@@ -40,14 +47,6 @@ const wordmark = (scale = 1): string => html`
     <div class="wordmark__top">BURNING</div>
     <div class="wordmark__bottom">RUBBER</div>
     <div class="wordmark__tag">&ldquo;FEAR THE R${raw(TYRE)}AD&rdquo;</div>
-  </div>
-`;
-
-/** Marks a screen whose design exists but whose content is not built yet. */
-const placeholder = (note: string): string => html`
-  <div class="stub">
-    <div class="stub__mark">NOT BUILT YET</div>
-    <p class="stub__note">${note}</p>
   </div>
 `;
 
@@ -320,20 +319,63 @@ export const shop: ScreenDef = {
   `
 };
 
+/** "9H 12M", as the artboard writes it. */
+const untilNext = (seconds: number): string => {
+  const hours = Math.floor(seconds / 3600);
+  const minutes = Math.floor((seconds % 3600) / 60);
+  return hours > 0 ? `${hours}H ${minutes}M` : `${minutes}M`;
+};
+
 export const daily: ScreenDef = {
-  bind: bindBack,
-  view: () => html`
-    <div class="screen">
-      <div class="glow"></div>
-      ${raw(header('DAILY'))}
-      ${raw(
-        placeholder(
-          'A seeded challenge with a fixed objective and a streak counter. Needs a deterministic RNG in the game loop before the objective can mean anything.'
-        )
-      )}
-      <div class="scan"></div>
-    </div>
-  `
+  bind: (root, ctx) => {
+    bindBack(root, ctx);
+    on(root, '[data-daily]', 'click', () => {
+      queueDaily(dayKey());
+      ctx.go('run');
+    });
+  },
+  view: (ctx) => {
+    const key = dayKey();
+    const challenge = challengeFor(key);
+    const done = ctx.state.daily.lastDone === key;
+    // four digits of the seed, as the artboard labels it: enough for two
+    // players to check they are on the same road, short enough to read aloud
+    const badge = String(seedForDay(key) % 10000).padStart(4, '0');
+
+    return html`
+      <div class="screen">
+        <div class="glow"></div>
+        ${raw(header('DAILY'))}
+
+        <div class="section">
+          <div class="section__title">TODAY &middot; SEED ${badge}</div>
+          <article class="shop__card">
+            <div class="shop__head">
+              <span class="shop__name">${challenge.name}</span>
+              <span class="num shop__value">${raw(COIN)} ${challenge.reward}</span>
+            </div>
+            <p class="shop__note">${challenge.note}</p>
+            <div class="shop__foot">
+              <span class="shop__level">STREAK ${ctx.state.daily.streak}</span>
+              <span class="shop__level">NEXT IN ${untilNext(secondsUntilNextDay())}</span>
+            </div>
+            ${raw(
+              done
+                ? html`<div class="btn btn--primary btn--disabled">DONE TODAY</div>`
+                : html`<button class="btn btn--primary" data-daily>RUN IT</button>`
+            )}
+          </article>
+        </div>
+
+        <p class="shop__intro">
+          Everyone drives the same road today. One payout per day &mdash; the run still
+          banks its coins either way.
+        </p>
+
+        <div class="scan"></div>
+      </div>
+    `;
+  }
 };
 
 export const summary: ScreenDef = {

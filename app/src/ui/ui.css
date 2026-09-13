@@ -15,8 +15,8 @@
 
   /* real numbers inside a webview thanks to viewport-fit=cover */
   /* One gap between a screen's header and whatever it shows first. It was 22px
-     on .section, 26px on .stub, 24px on the shop and 0 in the garage, which
-     made moving between screens feel like the title shifted. */
+     on .section, 24px on the shop and nothing at all in the garage, which made
+     moving between screens feel like the title shifted. */
   --gap-head: 24px;
   --safe-top: env(safe-area-inset-top, 0px);
   --safe-bottom: env(safe-area-inset-bottom, 0px);
@@ -843,37 +843,6 @@
 }
 
 /* ---------- placeholder ---------- */
-
-.stub {
-  flex: 1 1 auto;
-  width: 100%;
-  max-width: 361px;
-  margin: var(--gap-head) 0;
-  padding: 28px 22px;
-  border: 2px dashed #3a2e22;
-  border-radius: 14px;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  text-align: center;
-  gap: 14px;
-}
-
-.stub__mark {
-  font-size: 10px;
-  font-weight: 900;
-  letter-spacing: 3.4px;
-  color: var(--orange);
-}
-
-.stub__note {
-  margin: 0;
-  font-size: 13px;
-  line-height: 1.55;
-  color: var(--muted);
-  text-wrap: pretty;
-}
 
 /* the demo has to show the thing it describes: a car following the finger */
 .onboard__car {
