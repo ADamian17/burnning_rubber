@@ -74,10 +74,18 @@ const boot = async (page: Page, patch: Record<string, unknown> = {}): Promise<vo
 const shot = async (page: Page, name: string): Promise<void> => {
   await expect(page).toHaveScreenshot(`${name}.png`, {
     animations: 'disabled',
-    // the glow is a soft gradient and antialiasing differs by a hair between
-    // machines; this is loose enough to survive that and tight enough to catch
-    // anything that has actually moved
-    maxDiffPixelRatio: 0.01
+    /*
+     * threshold is per pixel, and Playwright's default of 0.2 is far too loose
+     * for a screen this dark. Removing the CRT scanline overlay outright —
+     * every screen, a fifth of the pixels — changed nothing the comparison
+     * could see, because 8% black over #0a0806 lands inside 0.2 in YIQ space.
+     * The baselines still matched art that no longer existed.
+     *
+     * maxDiffPixelRatio then allows a small number of genuinely different
+     * pixels, for antialiasing along the display face's edges.
+     */
+    maxDiffPixelRatio: 0.01,
+    threshold: 0.05
   });
 };
 

@@ -62,7 +62,6 @@ export const splash: ScreenDef = {
       <div class="glow"></div>
       ${raw(wordmark(1.15))}
       <div class="splash__hint">TAP TO START</div>
-      <div class="scan"></div>
     </div>
   `
 };
@@ -106,7 +105,6 @@ export const menu: ScreenDef = {
           CREDITS
         </button>
       </div>
-      <div class="scan"></div>
     </div>
   `
 };
@@ -137,7 +135,6 @@ export const onboarding: ScreenDef = {
       <div class="garage__actions">
         <button class="btn btn--primary" data-done>GOT IT</button>
       </div>
-      <div class="scan"></div>
     </div>
   `
 };
@@ -193,7 +190,6 @@ export const settings: ScreenDef = {
         <button class="btn btn--danger" data-reset>RESET PROGRESS</button>
         <p class="settings__version">BURNING RUBBER &middot; V2.0.0</p>
       </div>
-      <div class="scan"></div>
     </div>
   `
 };
@@ -225,7 +221,6 @@ export const credits: ScreenDef = {
         )}
       </div>
       <p class="settings__version">&copy; 2026 ADONIS D MARTIN</p>
-      <div class="scan"></div>
     </div>
   `
 };
@@ -314,7 +309,6 @@ export const shop: ScreenDef = {
         )}
       </div>
 
-      <div class="scan"></div>
     </div>
   `
 };
@@ -372,7 +366,6 @@ export const daily: ScreenDef = {
           banks its coins either way.
         </p>
 
-        <div class="scan"></div>
       </div>
     `;
   }
@@ -422,7 +415,6 @@ export const summary: ScreenDef = {
             <button class="btn btn--secondary" data-go="menu">MENU</button>
           </div>
         </div>
-        <div class="scan"></div>
       </div>
     `;
   }

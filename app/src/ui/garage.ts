@@ -120,7 +120,6 @@ export const garage: ScreenDef = {
           )}
         </div>
 
-        <div class="scan"></div>
       </div>
     `;
   },

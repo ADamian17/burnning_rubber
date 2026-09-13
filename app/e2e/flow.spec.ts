@@ -129,20 +129,34 @@ test.describe('garage', () => {
   });
 
   test('buying deducts, equips, and celebrates', async ({ page }) => {
-    await boot(page, { coins: 700 });
+    /*
+     * The price is read off the button, not written here.
+     *
+     * This test hard-coded 600 and broke the day the fleet was repriced, for a
+     * reason that had nothing to do with what it checks. Importing the fleet
+     * instead is not an option: it imports SVGs, which Vite resolves and the
+     * test transpiler does not.
+     */
+    const purse = 9_000;
+    await boot(page, { coins: purse });
     await page.locator('.screen--centred').click();
     await page.getByRole('button', { name: 'GARAGE' }).click();
 
     while ((await page.locator('.garage__name').textContent())?.trim() !== 'HATPIN') {
       await page.locator('[data-next]').click();
     }
+
+    const label = (await page.locator('[data-buy]').textContent()) ?? '';
+    const price = Number(label.replace(/\D/g, ''));
+    expect(price).toBeGreaterThan(0);
+
     await page.locator('[data-buy]').click();
 
     await expect(page.locator('.overlay')).toBeVisible();
     await expect(page.locator('.summary__badge')).toHaveText('UNLOCKED!');
 
     const saved = await page.evaluate((k) => JSON.parse(localStorage.getItem(k) ?? '{}'), SAVE_KEY);
-    expect(saved.coins).toBe(100);
+    expect(saved.coins).toBe(purse - price);
     expect(saved.owned).toContain('hatpin');
     expect(saved.equipped).toBe('hatpin');
   });

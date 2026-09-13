@@ -81,6 +81,20 @@ describe('the fleet', () => {
     const free = PLAYER_IDS.filter((id) => PLAYERS[id].cost === 0);
     expect(free).toEqual(['straycat']);
   });
+
+  it('charges most for the car that fits the smallest gap', () => {
+    // width is the stat that decides whether a gap is passable, so price has to
+    // follow it. It did not: the 46pt Hatpin was the cheapest unlock at 600
+    // while the 68pt Donkey Work cost 1800, which made coins buy the best car
+    // first and every later purchase a downgrade.
+    const paid = PLAYER_IDS.filter((id) => PLAYERS[id].cost > 0).sort(
+      (a, b) => PLAYERS[a].cost - PLAYERS[b].cost
+    );
+    const widths = paid.map((id) => PLAYERS[id].width);
+    for (let i = 1; i < widths.length; i += 1) {
+      expect(widths[i]).toBeLessThan(widths[i - 1]);
+    }
+  });
 });
 
 describe('save narrowing', () => {

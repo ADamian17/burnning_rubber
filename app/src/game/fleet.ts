@@ -45,10 +45,19 @@ export interface TrafficCar extends Vehicle {
   readonly threat: number;
 }
 
+/*
+ * Price tracks how much easier a car makes the game, and width decides that.
+ *
+ * A lane is 98.25pt, so the Hatpin's 46pt leaves more than twice the slack of
+ * the Boarhound's 72pt — it fits gaps the others cannot, which is the whole
+ * game. It was the cheapest unlock at 600 while the second-widest and slowest
+ * car cost 1800, so coins bought the best car first and everything after it was
+ * a downgrade.
+ */
 export const PLAYERS: Readonly<Record<PlayerId, PlayerCar>> = {
-  boarhound: { cost: 1200, grip: 4, handling: 3, klass: 'WIDEBODY', length: 128, name: 'BOARHOUND', speed: 6, url: boarhound, width: 72 },
-  donkeywork: { cost: 1800, grip: 6, handling: 3, klass: 'HAULER', length: 142, name: 'DONKEY WORK', speed: 2, url: donkeywork, width: 68 },
-  hatpin: { cost: 600, grip: 2, handling: 6, klass: 'NEEDLE', length: 112, name: 'HATPIN', speed: 3, url: hatpin, width: 46 },
+  boarhound: { cost: 900, grip: 4, handling: 3, klass: 'WIDEBODY', length: 128, name: 'BOARHOUND', speed: 6, url: boarhound, width: 72 },
+  donkeywork: { cost: 1400, grip: 6, handling: 3, klass: 'HAULER', length: 142, name: 'DONKEY WORK', speed: 2, url: donkeywork, width: 68 },
+  hatpin: { cost: 2200, grip: 2, handling: 6, klass: 'NEEDLE', length: 112, name: 'HATPIN', speed: 3, url: hatpin, width: 46 },
   straycat: { cost: 0, grip: 4, handling: 4, klass: 'MUSCLE', length: 122, name: 'STRAY CAT', speed: 3, url: straycat, width: 60 }
 };
 
