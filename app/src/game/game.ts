@@ -781,6 +781,20 @@ export const createGame = ({
     ctx.translate(originX(), (stage.height - DESIGN_HEIGHT * s) / 2);
     ctx.scale(s, s);
 
+    /*
+     * Clip to the design box.
+     *
+     * The rumble strips are drawn in whole blocks from above the top edge to
+     * past the bottom one, so they overhang 393x852 by up to a block at each
+     * end. That never showed while the canvas filled at least one axis exactly.
+     * Capping the scale at 1 for the web build put letterbox bars on both axes
+     * for the first time, and the strips painted straight into them — cream on
+     * the black, outside the road.
+     */
+    ctx.beginPath();
+    ctx.rect(0, 0, DESIGN_WIDTH, DESIGN_HEIGHT);
+    ctx.clip();
+
     drawRoad(ctx, roadOffset + lead);
     // under the traffic: a car crossing a coin should cover it, not sit behind it
     for (const p of pickups) {
