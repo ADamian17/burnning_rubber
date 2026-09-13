@@ -22,18 +22,21 @@
   --safe-bottom: env(safe-area-inset-bottom, 0px);
 }
 
-#ui {
+/*
+ * The React root.
+ *
+ * Was `#ui`, and was `display: none` until the old router set `data-open` on
+ * it — a guard against painting an empty container before the first screen was
+ * rendered into it. React has no such gap: whatever is mounted is what renders,
+ * so the container is simply always shown.
+ */
+#root {
   position: fixed;
   inset: 0;
-  display: none;
   font-family: var(--ui);
   color: var(--cream);
   background: var(--ink);
   overflow: hidden;
-}
-
-#ui[data-open] {
-  display: block;
 }
 
 /*
@@ -381,7 +384,7 @@
 /* ---------- router surfaces ---------- */
 
 /* during a run the layer must not swallow the steering drag */
-#ui[data-route='run'] {
+#root[data-route='run'] {
   background: transparent;
   pointer-events: none;
 }
@@ -402,6 +405,24 @@
   justify-content: center;
   gap: 26px;
   cursor: pointer;
+}
+
+/*
+ * A screen rendered as a <button>, so the whole thing is one keyboard-reachable
+ * target — the splash, where tapping anywhere is the only action.
+ *
+ * A button brings control styling with it: `buttonface` paints over the ink
+ * background, and the default border draws a line round the entire screen.
+ * `.screen` never set a background of its own — it inherits #root's — so the
+ * button's has to be cleared rather than overridden.
+ */
+button.screen {
+  appearance: none;
+  background: transparent;
+  border: 0;
+  color: inherit;
+  font: inherit;
+  text-align: inherit;
 }
 
 /* ---------- wordmark ---------- */
