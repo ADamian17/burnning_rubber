@@ -1,7 +1,6 @@
 import Coin from "../../components/Coin/Coin";
 import Meter from "../../components/Meter/Meter";
 import CoinPlate from "../../components/Plate/CoinPlate";
-import Screen from "../../components/Screen/Screen";
 import ScreenHeader from "../../components/ScreenHeader/ScreenHeader";
 import {
   UPGRADES,
@@ -78,7 +77,7 @@ const Shop = () => {
   const upgrades = usePlayerStore((state) => state.save.upgrades);
 
   return (
-    <Screen>
+    <>
       <ScreenHeader title="SHOP">
         <CoinPlate coins={coins} />
       </ScreenHeader>
@@ -92,7 +91,7 @@ const Shop = () => {
           <UpgradeCard coins={coins} id={id} key={id} levels={upgrades} />
         ))}
       </div>
-    </Screen>
+    </>
   );
 };
 

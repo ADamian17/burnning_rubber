@@ -1,6 +1,5 @@
 import { useNavigate } from "react-router-dom";
 import Coin from "../../components/Coin/Coin";
-import Screen from "../../components/Screen/Screen";
 import ScreenHeader from "../../components/ScreenHeader/ScreenHeader";
 import {
   challengeFor,
@@ -36,7 +35,7 @@ const Daily = () => {
   const badge = String(seedForDay(key) % 10000).padStart(4, "0");
 
   return (
-    <Screen>
+    <>
       <ScreenHeader title="DAILY" />
 
       <div className="section">
@@ -75,7 +74,7 @@ const Daily = () => {
         Everyone drives the same road today. One payout per day &mdash; the run
         still banks its coins either way.
       </p>
-    </Screen>
+    </>
   );
 };
 

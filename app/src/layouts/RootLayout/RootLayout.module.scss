@@ -1,0 +1,46 @@
+.root {
+  display: grid;
+  place-content: center;
+  min-height: 100dvh;
+  overflow: hidden;
+
+  /*
+   * Both in the same cell, stacked without absolute positioning — which is what
+   * lets the glow centre on the screen rather than the viewport, with no
+   * offsets to keep in step with its own size.
+   *
+   * `place-self` is doing real work, not tidiness: grid places an item in a
+   * cell but does not centre it, and an item with an explicit height cannot
+   * stretch. Without it the glow pins to the top of a row sized by the 852px
+   * screen, 116px above where it was drawn.
+   */
+  .glow,
+  .screen {
+    grid-row: 1;
+    grid-column: 1;
+    place-self: center;
+  }
+
+  .glow {
+    width: 620px;
+    height: 620px;
+    border-radius: 50%;
+    pointer-events: none;
+    background: radial-gradient(
+      circle,
+      rgba(242, 141, 53, 0.14) 0%,
+      rgba(0, 0, 0, 0) 62%
+    );
+  }
+
+  .screen {
+    align-items: center;
+    display: flex;
+    flex-direction: column;
+    height: min(100dvh, 852px);
+    padding: calc(var(--safe-top) + 8px) 16px calc(var(--safe-bottom) + 18px);
+    position: relative;
+    width: min(100vw, 393px);
+    z-index: 1;
+  }
+}

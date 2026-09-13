@@ -39,57 +39,6 @@
   overflow: hidden;
 }
 
-/*
- * Screens letterbox to the design aspect and never exceed it.
- *
- * With `inset: 0` a screen stretched to whatever the window was, while the
- * canvas beside it letterboxed to 393:852 — so on a desktop the two halves of
- * the app disagreed about their own shape.
- *
- * The 393x852 ceiling is the important half. Without it a tall window still
- * grew the box past the design height, and `margin-top: auto` went on pushing
- * the buttons to the floor of whatever it was given: the void was the window
- * being tall, not the screen being stretched sideways.
- *
- * Centred with `inset: 0; margin: auto` rather than a translate. A
- * translate(-50%, -50%) on a 393pt box offsets by 196.5pt, and that half pixel
- * re-antialiases every glyph on the screen — it moved 10% of the pixels in the
- * snapshots while changing nothing anybody could see.
- *
- * A plain cap on each axis, with no aspect term. The aspect version shaved a
- * fraction of a point off any viewport that is not exactly 393:852 — which
- * includes both real phones here, the XS at 375x812 and Playwright's iPhone 13
- * Pro at 390x844 — and re-centred every screen on a half pixel for nothing.
- * Capping both axes gives the design aspect on a desktop, where both are
- * clamped, and leaves a phone exactly as it was.
- *
- * The canvas frame below still needs the aspect maths, because it has to track
- * where the canvas actually draws.
- */
-.screen {
-  position: absolute;
-  inset: 0;
-  margin: auto;
-  width: min(100vw, 393px);
-  height: min(100vh, 852px);
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  padding: calc(var(--safe-top) + 8px) 16px calc(var(--safe-bottom) + 18px);
-}
-
-.glow {
-  position: absolute;
-  left: 50%;
-  top: 150px;
-  width: 620px;
-  height: 620px;
-  margin-left: -310px;
-  border-radius: 50%;
-  pointer-events: none;
-  background: radial-gradient(circle, rgba(242, 141, 53, 0.14) 0%, rgba(0, 0, 0, 0) 62%);
-}
-
 /* ---------- shared components ---------- */
 
 .plate {
@@ -399,30 +348,6 @@
   right: 16px;
   top: calc(var(--safe-top) + 12px);
   pointer-events: auto;
-}
-
-.screen--centred {
-  justify-content: center;
-  gap: 26px;
-  cursor: pointer;
-}
-
-/*
- * A screen rendered as a <button>, so the whole thing is one keyboard-reachable
- * target — the splash, where tapping anywhere is the only action.
- *
- * A button brings control styling with it: `buttonface` paints over the ink
- * background, and the default border draws a line round the entire screen.
- * `.screen` never set a background of its own — it inherits #root's — so the
- * button's has to be cleared rather than overridden.
- */
-button.screen {
-  appearance: none;
-  background: transparent;
-  border: 0;
-  color: inherit;
-  font: inherit;
-  text-align: inherit;
 }
 
 /* ---------- wordmark ---------- */

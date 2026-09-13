@@ -1,5 +1,4 @@
 import { useNavigate } from "react-router-dom";
-import Screen from "../../components/Screen/Screen";
 import ScreenHeader from "../../components/ScreenHeader/ScreenHeader";
 import { usePlayerStore } from "../../store/player/usePlayerStore";
 import type { Flag } from "../../store/player/usePlayerStore.types";
@@ -37,7 +36,7 @@ const Settings = () => {
   const { haptics, music, sfx } = usePlayerStore((state) => state.save);
 
   return (
-    <Screen>
+    <>
       <ScreenHeader title="SETTINGS" />
 
       <div className="section">
@@ -70,7 +69,7 @@ const Settings = () => {
         </button>
         <p className="settings__version">BURNING RUBBER &middot; V2.0.0</p>
       </div>
-    </Screen>
+    </>
   );
 };
 

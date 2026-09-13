@@ -1,5 +1,4 @@
 import { useNavigate } from "react-router-dom";
-import Screen from "../../components/Screen/Screen";
 import { usePlayerStore } from "../../store/player/usePlayerStore";
 
 /**
@@ -22,7 +21,7 @@ const Summary = () => {
   };
 
   return (
-    <Screen>
+    <>
       <h1 className="summary__title">WRECKED!</h1>
       {run.isBest ? <div className="summary__badge">NEW BEST!</div> : null}
 
@@ -68,7 +67,7 @@ const Summary = () => {
           </button>
         </div>
       </div>
-    </Screen>
+    </>
   );
 };
 

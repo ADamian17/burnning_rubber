@@ -1,6 +1,5 @@
 import { useNavigate } from "react-router-dom";
 import CoinPlate from "../../components/Plate/CoinPlate";
-import Screen from "../../components/Screen/Screen";
 import Wordmark from "../../components/Wordmark/Wordmark";
 import { usePlayerStore } from "../../store/player/usePlayerStore";
 
@@ -16,7 +15,7 @@ const MainMenu = () => {
   const coins = usePlayerStore((state) => state.save.coins);
 
   return (
-    <Screen>
+    <>
       <div className="menu__strip">
         <div className="plate menu__best">
           <div className="lbl">BEST</div>
@@ -63,7 +62,7 @@ const MainMenu = () => {
           CREDITS
         </button>
       </div>
-    </Screen>
+    </>
   );
 };
 

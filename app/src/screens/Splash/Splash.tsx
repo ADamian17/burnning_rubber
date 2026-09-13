@@ -1,4 +1,5 @@
 import { useNavigate } from "react-router-dom";
+import styles from "./Splash.module.scss";
 import Wordmark from "../../components/Wordmark/Wordmark";
 import { usePlayerStore } from "../../store/player/usePlayerStore";
 
@@ -9,11 +10,10 @@ import { usePlayerStore } from "../../store/player/usePlayerStore";
  * which is why the whole screen is the target rather than a button: there is
  * only one thing to do here, and a button would imply there were others.
  *
- * A div rather than a real <button>, because `.screen` sets the layout and a
- * button's own border, padding and font would fight it — the visual baselines
- * are what prove this refactor changed nothing, so the element stays as drawn.
- * The role, tabIndex and key handler give it the keyboard access the original
- * div never had.
+ * The tap target is a real <button>, so the whole screen is reachable from a
+ * keyboard. `Splash.module.scss` clears the control styling a button
+ * brings with it — without that its own background paints over the ink and its
+ * border draws a line round the whole screen.
  *
  * `replace` so the back gesture does not land back here after starting. It is
  * an entrance, not a place.
@@ -27,7 +27,7 @@ const Splash = () => {
 
   return (
     <button
-      className="screen screen--centred"
+      className={styles.tap}
       data-start
       onClick={enter}
       onKeyDown={(event) => {
@@ -39,7 +39,6 @@ const Splash = () => {
       type="button"
       tabIndex={0}
     >
-      <div className="glow" />
       <Wordmark scale={1.15} />
       <p className="splash__hint">TAP TO START</p>
     </button>

@@ -1,4 +1,3 @@
-import Screen from "../../components/Screen/Screen";
 import ScreenHeader from "../../components/ScreenHeader/ScreenHeader";
 
 interface Credit {
@@ -47,7 +46,7 @@ const CREDITS: readonly Credit[] = [
 
 const Credits = () => {
   return (
-    <Screen>
+    <>
       <ScreenHeader title="CREDITS" />
 
       <div className="section" style={{ gap: "11px" }}>
@@ -63,7 +62,7 @@ const Credits = () => {
       </div>
 
       <p className="settings__version">© 2026 ADONIS D MARTIN</p>
-    </Screen>
+    </>
   );
 };
 

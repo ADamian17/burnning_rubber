@@ -1,4 +1,5 @@
 import { createMemoryRouter } from "react-router-dom";
+import RootLayout from "../layouts/RootLayout";
 import Credits from "../screens/Credits/Credits";
 import Daily from "../screens/Daily/Daily";
 import Garage from "../screens/Garage/Garage";
@@ -9,7 +10,7 @@ import Settings from "../screens/Settings/Settings";
 import Shop from "../screens/Shop/Shop";
 import Splash from "../screens/Splash/Splash";
 import Summary from "../screens/Summary/Summary";
-import RootLayout from "./RootLayout";
+import { hydrate } from "../store/player/usePlayerStore";
 
 /**
  * Memory, not browser: there is no URL bar in a Capacitor webview, nothing
@@ -32,6 +33,22 @@ const mainRouter = createMemoryRouter(
 	[
 		{
 			Component: RootLayout,
+			/*
+			 * The save is read here so no screen's first render can see a fresh one.
+			 *
+			 * It matters beyond a flash of BEST 0: the splash *navigates* from
+			 * `onboarded`, and a re-render cannot undo a navigation already made.
+			 *
+			 * A loader rather than awaiting in main.tsx, because the router holds a
+			 * route back until this resolves — the guarantee then survives anyone
+			 * adding a second entry point. And a loader rather than `middleware`,
+			 * which fits the intent better but sits behind the v8_middleware future
+			 * flag; loading the save genuinely is fetching data a route needs.
+			 */
+			loader: async () => {
+				await hydrate();
+				return null;
+			},
 			children: [
 				{ index: true, Component: Splash },
 				{ path: "menu", Component: MainMenu },

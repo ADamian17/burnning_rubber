@@ -2,7 +2,6 @@ import { useState } from "react";
 import Chevron from "../../components/Chevron/Chevron";
 import Meter from "../../components/Meter/Meter";
 import CoinPlate from "../../components/Plate/CoinPlate";
-import Screen from "../../components/Screen/Screen";
 import ScreenHeader from "../../components/ScreenHeader/ScreenHeader";
 import { LANE_WIDTH } from "../../game/constants";
 import { PLAYERS, PLAYER_IDS, slimness } from "../../game/fleet";
@@ -41,7 +40,7 @@ const Garage = () => {
   let startX = 0;
 
   return (
-    <Screen>
+    <>
       <ScreenHeader title="GARAGE">
         <CoinPlate coins={coins} />
       </ScreenHeader>
@@ -143,7 +142,7 @@ const Garage = () => {
           <p className="garage__short">{shortfall.toLocaleString()} COINS SHORT</p>
         ) : null}
       </div>
-    </Screen>
+    </>
   );
 };
 

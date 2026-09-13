@@ -1,6 +1,5 @@
 import { useNavigate } from "react-router-dom";
 import straycat from "../../assets/cars/straycat.svg";
-import Screen from "../../components/Screen/Screen";
 import { usePlayerStore } from "../../store/player/usePlayerStore";
 
 /**
@@ -21,7 +20,7 @@ const Onboarding = () => {
   };
 
   return (
-    <Screen>
+    <>
       <div className="onboard__eyebrow">HOW IT WORKS</div>
       <h1 className="onboard__title">DRAG TO STEER</h1>
 
@@ -44,7 +43,7 @@ const Onboarding = () => {
           GOT IT
         </button>
       </div>
-    </Screen>
+    </>
   );
 };
 

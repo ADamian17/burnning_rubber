@@ -121,8 +121,15 @@ export const usePlayerStore = create<PlayerStore>()(
 /**
  * Load the save before anything renders.
  *
- * Call once, awaited, in boot — ahead of `createRoot().render()`.
+ * Awaited by the root route's loader, so no screen's first render can read a
+ * fresh save. That matters beyond a flash of BEST 0: the splash *navigates*
+ * from `onboarded`, and a re-render cannot undo a navigation already made.
+ *
+ * Idempotent, because a loader is not a one-shot — react-router re-runs it on
+ * revalidation, and re-reading storage each time would be wasted work at best
+ * and a race against a pending write at worst.
  */
 export const hydrate = async (): Promise<void> => {
+	if (usePlayerStore.persist.hasHydrated()) return;
 	await usePlayerStore.persist.rehydrate();
 };
