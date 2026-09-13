@@ -4,5 +4,23 @@
     "name": "COIN",
     "size": 34,
     "note": "Banked the instant it is taken, so a short run still pays."
+  },
+  {
+    "slug": "shield",
+    "name": "SHIELD",
+    "size": 36,
+    "note": "Eats one crash. Cream so it reads as armour rather than as a hazard."
+  },
+  {
+    "slug": "slowmo",
+    "name": "SLOW-MO",
+    "size": 36,
+    "note": "Cyan, matching the screen tint the artboard puts over a slowed road."
+  },
+  {
+    "slug": "magnet",
+    "name": "MAGNET",
+    "size": 36,
+    "note": "The only pickup that acts on other pickups."
   }
 ]

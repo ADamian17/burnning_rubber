@@ -15,7 +15,15 @@ import {
   THUMB_ZONE_TOP,
   laneCentre
 } from './constants';
-import { PICKUPS, type PickupId } from './pickups';
+import {
+  MAGNET_PULL,
+  MAGNET_REACH,
+  PICKUPS,
+  POWER_IDS,
+  SLOWMO_SCALE,
+  type PickupId,
+  type PowerId
+} from './pickups';
 import {
   PLAYERS,
   TRAFFIC,
@@ -100,6 +108,8 @@ export const createGame = ({ car, onCrash, sprites, stage }: GameOptions) => {
   let obstacles: Obstacle[] = [];
   let pickups: Pickup[] = [];
   let pickupTimer = 0;
+  /** Seconds left on each power. Zero means not running. */
+  let powers: Record<PowerId, number> = { magnet: 0, shield: 0, slowmo: 0 };
   let playerX = START_X;
   let roadOffset = 0;
   let score = 0;
@@ -163,9 +173,20 @@ export const createGame = ({ car, onCrash, sprites, stage }: GameOptions) => {
 
   /* ---------------- simulation ---------------- */
 
+  /*
+   * Slow-mo scales the world's velocity, never the timestep.
+   *
+   * createLoop accumulates real time and steps a fixed 1/60; scaling `step`
+   * instead would desynchronise that accumulator from the wall clock, and the
+   * render interpolation reads from here too, so both stay in agreement.
+   */
+  /** How far up the difficulty ramp this run has climbed, 0 to 1. */
+  const pressure = (): number => Math.min(1, distance / RAMP_METRES);
+
   const speed = (): number =>
     Math.min(MAX_SPEED, BASE_SPEED + (MAX_SPEED - BASE_SPEED) * (distance / RAMP_METRES)) *
-    (0.9 + player.speed * 0.035);
+    (0.9 + player.speed * 0.035) *
+    (powers.slowmo > 0 ? SLOWMO_SCALE : 1);
 
   /**
    * Spawns a group of cars across the road with exactly one lane left open, so
@@ -175,8 +196,8 @@ export const createGame = ({ car, onCrash, sprites, stage }: GameOptions) => {
    * car per spawn, most groups needed no reaction at all.
    */
   const spawn = (): void => {
-    const pressure = Math.min(1, distance / RAMP_METRES);
-    const pool = TRAFFIC_IDS.filter((id) => TRAFFIC[id].threat <= 1 + Math.round(pressure * 4));
+    const load = pressure();
+    const pool = TRAFFIC_IDS.filter((id) => TRAFFIC[id].threat <= 1 + Math.round(load * 4));
 
     /*
      * The gap walks at most one lane per group. At full pressure the groups are
@@ -198,7 +219,7 @@ export const createGame = ({ car, onCrash, sprites, stage }: GameOptions) => {
 
     // two cars from the off, three once the road is at pressure: opening with a
     // single car left the first stretch with nothing to steer around
-    const count = 2 + Math.round(pressure);
+    const count = 2 + Math.round(load);
     const lanes = LANE_CENTRES.map((_, lane) => lane)
       // a lane already holding a car cannot take another — two cars stacked in
       // one lane is the same defect seen from the other side
@@ -235,12 +256,22 @@ export const createGame = ({ car, onCrash, sprites, stage }: GameOptions) => {
    * still leaves real tension: the clear lane holding the coin is often not the
    * gap the next group will leave.
    */
+  /** Roughly one drop in six is a power rather than a coin. */
+  const POWER_CHANCE = 0.17;
+
   const dropPickup = (): void => {
-    const spec = PICKUPS.coin;
     const free = LANE_CENTRES.map((_, lane) => lane).filter((lane) => !laneBusy(lane));
     if (free.length === 0) return;
+    const unlocked = POWER_IDS.filter((power) => {
+      const spec = PICKUPS[power];
+      return spec.kind === 'power' && pressure() >= spec.from;
+    });
+    const id: PickupId =
+      unlocked.length > 0 && Math.random() < POWER_CHANCE
+        ? unlocked[Math.floor(Math.random() * unlocked.length)]
+        : 'coin';
     const lane = free[Math.floor(Math.random() * free.length)];
-    pickups.push({ id: 'coin', size: spec.size, x: laneCentre(lane), y: -spec.size });
+    pickups.push({ id, size: PICKUPS[id].size, x: laneCentre(lane), y: -PICKUPS[id].size });
   };
 
   /**
@@ -291,6 +322,9 @@ export const createGame = ({ car, onCrash, sprites, stage }: GameOptions) => {
 
     steer(step);
 
+    // the shield is the exception: it runs until it is spent or times out
+    for (const id of POWER_IDS) powers[id] = Math.max(0, powers[id] - step);
+
     spawnTimer -= step;
     if (spawnTimer <= 0) {
       spawn();
@@ -305,11 +339,22 @@ export const createGame = ({ car, onCrash, sprites, stage }: GameOptions) => {
 
     for (const o of obstacles) o.y += v * step;
     for (const o of obstacles) {
-      if (hits(o)) {
-        crashed = true;
-        onCrash?.();
-        return;
+      if (!hits(o)) continue;
+      if (powers.shield > 0) {
+        /*
+         * The shield eats the crash and the car that caused it.
+         *
+         * Removing the obstacle matters: leaving it there would put the car
+         * inside it on the next frame, with the shield already spent, so the
+         * run would end anyway and the pickup would have bought nothing.
+         */
+        powers.shield = 0;
+        obstacles = obstacles.filter((other) => other !== o);
+        break;
       }
+      crashed = true;
+      onCrash?.();
+      return;
     }
     obstacles = obstacles.filter((o) => o.y - o.length < DESIGN_HEIGHT + 60);
 
@@ -323,9 +368,33 @@ export const createGame = ({ car, onCrash, sprites, stage }: GameOptions) => {
      * act, and a short run still pays for what it collected.
      */
     for (const p of pickups) p.y += v * step;
+
+    /*
+     * A magnet drags anything in reach toward the car.
+     *
+     * It moves pickups rather than widening the collection box, so the pull is
+     * visible: the coin comes to you. Applied after the scroll so a pickup the
+     * road has already carried past can still be hauled back.
+     */
+    if (powers.magnet > 0) {
+      for (const p of pickups) {
+        const dx = playerX - p.x;
+        const dy = playerY - p.y;
+        const away = Math.hypot(dx, dy);
+        if (away > MAGNET_REACH || away < 1) continue;
+        const move = Math.min(away, MAGNET_PULL * step);
+        p.x += (dx / away) * move;
+        p.y += (dy / away) * move;
+      }
+    }
+
     pickups = pickups.filter((p) => {
       if (takes(p)) {
-        coins += PICKUPS[p.id].value;
+        const spec = PICKUPS[p.id];
+        // taking a second one refreshes the clock rather than stacking a
+        // second copy, or two shields would mean two crashes absorbed
+        if (spec.kind === 'power') powers[p.id as PowerId] = spec.seconds;
+        else coins += spec.value;
         return false;
       }
       return p.y - p.size < DESIGN_HEIGHT + 60;
@@ -387,6 +456,53 @@ export const createGame = ({ car, onCrash, sprites, stage }: GameOptions) => {
     ctx.restore();
   };
 
+  const POWER_TINT: Readonly<Record<PowerId, string>> = {
+    magnet: '#F2359B',
+    shield: '#F5EFE4',
+    slowmo: '#35D6F2'
+  };
+
+  /**
+   * One pill per running power, name and seconds left, stacked down the left.
+   *
+   * Kept above THUMB_ZONE_TOP with the rest of the HUD: a countdown the hand
+   * is resting on is a countdown the player cannot read.
+   */
+  const drawPowerPills = (ctx: CanvasRenderingContext2D): void => {
+    const running = POWER_IDS.filter((id) => powers[id] > 0);
+    let top = 172;
+    for (const id of running) {
+      const spec = PICKUPS[id];
+      if (spec.kind !== 'power') continue;
+      const left = spec.seconds > 0 ? powers[id] / spec.seconds : 0;
+
+      ctx.fillStyle = 'rgba(10,8,6,0.85)';
+      ctx.strokeStyle = '#000';
+      ctx.lineWidth = 2;
+      ctx.fillRect(16, top, 150, 30);
+      ctx.strokeRect(16, top, 150, 30);
+
+      ctx.fillStyle = POWER_TINT[id];
+      ctx.fillRect(24, top + 11, 8, 8);
+
+      ctx.fillStyle = COLORS.cream;
+      ctx.font = `900 10px ${FONT_UI}`;
+      ctx.fillText(spec.label, 40, top + 19);
+
+      // the bar is the read at speed; the number is for when you have a moment
+      ctx.fillStyle = '#0B0908';
+      ctx.fillRect(102, top + 12, 40, 6);
+      ctx.fillStyle = POWER_TINT[id];
+      ctx.fillRect(102, top + 12, 40 * left, 6);
+
+      ctx.fillStyle = COLORS.muted;
+      ctx.font = `800 10px ${FONT_UI}`;
+      ctx.fillText(powers[id].toFixed(1), 148, top + 19);
+
+      top += 36;
+    }
+  };
+
   const drawHud = (ctx: CanvasRenderingContext2D, fps: number): void => {
     ctx.fillStyle = 'rgba(10,8,6,0.86)';
     ctx.strokeStyle = '#000';
@@ -418,6 +534,8 @@ export const createGame = ({ car, onCrash, sprites, stage }: GameOptions) => {
     ctx.fillStyle = fps < 50 ? COLORS.red : COLORS.muted;
     ctx.font = `800 12px ${FONT_UI}`;
     ctx.fillText(`${fps.toFixed(0)} fps · ${obstacles.length} cars`, 18, 156);
+
+    drawPowerPills(ctx);
 
     if (countdown > 0) {
       const n = Math.ceil(countdown);
@@ -475,6 +593,16 @@ export const createGame = ({ car, onCrash, sprites, stage }: GameOptions) => {
       drawSprite(ctx, o.id, o.x, o.y + lead, o.width, o.length, true);
     }
     drawSprite(ctx, car, playerX, playerY, player.width, player.length, false);
+
+    // the artboard washes a slowed road in cyan; it is also the only cue that
+    // reads without looking away from the car
+    if (powers.slowmo > 0) {
+      ctx.globalCompositeOperation = 'screen';
+      ctx.fillStyle = 'rgba(53,214,242,0.16)';
+      ctx.fillRect(0, 0, DESIGN_WIDTH, DESIGN_HEIGHT);
+      ctx.globalCompositeOperation = 'source-over';
+    }
+
     drawHud(ctx, fps);
 
     ctx.restore();
@@ -491,6 +619,7 @@ export const createGame = ({ car, onCrash, sprites, stage }: GameOptions) => {
     spawnTimer = 0;
     pickups = [];
     pickupTimer = PICKUP_EVERY;
+    powers = { magnet: 0, shield: 0, slowmo: 0 };
   };
 
   return {

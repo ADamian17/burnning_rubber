@@ -1,7 +1,7 @@
 import { describe, expect, it } from 'vitest';
 import { DESIGN_WIDTH, LANE_CENTRES, LANE_COUNT, LANE_WIDTH, START_X } from './constants';
 import { HITBOX_INSET } from './constants';
-import { PICKUPS, PICKUP_IDS } from './pickups';
+import { MAGNET_REACH, PICKUPS, PICKUP_IDS, POWER_IDS, SLOWMO_SCALE } from './pickups';
 import { PLAYERS, PLAYER_IDS, SPRITE_MANIFEST, TRAFFIC, TRAFFIC_IDS, slimness } from './fleet';
 import { revive } from './state';
 
@@ -113,7 +113,9 @@ describe('pickups', () => {
   it('gives every pickup something to be worth', () => {
     // a pickup worth nothing is scenery the player wastes a lane change on
     for (const id of PICKUP_IDS) {
-      expect(PICKUPS[id].value).toBeGreaterThan(0);
+      const spec = PICKUPS[id];
+      if (spec.kind === 'coin') expect(spec.value).toBeGreaterThan(0);
+      else expect(spec.seconds).toBeGreaterThan(0);
     }
   });
 
@@ -130,5 +132,68 @@ describe('pickups', () => {
     // the two hitboxes lean opposite ways on purpose: clipping a wing mirror
     // should not end a run, and brushing a coin should still bank it
     expect(HITBOX_INSET).toBeLessThan(1);
+  });
+});
+
+describe('power-ups', () => {
+  it('slows the road rather than speeding it up', () => {
+    // the name promises one direction; a scale above 1 would be a trap dressed
+    // as a reward, and the player has no way to refuse a pickup once taken
+    expect(SLOWMO_SCALE).toBeGreaterThan(0);
+    expect(SLOWMO_SCALE).toBeLessThan(1);
+  });
+
+  it('reaches further with a magnet than the player can without one', () => {
+    // if the reach were inside the collection box the power would do nothing
+    // visible, and the player would think it had failed
+    const widest = Math.max(...PLAYER_IDS.map((id) => PLAYERS[id].width));
+    expect(MAGNET_REACH).toBeGreaterThan(widest);
+  });
+
+  it('labels every power for the HUD pill', () => {
+    // the pill shows a name beside a countdown; a blank one reads as a bug
+    for (const id of POWER_IDS) {
+      const spec = PICKUPS[id];
+      expect(spec.kind).toBe('power');
+      if (spec.kind === 'power') expect(spec.label.length).toBeGreaterThan(0);
+    }
+  });
+
+  it('keeps every power off the banking path a coin uses', () => {
+    // coins bank a value and powers start a clock; one spec doing both would
+    // mean a power silently paying out, or a coin silently arming something
+    for (const id of POWER_IDS) {
+      expect(PICKUPS[id]).not.toHaveProperty('value');
+    }
+  });
+});
+
+describe('power availability', () => {
+  it('keeps every unlock threshold inside the ramp', () => {
+    // `from` is compared against pressure, which is clamped to 0..1; a value
+    // above 1 is a power that can never drop, and reads as a missing feature
+    for (const id of POWER_IDS) {
+      const spec = PICKUPS[id];
+      if (spec.kind !== 'power') continue;
+      expect(spec.from).toBeGreaterThanOrEqual(0);
+      expect(spec.from).toBeLessThanOrEqual(1);
+    }
+  });
+
+  it('offers at least one power from the first metre', () => {
+    // if every power were gated behind some distance, an early run would show
+    // none at all and the whole system would look unimplemented
+    const immediate = POWER_IDS.filter((id) => {
+      const spec = PICKUPS[id];
+      return spec.kind === 'power' && spec.from === 0;
+    });
+    expect(immediate.length).toBeGreaterThan(0);
+  });
+
+  it('holds slow-mo back until slowing down would actually help', () => {
+    // it scales an already-slow road at the start, so an early one is a dud
+    const spec = PICKUPS.slowmo;
+    expect(spec.kind).toBe('power');
+    if (spec.kind === 'power') expect(spec.from).toBeGreaterThan(0);
   });
 });
