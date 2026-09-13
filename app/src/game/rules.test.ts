@@ -2,6 +2,7 @@ import { describe, expect, it } from 'vitest';
 import { DESIGN_WIDTH, LANE_CENTRES, LANE_COUNT, LANE_WIDTH, START_X } from './constants';
 import { HITBOX_INSET } from './constants';
 import { MAGNET_REACH, PICKUPS, PICKUP_IDS, POWER_IDS, SLOWMO_SCALE } from './pickups';
+import { COMBO_WINDOW, NEAR_MISS_MARGIN } from './constants';
 import { PLAYERS, PLAYER_IDS, SPRITE_MANIFEST, TRAFFIC, TRAFFIC_IDS, slimness } from './fleet';
 import { revive } from './state';
 
@@ -195,5 +196,32 @@ describe('power availability', () => {
     const spec = PICKUPS.slowmo;
     expect(spec.kind).toBe('power');
     if (spec.kind === 'power') expect(spec.from).toBeGreaterThan(0);
+  });
+});
+
+describe('near-miss combo', () => {
+  it('puts the near-miss band outside the crash box but inside a lane', () => {
+    // inside the crash box it could never fire, since contact ends the run
+    // first; wider than a lane and simply driving straight would score one
+    expect(NEAR_MISS_MARGIN).toBeGreaterThan(0);
+    expect(NEAR_MISS_MARGIN).toBeLessThan(LANE_WIDTH);
+  });
+
+  it('gives a streak long enough to chain but short enough to lose', () => {
+    // at full speed cars arrive roughly every 0.34s, so a window under that
+    // could never chain, and one several seconds long would never drop
+    expect(COMBO_WINDOW).toBeGreaterThan(0.34);
+    expect(COMBO_WINDOW).toBeLessThan(10);
+  });
+
+  it('defaults the combo on a run recorded before combos existed', () => {
+    // a returning player's lastRun has no bestCombo; the summary must not
+    // render "×undefined"
+    const save = revive({ lastRun: { coins: 3, distance: 900, isBest: false, score: 400 } });
+    expect(save.lastRun?.bestCombo).toBe(1);
+  });
+
+  it('keeps a junk run summary from reaching the screen', () => {
+    expect(revive({ lastRun: 'nope' }).lastRun).toBeNull();
   });
 });

@@ -2,6 +2,7 @@ import './style.css';
 import './ui/ui.css';
 import * as screens from './ui/screens';
 import { SPRITE_MANIFEST, type SpriteId } from './game/fleet';
+import { Haptics, ImpactStyle } from '@capacitor/haptics';
 import { SplashScreen } from '@capacitor/splash-screen';
 import { createGame, type Game } from './game/game';
 import { createLoop } from './engine/loop';
@@ -83,6 +84,16 @@ const boot = async (): Promise<void> => {
     game = createGame({
       car: router.state.equipped,
       onCrash: () => finishRun(),
+      /*
+       * A tick per near miss, so a streak is felt as well as seen — the
+       * multiplier sits mid-screen and the eyes are on the next gap.
+       *
+       * Fired and forgotten: a haptics failure must never interrupt a run, and
+       * the game itself stays free of any Capacitor import.
+       */
+      onNearMiss: router.state.haptics
+        ? () => void Haptics.impact({ style: ImpactStyle.Light })
+        : undefined,
       sprites,
       stage
     });
@@ -100,7 +111,13 @@ const boot = async (): Promise<void> => {
     router.save({
       best: Math.max(router.state.best, score),
       coins: router.state.coins + game.coins,
-      lastRun: { coins: game.coins, distance: game.distance, isBest, score }
+      lastRun: {
+        bestCombo: game.bestCombo,
+        coins: game.coins,
+        distance: game.distance,
+        isBest,
+        score
+      }
     });
     router.go('summary');
   };

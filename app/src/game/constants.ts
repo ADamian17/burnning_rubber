@@ -38,6 +38,20 @@ export const START_X = laneCentre(1);
  */
 export const HITBOX_INSET = 0.92;
 
+/**
+ * How far outside the crash box still counts as a near miss, in design points.
+ *
+ * Expressed as clearance beyond the hitbox rather than as its own multiple of
+ * the car widths, for two reasons: it rides on HITBOX_INSET, so re-tuning the
+ * crash box on a device carries into what counts as a shave; and it stays a
+ * fixed distance for every pairing, where a multiplier would quietly exceed a
+ * whole lane for the widest car against the widest lorry.
+ */
+export const NEAR_MISS_MARGIN = 34;
+
+/** Seconds a combo survives without another near miss before it drops to 1. */
+export const COMBO_WINDOW = 2.5;
+
 export const COLORS = {
   asphalt: '#26241F',
   cream: '#F5EFE4',

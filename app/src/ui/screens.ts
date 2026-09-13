@@ -283,7 +283,13 @@ export const summary: ScreenDef = {
     on(root, '[data-go]', 'click', (el) => ctx.go(el.dataset.go as never));
   },
   view: (ctx) => {
-    const last = ctx.state.lastRun ?? { coins: 0, distance: 0, isBest: false, score: 0 };
+    const last = ctx.state.lastRun ?? {
+      bestCombo: 1,
+      coins: 0,
+      distance: 0,
+      isBest: false,
+      score: 0
+    };
     return html`
       <div class="screen">
         <div class="glow"></div>
@@ -302,6 +308,10 @@ export const summary: ScreenDef = {
           <div class="row">
             <span class="lbl">COINS EARNED</span>
             <span class="num" style="font-size:22px;color:var(--gold);">+${last.coins}</span>
+          </div>
+          <div class="row">
+            <span class="lbl">BEST COMBO</span>
+            <span class="num" style="font-size:22px;color:var(--orange);">×${last.bestCombo ?? 1}</span>
           </div>
         </div>
         <div class="garage__actions">

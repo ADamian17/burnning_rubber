@@ -7,10 +7,12 @@ import {
   DESIGN_WIDTH,
   FONT_DISPLAY,
   FONT_UI,
+  COMBO_WINDOW,
   HITBOX_INSET,
   LANE_CENTRES,
   LANE_COUNT,
   LANE_WIDTH,
+  NEAR_MISS_MARGIN,
   START_X,
   THUMB_ZONE_TOP,
   laneCentre
@@ -94,11 +96,13 @@ export interface GameOptions {
   readonly car: PlayerId;
   /** Fired once, the frame the run ends. */
   readonly onCrash?: () => void;
+  /** Fired on each near miss, so the shell can buzz without the game importing haptics. */
+  readonly onNearMiss?: () => void;
   readonly sprites: SpriteSheet<SpriteId>;
   readonly stage: Stage;
 }
 
-export const createGame = ({ car, onCrash, sprites, stage }: GameOptions) => {
+export const createGame = ({ car, onCrash, onNearMiss, sprites, stage }: GameOptions) => {
   const player = PLAYERS[car];
 
   let coins = 0;
@@ -110,6 +114,10 @@ export const createGame = ({ car, onCrash, sprites, stage }: GameOptions) => {
   let pickupTimer = 0;
   /** Seconds left on each power. Zero means not running. */
   let powers: Record<PowerId, number> = { magnet: 0, shield: 0, slowmo: 0 };
+  /** Current near-miss multiplier, and the best it reached this run. */
+  let combo = 1;
+  let bestCombo = 1;
+  let comboTimer = 0;
   let playerX = START_X;
   let roadOffset = 0;
   let score = 0;
@@ -294,6 +302,18 @@ export const createGame = ({ car, onCrash, sprites, stage }: GameOptions) => {
     return Math.abs(playerX - o.x) < halfW && Math.abs(playerY - o.y) < halfH;
   };
 
+  /**
+   * True when a car went by close enough to count, without touching.
+   *
+   * The band is the crash box plus a fixed clearance, so it can never be
+   * narrower than the thing it surrounds, and re-tuning HITBOX_INSET moves
+   * both together.
+   */
+  const shaved = (o: Obstacle): boolean => {
+    const crashHalfW = ((player.width + o.width) / 2) * HITBOX_INSET;
+    return Math.abs(playerX - o.x) < crashHalfW + NEAR_MISS_MARGIN;
+  };
+
   /** Chase the finger, rate-limited by handling so the stat is felt. */
   const steer = (step: number): void => {
     if (targetX !== null) {
@@ -318,12 +338,19 @@ export const createGame = ({ car, onCrash, sprites, stage }: GameOptions) => {
     }
     distance += (v * step) / POINTS_PER_METRE;
     roadOffset = (roadOffset + v * step) % ROAD_CYCLE;
-    score += v * step * 0.05;
+    score += v * step * 0.05 * combo;
 
     steer(step);
 
     // the shield is the exception: it runs until it is spent or times out
     for (const id of POWER_IDS) powers[id] = Math.max(0, powers[id] - step);
+
+    if (comboTimer > 0) {
+      comboTimer -= step;
+      // the whole multiplier goes at once rather than stepping down: a combo
+      // is a streak, and a streak either continues or it is over
+      if (comboTimer <= 0) combo = 1;
+    }
 
     spawnTimer -= step;
     if (spawnTimer <= 0) {
@@ -356,6 +383,25 @@ export const createGame = ({ car, onCrash, sprites, stage }: GameOptions) => {
       onCrash?.();
       return;
     }
+    /*
+     * A car that has just drawn level with the player and did not hit is a
+     * near miss.
+     *
+     * Checked after the crash pass, which returns on contact, so anything
+     * reaching here by definition got past. The crossing is detected from
+     * where the car was one step ago rather than from a stored flag — it moves
+     * a known distance per step, so the previous position is already known.
+     */
+    for (const o of obstacles) {
+      const was = o.y - v * step;
+      if (was >= playerY || o.y < playerY) continue;
+      if (!shaved(o)) continue;
+      combo += 1;
+      comboTimer = COMBO_WINDOW;
+      if (combo > bestCombo) bestCombo = combo;
+      onNearMiss?.();
+    }
+
     obstacles = obstacles.filter((o) => o.y - o.length < DESIGN_HEIGHT + 60);
 
     /*
@@ -574,6 +620,48 @@ export const createGame = ({ car, onCrash, sprites, stage }: GameOptions) => {
     }
   };
 
+  /**
+   * The multiplier, centred over the road at 46% of the height.
+   *
+   * Both artboards scale it with the streak — 76px at x3, 86px at x5 — and
+   * swap the caption from NEAR MISS to ON FIRE, so the number grows into the
+   * screen as the run gets better rather than sitting at a fixed size. Above
+   * THUMB_ZONE_TOP like everything else, and tilted the same -7 degrees.
+   */
+  const drawCombo = (ctx: CanvasRenderingContext2D): void => {
+    if (combo < 2) return;
+    const y = DESIGN_HEIGHT * 0.46;
+    const size = 66 + combo * 4;
+    const glow = 200 + combo * 10;
+    // it fades out with the streak's last half-second rather than blinking off
+    const alpha = Math.min(1, comboTimer / 0.5);
+
+    ctx.save();
+    ctx.globalAlpha = alpha;
+    ctx.translate(DESIGN_WIDTH / 2, y);
+    ctx.rotate((-7 * Math.PI) / 180);
+    ctx.textAlign = 'center';
+
+    const halo = ctx.createRadialGradient(0, 0, 0, 0, 0, glow / 2);
+    halo.addColorStop(0, 'rgba(247,117,3,0.45)');
+    halo.addColorStop(0.62, 'rgba(247,117,3,0)');
+    ctx.fillStyle = halo;
+    ctx.fillRect(-glow / 2, -glow / 2, glow, glow);
+
+    ctx.fillStyle = '#000';
+    ctx.font = `${size}px ${FONT_DISPLAY}`;
+    ctx.fillText(`×${combo}`, 5, 6);
+    ctx.fillStyle = COLORS.lite;
+    ctx.fillText(`×${combo}`, 0, 0);
+
+    ctx.fillStyle = COLORS.orange;
+    ctx.font = `900 11px ${FONT_UI}`;
+    ctx.fillText(combo >= 5 ? 'ON FIRE' : 'NEAR MISS', 0, size * 0.28);
+
+    ctx.textAlign = 'left';
+    ctx.restore();
+  };
+
   const drawHud = (ctx: CanvasRenderingContext2D, fps: number): void => {
     ctx.fillStyle = 'rgba(10,8,6,0.86)';
     ctx.strokeStyle = '#000';
@@ -607,6 +695,7 @@ export const createGame = ({ car, onCrash, sprites, stage }: GameOptions) => {
     ctx.fillText(`${fps.toFixed(0)} fps · ${obstacles.length} cars`, 18, 156);
 
     drawPowerPills(ctx);
+    drawCombo(ctx);
 
     if (countdown > 0) {
       const n = Math.ceil(countdown);
@@ -693,10 +782,16 @@ export const createGame = ({ car, onCrash, sprites, stage }: GameOptions) => {
     pickups = [];
     pickupTimer = PICKUP_EVERY;
     powers = { magnet: 0, shield: 0, slowmo: 0 };
+    combo = 1;
+    bestCombo = 1;
+    comboTimer = 0;
   };
 
   return {
     bind,
+    get bestCombo() {
+      return bestCombo;
+    },
     get coins() {
       return coins;
     },

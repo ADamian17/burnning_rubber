@@ -8,6 +8,8 @@ export type ControlScheme = 'drag' | 'tapLanes' | 'tilt';
 
 /** Result of the most recent run, so the summary survives a reload. */
 export interface RunResult {
+  /** Highest near-miss multiplier reached during the run. */
+  bestCombo: number;
   coins: number;
   distance: number;
   isBest: boolean;
@@ -41,6 +43,24 @@ const FRESH: SaveState = {
   sfx: true
 };
 
+/**
+ * Fill in a run summary written before a field existed.
+ *
+ * bestCombo arrived after the first saves did, so a returning player has a
+ * lastRun without one. Defaulting to 1 here keeps the summary screen honest —
+ * a run recorded before combos existed genuinely had no streak.
+ */
+const reviveRun = (raw: RunResult | undefined | null): RunResult | null => {
+  if (!raw || typeof raw !== 'object') return null;
+  return {
+    bestCombo: Number.isFinite(raw.bestCombo) ? Number(raw.bestCombo) : 1,
+    coins: Number.isFinite(raw.coins) ? Number(raw.coins) : 0,
+    distance: Number.isFinite(raw.distance) ? Number(raw.distance) : 0,
+    isBest: raw.isBest === true,
+    score: Number.isFinite(raw.score) ? Number(raw.score) : 0
+  };
+};
+
 /** Narrow unknown JSON to a SaveState, discarding anything that no longer exists. */
 export const revive = (raw: unknown): SaveState => {
   if (typeof raw !== 'object' || raw === null) return { ...FRESH };
@@ -60,7 +80,7 @@ export const revive = (raw: unknown): SaveState => {
       : 'drag',
     equipped,
     haptics: value.haptics !== false,
-    lastRun: value.lastRun ?? null,
+    lastRun: reviveRun(value.lastRun),
     music: value.music !== false,
     onboarded: value.onboarded === true,
     owned,
