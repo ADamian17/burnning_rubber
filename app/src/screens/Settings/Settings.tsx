@@ -1,5 +1,8 @@
+import clsx from "clsx";
 import { useNavigate } from "react-router-dom";
 import ScreenHeader from "../../components/ScreenHeader/ScreenHeader";
+import Button from "../../ui/buttons/Button/Button";
+import Toggle from "../../ui/controls/Toggle/Toggle";
 import { usePlayerStore } from "../../store/player/usePlayerStore";
 import type { Flag } from "../../store/player/usePlayerStore.types";
 
@@ -15,18 +18,8 @@ const ToggleRow = ({ flag, label, on }: ToggleProps) => {
 
   return (
     <div className="row">
-      <span className={`row__label${on ? "" : " row__label--off"}`}>{label}</span>
-      <button
-        aria-checked={on}
-        aria-label={label}
-        className={`sw${on ? " sw--on" : ""}`}
-        data-toggle={flag}
-        onClick={() => toggle(flag)}
-        role="switch"
-        type="button"
-      >
-        <span className="sw__knob" />
-      </button>
+      <span className={clsx("row__label", !on && "row__label--off")}>{label}</span>
+      <Toggle data-toggle={flag} label={label} on={on} onChange={() => toggle(flag)} />
     </div>
   );
 };
@@ -59,14 +52,9 @@ const Settings = () => {
       </div>
 
       <div className="settings__danger">
-        <button
-          className="btn btn--danger"
-          data-reset
-          onClick={() => navigate("reset")}
-          type="button"
-        >
+        <Button data-reset onClick={() => navigate("reset")} variant="danger">
           RESET PROGRESS
-        </button>
+        </Button>
         <p className="settings__version">BURNING RUBBER &middot; V2.0.0</p>
       </div>
     </>

@@ -1,6 +1,9 @@
+import clsx from "clsx";
 import { useState } from "react";
 import Chevron from "../../components/Chevron/Chevron";
-import Meter from "../../components/Meter/Meter";
+import Button from "../../ui/buttons/Button/Button";
+import CarCard from "../../ui/cards/CarCard/CarCard";
+import IconButton from "../../ui/buttons/IconButton/IconButton";
 import CoinPlate from "../../components/Plate/CoinPlate";
 import ScreenHeader from "../../components/ScreenHeader/ScreenHeader";
 import { LANE_WIDTH } from "../../game/constants";
@@ -56,67 +59,39 @@ const Garage = () => {
           if (Math.abs(dx) > 40) step(dx < 0 ? 1 : -1);
         }}
       >
-        <button
+        <IconButton
           aria-label="Previous car"
-          className="icon-btn"
+          icon={<Chevron direction="left" />}
           onClick={() => step(-1)}
-          type="button"
-        >
-          <Chevron direction="left" />
-        </button>
+        />
 
-        <article className="garage__card">
-          <span className={`chip chip--${owns}`}>{owns.toUpperCase()}</span>
-          <div className="garage__art-box">
-            <img
-              alt={car.name}
-              className={`garage__art${owns === "locked" ? " garage__art--locked" : ""}`}
-              src={car.url}
-            />
-          </div>
-          <h1 className="garage__name">{car.name}</h1>
-          <p className="garage__class">
-            {car.klass} &middot; {car.width}PT
-          </p>
+        <CarCard
+          klass={car.klass}
+          laneRoom={LANE_WIDTH - car.width}
+          name={car.name}
+          ownership={owns}
+          src={car.url}
+          stats={[
+            { name: "SPEED", value: car.speed },
+            { name: "HANDLING", value: car.handling },
+            { name: "GRIP", value: car.grip },
+            { name: "SLIMNESS", value: slimness(car.width) },
+          ]}
+          width={car.width}
+        />
 
-          <div className="garage__stats">
-            {(
-              [
-                ["SPEED", car.speed],
-                ["HANDLING", car.handling],
-                ["GRIP", car.grip],
-                ["SLIMNESS", slimness(car.width)],
-              ] as const
-            ).map(([name, value]) => (
-              <div className="garage__stat" key={name}>
-                <span className="garage__stat-name">{name}</span>
-                <Meter value={value} />
-              </div>
-            ))}
-          </div>
-
-          <div className="plate garage__slack">
-            <span className="lbl">LANE ROOM</span>
-            <span className="num" style={{ color: "var(--lite)", fontSize: "18px" }}>
-              {(LANE_WIDTH - car.width).toFixed(1)}PT
-            </span>
-          </div>
-        </article>
-
-        <button
+        <IconButton
           aria-label="Next car"
-          className="icon-btn"
+          data-next
+          icon={<Chevron direction="right" />}
           onClick={() => step(1)}
-          type="button"
-        >
-          <Chevron direction="right" />
-        </button>
+        />
       </div>
 
       <div className="garage__pager">
         {PLAYER_IDS.map((carId, i) => (
           <span
-            className={`garage__dot${i === index ? " garage__dot--on" : ""}`}
+            className={clsx("garage__dot", i === index && "garage__dot--on")}
             key={carId}
           />
         ))}
@@ -124,19 +99,19 @@ const Garage = () => {
 
       <div className="garage__actions">
         {owns === "equipped" ? (
-          <div className="btn btn--primary btn--disabled">EQUIPPED</div>
+          <Button disabled>EQUIPPED</Button>
         ) : owns === "owned" ? (
-          <button className="btn btn--primary" data-equip onClick={() => equip(id)} type="button">
+          <Button data-equip onClick={() => equip(id)}>
             EQUIP
-          </button>
+          </Button>
         ) : shortfall <= 0 ? (
-          <button className="btn btn--primary" data-buy onClick={() => buyCar(id)} type="button">
+          <Button data-buy onClick={() => buyCar(id)}>
             BUY <Coin /> {car.cost.toLocaleString()}
-          </button>
+          </Button>
         ) : (
-          <div className="btn btn--primary btn--disabled">
+          <Button disabled>
             BUY <Coin /> {car.cost.toLocaleString()}
-          </div>
+          </Button>
         )}
         {owns === "locked" && shortfall > 0 ? (
           <p className="garage__short">{shortfall.toLocaleString()} COINS SHORT</p>

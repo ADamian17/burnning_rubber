@@ -1,6 +1,8 @@
 import { useNavigate } from "react-router-dom";
 import CoinPlate from "../../components/Plate/CoinPlate";
 import Wordmark from "../../components/Wordmark/Wordmark";
+import Button from "../../ui/buttons/Button/Button";
+import Plate from "../../ui/hud/Plate/Plate";
 import { usePlayerStore } from "../../store/player/usePlayerStore";
 
 /**
@@ -17,50 +19,47 @@ const MainMenu = () => {
   return (
     <>
       <div className="menu__strip">
-        <div className="plate menu__best">
+        <Plate className="menu__best">
           <div className="lbl">BEST</div>
           <div className="num" style={{ color: "var(--lite)", fontSize: "22px" }}>
             {best.toLocaleString()}
           </div>
-        </div>
+        </Plate>
         <CoinPlate coins={coins} />
       </div>
 
       <Wordmark />
 
       <div className="menu__actions">
-        <button
-          className="btn btn--primary"
-          onClick={() => navigate("/run")}
-          style={{ fontSize: "40px", height: "88px" }}
-          type="button"
-        >
+        {/* oversized against the rest: on a phone the thumb lands here without
+            aiming, and everything else is a detour */}
+        <Button data-play onClick={() => navigate("/run")} style={{ fontSize: "40px", height: "88px" }}>
           PLAY
-        </button>
+        </Button>
         <div className="menu__row">
-          <button className="btn btn--secondary" onClick={() => navigate("/garage")} type="button">
+          <Button data-go="garage" onClick={() => navigate("/garage")} variant="secondary">
             GARAGE
-          </button>
-          <button className="btn btn--secondary" onClick={() => navigate("/shop")} type="button">
+          </Button>
+          <Button data-go="shop" onClick={() => navigate("/shop")} variant="secondary">
             SHOP
-          </button>
+          </Button>
         </div>
         <div className="menu__row">
-          <button className="btn btn--secondary" onClick={() => navigate("/daily")} type="button">
+          <Button data-go="daily" onClick={() => navigate("/daily")} variant="secondary">
             DAILY
-          </button>
-          <button className="btn btn--secondary" onClick={() => navigate("/settings")} type="button">
+          </Button>
+          <Button data-go="settings" onClick={() => navigate("/settings")} variant="secondary">
             SETTINGS
-          </button>
+          </Button>
         </div>
-        <button
-          className="btn btn--secondary"
+        <Button
+          data-go="credits"
           onClick={() => navigate("/credits")}
           style={{ fontSize: "17px", height: "48px" }}
-          type="button"
+          variant="secondary"
         >
           CREDITS
-        </button>
+        </Button>
       </div>
     </>
   );

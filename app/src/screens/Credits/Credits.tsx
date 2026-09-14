@@ -1,3 +1,4 @@
+import clsx from "clsx";
 import ScreenHeader from "../../components/ScreenHeader/ScreenHeader";
 
 interface Credit {
@@ -53,7 +54,7 @@ const Credits = () => {
         {CREDITS.map(({ label, note, value, warn }) => (
           <div className="row row--stacked" key={label}>
             <div className="lbl">{label}</div>
-            <div className={`row__value${warn ? " row__value--warn" : ""}`}>
+            <div className={clsx("row__value", warn && "row__value--warn")}>
               {value}
             </div>
             <div className="row__note">{note}</div>

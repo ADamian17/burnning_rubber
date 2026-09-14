@@ -1,0 +1,89 @@
+/* fieldset arrives with a border, margin and padding of its own */
+.fieldset {
+  border: 0;
+  margin: 0;
+  padding: 0;
+  min-width: 0;
+}
+
+/*
+ * The legend names the group for assistive tech, so it has to stay in the
+ * accessibility tree — hidden with the clip technique rather than `display:
+ * none` or `visibility: hidden`, either of which would remove it outright.
+ */
+.legend {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+  padding: 0;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+  border: 0;
+}
+
+.group {
+  display: flex;
+  gap: 11px;
+}
+
+.item {
+  flex: 1 1 0;
+  height: 62px;
+  border: 2px solid #000;
+  border-radius: 11px;
+  font-family: var(--ui);
+  font-size: 9.5px;
+  font-weight: 900;
+  letter-spacing: 1.6px;
+  color: var(--muted);
+  background: linear-gradient(180deg, #1c1712, #131009);
+  box-shadow: 0 5px 0 #000;
+  cursor: pointer;
+  /* icon over label, which the flat rule this moved from never set — the
+     segments are only legible stacked once an icon is in them */
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 7px;
+
+  /*
+   * The focus ring has to be drawn here, because the input it belongs to is
+   * clipped to a pixel. Without this, tabbing to the group would move focus
+   * with nothing on screen to show where it went.
+   */
+  &:has(.input:focus-visible) {
+    outline: 3px solid var(--lite);
+    outline-offset: 2px;
+  }
+
+  &:active {
+    transform: translateY(3px);
+    box-shadow: 0 2px 0 #000;
+  }
+}
+
+/* clipped, not `display: none` — a hidden input is not focusable, which would
+   cost exactly the keyboard support native radios are here for */
+.input {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+  padding: 0;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+  border: 0;
+  appearance: none;
+}
+
+.selected {
+  color: #1a0f04;
+  background: linear-gradient(180deg, #ffc684, var(--orange) 46%, var(--hot));
+  box-shadow:
+    0 5px 0 #000,
+    inset 0 2px 0 rgba(255, 255, 255, 0.4);
+}

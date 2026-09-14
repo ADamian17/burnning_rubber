@@ -1,5 +1,6 @@
 import type { ReactNode } from "react";
 import { useNavigate } from "react-router-dom";
+import IconButton from "../../ui/buttons/IconButton/IconButton";
 
 interface Props {
   /** Sits at the right of the bar — the garage and shop put a coin plate here. */
@@ -24,27 +25,26 @@ const ScreenHeader = ({ children, title }: Props) => {
 
   return (
     <header className="garage__head">
-      <button
+      <IconButton
         aria-label="Back"
-        className="icon-btn"
         data-back
+        icon={
+          <svg
+            fill="none"
+            height="21"
+            stroke="#F28D35"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            strokeWidth="2.6"
+            viewBox="0 0 24 24"
+            width="21"
+          >
+            <title>Back</title>
+            <path d="M14.6 5.4 8 12l6.6 6.6" />
+          </svg>
+        }
         onClick={() => navigate(-1)}
-        type="button"
-      >
-        <svg
-          fill="none"
-          height="21"
-          stroke="#F28D35"
-          strokeLinecap="round"
-          strokeLinejoin="round"
-          strokeWidth="2.6"
-          viewBox="0 0 24 24"
-          width="21"
-        >
-          <title>Back</title>
-          <path d="M14.6 5.4 8 12l6.6 6.6" />
-        </svg>
-      </button>
+      />
       <div className="garage__title">{title}</div>
       {children}
     </header>

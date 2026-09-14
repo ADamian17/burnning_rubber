@@ -1,4 +1,5 @@
 import { useNavigate } from "react-router-dom";
+import Button from "../../ui/buttons/Button/Button";
 import { usePlayerStore } from "../../store/player/usePlayerStore";
 
 /**
@@ -55,16 +56,16 @@ const Summary = () => {
       </div>
 
       <div className="garage__actions">
-        <button className="btn btn--primary" onClick={() => navigate("/run")} type="button">
+        <Button onClick={() => navigate("/run")}>
           RETRY
-        </button>
+        </Button>
         <div className="menu__row">
-          <button className="btn btn--secondary" onClick={() => navigate("/garage")} type="button">
+          <Button onClick={() => navigate("/garage")} variant="secondary">
             GARAGE
-          </button>
-          <button className="btn btn--secondary" onClick={() => navigate("/menu")} type="button">
+          </Button>
+          <Button onClick={() => navigate("/menu")} variant="secondary">
             MENU
-          </button>
+          </Button>
         </div>
       </div>
     </>

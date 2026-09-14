@@ -41,15 +41,6 @@
 
 /* ---------- shared components ---------- */
 
-.plate {
-  background: rgba(10, 8, 6, 0.86);
-  border: 2px solid #000;
-  border-radius: 9px;
-  box-shadow:
-    0 3px 0 #000,
-    inset 0 1px 0 rgba(255, 183, 101, 0.18);
-}
-
 .lbl {
   font-size: 9.5px;
   font-weight: 800;
@@ -61,123 +52,6 @@
   font-weight: 900;
   font-variant-numeric: tabular-nums;
   text-shadow: 0 2px 0 rgba(0, 0, 0, 0.9);
-}
-
-.btn {
-  width: 100%;
-  border: 3px solid #000;
-  border-radius: 13px;
-  font-family: var(--display);
-  letter-spacing: 1.2px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 12px;
-  cursor: pointer;
-  transition: transform 0.06s ease-out;
-}
-
-.btn--primary {
-  height: 74px;
-  font-size: 31px;
-  color: #1a0f04;
-  background: linear-gradient(180deg, #ffc684, var(--orange) 42%, var(--hot));
-  box-shadow:
-    0 7px 0 #000,
-    0 12px 20px rgba(0, 0, 0, 0.5),
-    inset 0 2px 0 rgba(255, 255, 255, 0.4);
-}
-
-.btn--secondary {
-  height: 58px;
-  font-size: 21px;
-  color: var(--cream);
-  background: linear-gradient(180deg, #241e17, #171310);
-  box-shadow:
-    0 6px 0 #000,
-    inset 0 1px 0 rgba(255, 183, 101, 0.14);
-}
-
-/* pressed drops into its own shadow — the arcade-cabinet tell */
-.btn:not(.btn--disabled):active {
-  transform: translateY(5px);
-  box-shadow:
-    0 2px 0 #000,
-    inset 0 3px 8px rgba(0, 0, 0, 0.45);
-}
-
-.btn--disabled {
-  color: #5a524a;
-  background: linear-gradient(180deg, #211d19, #171310);
-  box-shadow: 0 4px 0 #000;
-  cursor: default;
-}
-
-.icon-btn {
-  width: 48px;
-  height: 48px;
-  flex: none;
-  border: 2px solid #000;
-  border-radius: 11px;
-  background: linear-gradient(180deg, #241e17, #171310);
-  box-shadow: 0 4px 0 #000;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  cursor: pointer;
-}
-
-.icon-btn:active {
-  transform: translateY(4px);
-  box-shadow: 0 1px 0 #000;
-}
-
-.icon-btn[disabled] {
-  opacity: 0.35;
-  cursor: default;
-}
-
-.chip {
-  display: inline-flex;
-  align-items: center;
-  gap: 5px;
-  padding: 5px 12px;
-  border: 2px solid #000;
-  border-radius: 6px;
-  font-size: 9px;
-  font-weight: 900;
-  letter-spacing: 1.9px;
-}
-
-.chip--equipped {
-  background: #1d3a22;
-  color: var(--green);
-}
-.chip--owned {
-  background: #2a2118;
-  color: var(--lite);
-}
-.chip--locked {
-  background: #2e1512;
-  color: #ff9a93;
-}
-
-/* six discrete pips, never a bar — players compare cars by counting */
-.meter {
-  display: flex;
-  gap: 3px;
-}
-
-.pip {
-  width: 12px;
-  height: 9px;
-  border: 1px solid #000;
-  border-radius: 2px;
-  background: #2b241d;
-}
-
-.pip--on {
-  background: linear-gradient(180deg, var(--lite), var(--hot));
 }
 
 /* ---------- garage ---------- */
@@ -215,80 +89,6 @@
   align-items: center;
   gap: 10px;
   min-height: 0;
-}
-
-.garage__card {
-  flex: 1 1 auto;
-  align-self: stretch;
-  min-height: 0;
-  border: 3px solid #000;
-  border-radius: 17px;
-  padding: 16px;
-  background: linear-gradient(180deg, #1f1a15, #120f0c);
-  box-shadow: 0 9px 0 #000;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  text-align: center;
-}
-
-.garage__art {
-  flex: 1 1 auto;
-  min-height: 0;
-  margin: 12px 0;
-  object-fit: contain;
-  filter: drop-shadow(0 12px 12px rgba(0, 0, 0, 0.75));
-}
-
-.garage__art--locked {
-  filter: drop-shadow(0 12px 12px rgba(0, 0, 0, 0.75)) grayscale(0.6) brightness(0.66);
-}
-
-.garage__name {
-  font-family: var(--display);
-  font-size: 27px;
-  line-height: 1;
-  color: var(--lite);
-  text-shadow: 2px 3px 0 #000;
-}
-
-.garage__class {
-  margin-top: 3px;
-  font-size: 10px;
-  font-weight: 800;
-  letter-spacing: 2.2px;
-  color: var(--muted);
-}
-
-.garage__stats {
-  width: 100%;
-  margin-top: 14px;
-  display: flex;
-  flex-direction: column;
-  gap: 7px;
-}
-
-.garage__stat {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-}
-
-.garage__stat-name {
-  font-size: 9.5px;
-  font-weight: 900;
-  letter-spacing: 2.1px;
-  color: var(--muted);
-}
-
-/* width restated as lane room — the number that decides a gap */
-.garage__slack {
-  width: 100%;
-  margin-top: 12px;
-  padding: 9px 12px;
-  display: flex;
-  align-items: baseline;
-  justify-content: space-between;
 }
 
 .garage__pager {
@@ -496,78 +296,6 @@
   font-size: 11px;
   line-height: 1.4;
   color: var(--muted);
-}
-
-.sw {
-  width: 62px;
-  height: 34px;
-  flex: none;
-  position: relative;
-  border: 2px solid #000;
-  border-radius: 17px;
-  background: #241e18;
-  box-shadow: inset 0 2px 5px rgba(0, 0, 0, 0.8);
-  cursor: pointer;
-  padding: 0;
-}
-
-.sw--on {
-  background: linear-gradient(180deg, var(--lite), var(--hot));
-}
-
-.sw__knob {
-  position: absolute;
-  top: 3px;
-  left: 3px;
-  width: 24px;
-  height: 24px;
-  border: 2px solid #000;
-  border-radius: 50%;
-  background: linear-gradient(180deg, #6e655c, #4a433c);
-  box-shadow: 0 2px 0 rgba(0, 0, 0, 0.6);
-  transition: left 0.12s ease-out;
-}
-
-.sw--on .sw__knob {
-  left: 31px;
-  background: linear-gradient(180deg, #fffdf8, #cfc7bb);
-}
-
-.seg {
-  display: flex;
-  gap: 11px;
-}
-
-.seg__item {
-  flex: 1 1 0;
-  height: 62px;
-  border: 2px solid #000;
-  border-radius: 11px;
-  font-family: var(--ui);
-  font-size: 9.5px;
-  font-weight: 900;
-  letter-spacing: 1.6px;
-  color: var(--muted);
-  background: linear-gradient(180deg, #1c1712, #131009);
-  box-shadow: 0 5px 0 #000;
-  cursor: pointer;
-}
-
-.seg__item--on {
-  color: #1a0f04;
-  background: linear-gradient(180deg, #ffc684, var(--orange) 46%, var(--hot));
-  box-shadow:
-    0 5px 0 #000,
-    inset 0 2px 0 rgba(255, 255, 255, 0.4);
-}
-
-.btn--danger {
-  height: 56px;
-  font-size: 21px;
-  color: var(--red);
-  background: transparent;
-  border-color: var(--red);
-  box-shadow: none;
 }
 
 .settings__danger {
@@ -827,25 +555,6 @@
    the widest and narrowest car — which moved the carousel arrows under your
    thumb between taps. Constrain the art by the space available, not by its
    own proportions, and the card stays put. */
-.garage__art-box {
-  flex: 1 1 auto;
-  min-height: 0;
-  width: 100%;
-  margin: 12px 0;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.garage__art {
-  /* fill the box and let object-fit keep the aspect. Sizing by max-* instead
-     capped the car at its intrinsic 60x122, leaving it marooned in the card. */
-  width: 100%;
-  height: 100%;
-  object-fit: contain;
-  margin: 0;
-}
-
 /* reserve the shortfall line's space so the layout doesn't jump per car */
 .garage__actions {
   min-height: 106px;

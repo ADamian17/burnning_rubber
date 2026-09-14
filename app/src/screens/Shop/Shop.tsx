@@ -1,5 +1,6 @@
 import Coin from "../../components/Coin/Coin";
-import Meter from "../../components/Meter/Meter";
+import Button from "../../ui/buttons/Button/Button";
+import Meter from "../../ui/cards/Meter/Meter";
 import CoinPlate from "../../components/Plate/CoinPlate";
 import ScreenHeader from "../../components/ScreenHeader/ScreenHeader";
 import {
@@ -53,20 +54,15 @@ const UpgradeCard = ({ coins, id, levels }: CardProps) => {
       </div>
 
       {cost === null ? (
-        <div className="btn btn--primary btn--disabled">MAXED</div>
+        <Button disabled>MAXED</Button>
       ) : short <= 0 ? (
-        <button
-          className="btn btn--primary"
-          data-upgrade={id}
-          onClick={() => buyUpgrade(id)}
-          type="button"
-        >
+        <Button data-upgrade={id} onClick={() => buyUpgrade(id)}>
           BUY <Coin /> {cost.toLocaleString()}
-        </button>
+        </Button>
       ) : (
-        <div className="btn btn--primary btn--disabled">
+        <Button disabled>
           <Coin /> {short.toLocaleString()} SHORT
-        </div>
+        </Button>
       )}
     </article>
   );

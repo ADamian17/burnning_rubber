@@ -106,8 +106,8 @@ test.describe('garage', () => {
     await page.locator('.screen--centred').click();
     await page.getByRole('button', { name: 'GARAGE' }).click();
 
-    await expect(page.locator('.garage__name')).toHaveText('HATPIN');
-    await expect(page.locator('.chip')).toHaveText('EQUIPPED');
+    await expect(page.locator('[data-car-name]')).toHaveText('HATPIN');
+    await expect(page.locator('[data-ownership]')).toHaveText('EQUIPPED');
   });
 
   test('keeps the carousel arrows still between cars', async ({ page }) => {
@@ -142,7 +142,7 @@ test.describe('garage', () => {
     await page.locator('.screen--centred').click();
     await page.getByRole('button', { name: 'GARAGE' }).click();
 
-    while ((await page.locator('.garage__name').textContent())?.trim() !== 'HATPIN') {
+    while ((await page.locator('[data-car-name]').textContent())?.trim() !== 'HATPIN') {
       await page.locator('[data-next]').click();
     }
 
@@ -165,7 +165,7 @@ test.describe('garage', () => {
     await boot(page, { coins: 0 });
     await page.locator('.screen--centred').click();
     await page.getByRole('button', { name: 'GARAGE' }).click();
-    while ((await page.locator('.garage__name').textContent())?.trim() !== 'HATPIN') {
+    while ((await page.locator('[data-car-name]').textContent())?.trim() !== 'HATPIN') {
       await page.locator('[data-next]').click();
     }
     await expect(page.locator('.garage__short')).toContainText('COINS SHORT');

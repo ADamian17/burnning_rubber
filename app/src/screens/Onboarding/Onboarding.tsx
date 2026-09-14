@@ -1,5 +1,6 @@
 import { useNavigate } from "react-router-dom";
 import straycat from "../../assets/cars/straycat.svg";
+import Button from "../../ui/buttons/Button/Button";
 import { usePlayerStore } from "../../store/player/usePlayerStore";
 
 /**
@@ -39,9 +40,9 @@ const Onboarding = () => {
       </p>
 
       <div className="garage__actions">
-        <button className="btn btn--primary" data-done onClick={done} type="button">
+        <Button data-done onClick={done}>
           GOT IT
-        </button>
+        </Button>
       </div>
     </>
   );

@@ -1,0 +1,66 @@
+.base {
+  width: 100%;
+  border: 3px solid #000;
+  border-radius: 13px;
+  font-family: var(--display);
+  letter-spacing: 1.2px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  cursor: pointer;
+  transition: transform 0.06s ease-out;
+}
+
+.primary {
+  height: 74px;
+  font-size: 31px;
+  color: #1a0f04;
+  background: linear-gradient(180deg, #ffc684, var(--orange) 42%, var(--hot));
+  box-shadow:
+    0 7px 0 #000,
+    0 12px 20px rgba(0, 0, 0, 0.5),
+    inset 0 2px 0 rgba(255, 255, 255, 0.4);
+}
+
+.secondary {
+  height: 58px;
+  font-size: 21px;
+  color: var(--cream);
+  background: linear-gradient(180deg, #241e17, #171310);
+  box-shadow:
+    0 6px 0 #000,
+    inset 0 1px 0 rgba(255, 183, 101, 0.14);
+}
+
+/*
+ * The press. It reads as the button dropping the 5px into its own shadow, which
+ * is why the shadow shrinks by the same amount rather than just moving.
+ *
+ * Hung off the enabled variant instead of the old `:not(.disabled)` — cva knows
+ * which of the two is on, so the exclusion no longer has to be spelled in a
+ * selector. It still outranks every fill below it on specificity, so a danger
+ * button presses like the rest.
+ */
+.enabled:active {
+  transform: translateY(5px);
+  box-shadow:
+    0 2px 0 #000,
+    inset 0 3px 8px rgba(0, 0, 0, 0.45);
+}
+
+.disabled {
+  color: #5a524a;
+  background: linear-gradient(180deg, #211d19, #171310);
+  box-shadow: 0 4px 0 #000;
+  cursor: default;
+}
+
+.danger {
+  height: 56px;
+  font-size: 21px;
+  color: var(--red);
+  background: transparent;
+  border-color: var(--red);
+  box-shadow: none;
+}

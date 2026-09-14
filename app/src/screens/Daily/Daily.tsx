@@ -1,6 +1,7 @@
 import { useNavigate } from "react-router-dom";
 import Coin from "../../components/Coin/Coin";
 import ScreenHeader from "../../components/ScreenHeader/ScreenHeader";
+import Button from "../../ui/buttons/Button/Button";
 import {
   challengeFor,
   dayKey,
@@ -56,16 +57,11 @@ const Daily = () => {
           </div>
 
           {done ? (
-            <div className="btn btn--primary btn--disabled">DONE TODAY</div>
+            <Button disabled>DONE TODAY</Button>
           ) : (
-            <button
-              className="btn btn--primary"
-              data-daily
-              onClick={() => navigate("/run", { state: { day: key } })}
-              type="button"
-            >
+            <Button data-daily onClick={() => navigate("/run", { state: { day: key } })}>
               RUN IT
-            </button>
+            </Button>
           )}
         </article>
       </div>
