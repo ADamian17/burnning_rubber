@@ -1,0 +1,13 @@
+/*
+ * Only the label lives here. The row's own frame is the shared `.row` in
+ * ui.css, which the credits and summary screens also build on — pulling it in
+ * here would fork it three ways.
+ */
+.label {
+  font-size: 15px;
+  font-weight: 800;
+}
+
+.off {
+  color: #8e8377;
+}

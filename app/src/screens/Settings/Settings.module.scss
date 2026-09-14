@@ -1,0 +1,36 @@
+/*
+ * What only the settings screen uses.
+ *
+ * `.section`, `.section__title` and `.row` stay global in ui.css — the credits,
+ * daily and summary screens build on them, so they are shared furniture rather
+ * than this screen's own styling.
+ */
+
+/*
+ * A section title with a control beside it. The title keeps its place at the
+ * start of the section, so the control comes to it rather than taking a row of
+ * its own.
+ */
+.head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.note {
+  margin: 2px 0 0;
+  font-size: 11.5px;
+  line-height: 1.45;
+  color: var(--muted);
+}
+
+/* `margin-top: auto` is what pins this to the bottom of the screen's flex
+   column, so the danger action sits well clear of the switches above it. */
+.danger {
+  width: 100%;
+  max-width: 361px;
+  flex: none;
+  margin-top: auto;
+  padding-top: 20px;
+}

@@ -3,7 +3,7 @@ import type { ButtonHTMLAttributes, ReactNode } from "react";
 import styles from "./Button.module.scss";
 
 const button = cva(styles.base, {
-  defaultVariants: { disabled: false, variant: "primary" },
+  defaultVariants: { disabled: false, size: "default", variant: "primary" },
   variants: {
     /*
      * A variant rather than a bare attribute, because disabled is a fill here,
@@ -12,6 +12,8 @@ const button = cva(styles.base, {
      * never has to exclude one in a `:not()`.
      */
     disabled: { false: styles.enabled, true: styles.disabled },
+    /* `default` takes its height from the fill; `small` overrides it. */
+    size: { default: null, small: styles.small },
     variant: {
       danger: styles.danger,
       primary: styles.primary,
@@ -43,9 +45,9 @@ export interface ButtonProps
  * `type` is pinned rather than defaulted: these sit inside screens that may
  * later contain a form, where a bare button submits it.
  */
-const Button = ({ children, className, disabled, variant, ...rest }: ButtonProps) => (
+const Button = ({ children, className, disabled, size, variant, ...rest }: ButtonProps) => (
   <button
-    className={button({ className, disabled, variant })}
+    className={button({ className, disabled, size, variant })}
     disabled={disabled || undefined}
     type="button"
     {...rest}

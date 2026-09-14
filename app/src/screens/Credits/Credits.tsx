@@ -1,5 +1,7 @@
 import clsx from "clsx";
+import FinePrint from "../../components/FinePrint/FinePrint";
 import ScreenHeader from "../../components/ScreenHeader/ScreenHeader";
+import Section from "../../components/Section/Section";
 
 interface Credit {
   label: string;
@@ -50,7 +52,7 @@ const Credits = () => {
     <>
       <ScreenHeader title="CREDITS" />
 
-      <div className="section" style={{ gap: "11px" }}>
+      <Section style={{ gap: "11px" }}>
         {CREDITS.map(({ label, note, value, warn }) => (
           <div className="row row--stacked" key={label}>
             <div className="lbl">{label}</div>
@@ -60,9 +62,9 @@ const Credits = () => {
             <div className="row__note">{note}</div>
           </div>
         ))}
-      </div>
+      </Section>
 
-      <p className="settings__version">© 2026 ADONIS D MARTIN</p>
+      <FinePrint>© 2026 ADONIS D MARTIN</FinePrint>
     </>
   );
 };

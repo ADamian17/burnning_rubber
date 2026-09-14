@@ -1,0 +1,13 @@
+/*
+ * The quietest type in the game: 10px, wide-tracked, and dimmer than the muted
+ * token so it sits below body copy rather than beside it. It is meant to be
+ * legible when looked for and ignorable otherwise.
+ */
+.base {
+  margin: 14px 0 0;
+  text-align: center;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 2px;
+  color: #5f5750;
+}

@@ -1,0 +1,20 @@
+.section {
+  width: 100%;
+  max-width: 361px;
+  flex: none;
+  margin-top: var(--gap-head);
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+/*
+ * Only the first section clears the header; stacked ones sit closer together.
+ *
+ * The sibling selector is why both sections have to come from this module —
+ * CSS modules hash per file, so a section rendered from anywhere else would
+ * carry a different class and this rule would never match it.
+ */
+.section + .section {
+  margin-top: 14px;
+}

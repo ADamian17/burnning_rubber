@@ -64,3 +64,22 @@
   border-color: var(--red);
   box-shadow: none;
 }
+
+/*
+ * Declared last so it wins on source order: it overrides the height and
+ * font-size each fill above sets, at equal specificity.
+ *
+ * 44px, not smaller. That is the touch floor this game holds itself to — the
+ * icon button sits at 48 and the segmented control is sized so three across
+ * still clear 44. A button that only has to fit beside a 9.5px label could look
+ * right at 32 and still be the hardest thing on the screen to hit.
+ *
+ * `width: auto` because the base is full-width: a small button exists to sit
+ * next to something, so it sizes to its label instead of filling the row.
+ */
+.small {
+  width: auto;
+  height: 44px;
+  padding: 0 16px;
+  font-size: 15px;
+}

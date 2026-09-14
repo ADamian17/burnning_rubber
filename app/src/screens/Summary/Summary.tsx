@@ -1,6 +1,7 @@
 import { useNavigate } from "react-router-dom";
-import Button from "../../ui/buttons/Button/Button";
+import Section from "../../components/Section/Section";
 import { usePlayerStore } from "../../store/player/usePlayerStore";
+import Button from "../../ui/buttons/Button/Button";
 
 /**
  * What the last run came to.
@@ -34,7 +35,7 @@ const Summary = () => {
         <div className="summary__best">BEST {best.toLocaleString()}</div>
       </div>
 
-      <div className="section">
+      <Section>
         <div className="row">
           <span className="lbl">DISTANCE</span>
           <span className="num" style={{ fontSize: "22px" }}>
@@ -53,7 +54,7 @@ const Summary = () => {
             ×{run.bestCombo}
           </span>
         </div>
-      </div>
+      </Section>
 
       <div className="garage__actions">
         <Button onClick={() => navigate("/run")}>

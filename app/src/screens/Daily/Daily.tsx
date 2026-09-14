@@ -1,7 +1,8 @@
 import { useNavigate } from "react-router-dom";
 import Coin from "../../components/Coin/Coin";
 import ScreenHeader from "../../components/ScreenHeader/ScreenHeader";
-import Button from "../../ui/buttons/Button/Button";
+import Section from "../../components/Section/Section";
+import SectionTitle from "../../components/SectionTitle/SectionTitle";
 import {
   challengeFor,
   dayKey,
@@ -9,6 +10,7 @@ import {
   seedForDay,
 } from "../../game/daily";
 import { usePlayerStore } from "../../store/player/usePlayerStore";
+import Button from "../../ui/buttons/Button/Button";
 
 /** "9H 12M", as the artboard writes it. */
 const untilNext = (seconds: number): string => {
@@ -39,8 +41,8 @@ const Daily = () => {
     <>
       <ScreenHeader title="DAILY" />
 
-      <div className="section">
-        <div className="section__title">TODAY &middot; SEED {badge}</div>
+      <Section>
+        <SectionTitle>TODAY &middot; SEED {badge}</SectionTitle>
         <article className="shop__card">
           <div className="shop__head">
             <span className="shop__name">{challenge.name}</span>
@@ -64,7 +66,7 @@ const Daily = () => {
             </Button>
           )}
         </article>
-      </div>
+      </Section>
 
       <p className="shop__intro">
         Everyone drives the same road today. One payout per day &mdash; the run
