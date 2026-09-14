@@ -75,6 +75,12 @@ Screens are designed before they are built. The artboards in `design/` are the
 spec, and `node design/gen-screens.mjs` combines them into the canvases that
 sync to Claude Design.
 
+The shared kit — buttons, toggles, plates, meters — lives one preview per
+component in `design/ds/`, which is what the Design System pane renders.
+`node design/gen-components.mjs` collects those same previews onto a single
+`Components.dc.html` canvas, for when you want to see the kit whole rather than
+a card at a time. Both read the previews; neither is a second copy of them.
+
 Art direction is late-80s arcade cabinet: `#F28D35` on near-black, Underdog for
 display type, Outfit for anything numeric. No HUD element may sit in the bottom
 35% of the screen — that space belongs to the player's thumb.
