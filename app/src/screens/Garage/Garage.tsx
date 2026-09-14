@@ -48,7 +48,6 @@ const Garage = () => {
         <CoinPlate coins={coins} />
       </ScreenHeader>
 
-      {/* biome-ignore lint/a11y/noStaticElementInteractions: swipe augments the arrows */}
       <div
         className="garage__stage"
         onPointerDown={(event) => {

@@ -121,12 +121,6 @@ describe('save narrowing', () => {
     }
   });
 
-  it('treats a missing audio flag as on, not off', () => {
-    // `value.x !== false` and `!!value.x` differ here, and getting it wrong
-    // silently mutes a returning player
-    expect(revive({}).music).toBe(true);
-    expect(revive({ music: false }).music).toBe(false);
-  });
 });
 
 describe('pickups', () => {

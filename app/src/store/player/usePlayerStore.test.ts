@@ -92,16 +92,26 @@ describe('recording a run', () => {
     const day = dayKey();
     const reward = challengeFor(day).reward;
     start({ coins: 0 });
-    // a run big enough to clear any of the three goals
-    const huge = { ...run, bestCombo: 99, coins: 0, distance: 99_999, score: 99_999 };
+    /*
+     * Big enough to clear any of the three goals, the coin one included — the
+     * day's challenge is picked by hashing the UTC date, so which goal this has
+     * to beat depends on when the test runs. It used to bank `coins: 0`, which
+     * cannot meet a PAYDAY target, so it failed on roughly one day in three.
+     *
+     * Banking coins means the balance is the run's take plus the reward, not the
+     * reward alone; asserting the difference is what keeps this about the payout.
+     */
+    const huge = { ...run, bestCombo: 99, coins: 99, distance: 99_999, score: 99_999 };
 
     usePlayerStore.getState().recordRun(huge, day);
-    expect(save().coins).toBe(reward);
+    expect(save().coins).toBe(huge.coins + reward);
     expect(save().daily).toEqual({ lastDone: day, streak: 1 });
 
-    // the same day again pays nothing and does not bump the streak
+    // the same day again banks the run's coins but pays no reward, and the
+    // streak does not move
+    const banked = save().coins;
     usePlayerStore.getState().recordRun(huge, day);
-    expect(save().coins).toBe(reward);
+    expect(save().coins).toBe(banked + huge.coins);
     expect(save().daily.streak).toBe(1);
   });
 
@@ -115,25 +125,14 @@ describe('recording a run', () => {
 });
 
 describe('reset', () => {
-  it('wipes progress but leaves the player onboarded and their switches alone', () => {
+  it('wipes progress but leaves the player onboarded', () => {
     // sitting through the tutorial again is a punishment for using a settings
-    // button, and a reset is not a statement about wanting the sound off
-    start({ best: 900, coins: 400, music: false, onboarded: true, owned: ['straycat', 'hatpin'] });
+    // button
+    start({ best: 900, coins: 400, onboarded: true, owned: ['straycat', 'hatpin'] });
     usePlayerStore.getState().reset();
     expect(save().best).toBe(0);
     expect(save().coins).toBe(0);
     expect(save().owned).toEqual(['straycat']);
     expect(save().onboarded).toBe(true);
-    expect(save().music).toBe(false);
-  });
-});
-
-describe('flags', () => {
-  it('toggles each independently', () => {
-    usePlayerStore.getState().toggle('music');
-    expect(save().music).toBe(false);
-    expect(save().sfx).toBe(true);
-    usePlayerStore.getState().toggle('music');
-    expect(save().music).toBe(true);
   });
 });

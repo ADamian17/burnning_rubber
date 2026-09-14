@@ -1,5 +1,5 @@
-import Coin from "../Coin/Coin";
 import Plate from "../../ui/hud/Plate/Plate";
+import Coin from "../Coin/Coin";
 
 interface Props {
   coins: number;

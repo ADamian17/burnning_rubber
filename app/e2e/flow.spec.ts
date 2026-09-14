@@ -80,7 +80,7 @@ test.describe('first launch', () => {
     await boot(page, { onboarded: false });
 
     await expect(page.locator('.wordmark__bottom')).toHaveText('RUBBER');
-    await page.locator('.screen--centred').click();
+    await page.locator('[data-start]').click();
 
     await expect(page.locator('.onboard__title')).toHaveText('DRAG TO STEER');
     // the copy promises "the car tracks your finger" — it shipped once with
@@ -94,7 +94,7 @@ test.describe('first launch', () => {
 
   test('onboarding is skipped once dismissed', async ({ page }) => {
     await boot(page, { onboarded: true });
-    await page.locator('.screen--centred').click();
+    await page.locator('[data-start]').click();
     await expect(page.locator('.menu__actions')).toBeVisible();
   });
 });
@@ -103,7 +103,7 @@ test.describe('garage', () => {
   test('opens on the equipped car, not the first one', async ({ page }) => {
     // hatpin is index 2 of 4, so passing by coincidence is not possible
     await boot(page, { equipped: 'hatpin', owned: ['straycat', 'hatpin'] });
-    await page.locator('.screen--centred').click();
+    await page.locator('[data-start]').click();
     await page.getByRole('button', { name: 'GARAGE' }).click();
 
     await expect(page.locator('[data-car-name]')).toHaveText('HATPIN');
@@ -114,7 +114,7 @@ test.describe('garage', () => {
     // the card used to size itself to each car's aspect ratio, swinging 143px
     // and moving the button out from under a repeat tap
     await boot(page);
-    await page.locator('.screen--centred').click();
+    await page.locator('[data-start]').click();
     await page.getByRole('button', { name: 'GARAGE' }).click();
 
     const next = page.locator('[data-next]');
@@ -139,7 +139,7 @@ test.describe('garage', () => {
      */
     const purse = 9_000;
     await boot(page, { coins: purse });
-    await page.locator('.screen--centred').click();
+    await page.locator('[data-start]').click();
     await page.getByRole('button', { name: 'GARAGE' }).click();
 
     while ((await page.locator('[data-car-name]').textContent())?.trim() !== 'HATPIN') {
@@ -152,7 +152,7 @@ test.describe('garage', () => {
 
     await page.locator('[data-buy]').click();
 
-    await expect(page.locator('.overlay')).toBeVisible();
+    await expect(page.locator('[data-modal]')).toBeVisible();
     await expect(page.locator('.summary__badge')).toHaveText('UNLOCKED!');
 
     const saved = await page.evaluate((k) => JSON.parse(localStorage.getItem(k) ?? '{}'), SAVE_KEY);
@@ -163,7 +163,7 @@ test.describe('garage', () => {
 
   test('refuses a car it cannot afford', async ({ page }) => {
     await boot(page, { coins: 0 });
-    await page.locator('.screen--centred').click();
+    await page.locator('[data-start]').click();
     await page.getByRole('button', { name: 'GARAGE' }).click();
     while ((await page.locator('[data-car-name]').textContent())?.trim() !== 'HATPIN') {
       await page.locator('[data-next]').click();
@@ -176,7 +176,7 @@ test.describe('garage', () => {
 test.describe('a run', () => {
   test('holds traffic back during the countdown', async ({ page }) => {
     await boot(page);
-    await page.locator('.screen--centred').click();
+    await page.locator('[data-start]').click();
     await page.getByRole('button', { name: 'PLAY' }).click();
 
     await expect.poll(() => state(page).then((s) => s?.counting)).toBe(true);
@@ -192,12 +192,12 @@ test.describe('a run', () => {
     // this shipped broken: the loop was only halted on route changes, and an
     // overlay is not a route change, so you could crash while paused
     await boot(page);
-    await page.locator('.screen--centred').click();
+    await page.locator('[data-start]').click();
     await page.getByRole('button', { name: 'PLAY' }).click();
     await expect.poll(() => state(page).then((s) => s?.counting), { timeout: 6000 }).toBe(false);
 
     await page.locator('[data-pause]').click();
-    await expect(page.locator('.overlay')).toBeVisible();
+    await expect(page.locator('[data-modal]')).toBeVisible();
 
     const frozen = (await state(page))?.distance ?? 0;
     await page.waitForTimeout(1500);
@@ -210,7 +210,7 @@ test.describe('a run', () => {
 
   test('crashing routes to a summary carrying the run', async ({ page }) => {
     await boot(page);
-    await page.locator('.screen--centred').click();
+    await page.locator('[data-start]').click();
     await page.getByRole('button', { name: 'PLAY' }).click();
 
     await expect.poll(() => state(page).then((s) => s?.route), { timeout: 40_000 }).toBe('summary');
@@ -226,7 +226,7 @@ test.describe('a run', () => {
 test.describe('settings', () => {
   test('persists a toggle', async ({ page }) => {
     await boot(page);
-    await page.locator('.screen--centred').click();
+    await page.locator('[data-start]').click();
     await page.getByRole('button', { name: 'SETTINGS' }).click();
 
     await page.locator('[data-toggle="music"]').click();
@@ -237,11 +237,11 @@ test.describe('settings', () => {
   test('cancelling the reset keeps everything', async ({ page }) => {
     // the one irreversible action in the game; cancel has to actually cancel
     await boot(page, { best: 4200, coins: 900, owned: ['straycat', 'hatpin'] });
-    await page.locator('.screen--centred').click();
+    await page.locator('[data-start]').click();
     await page.getByRole('button', { name: 'SETTINGS' }).click();
     await page.getByRole('button', { name: 'RESET PROGRESS' }).click();
 
-    await expect(page.locator('.overlay__warn')).toHaveText('THIS CANNOT BE UNDONE');
+    await expect(page.locator('[data-warn]')).toHaveText('THIS CANNOT BE UNDONE');
     await page.getByRole('button', { name: 'KEEP MY PROGRESS' }).click();
 
     const saved = await page.evaluate((k) => JSON.parse(localStorage.getItem(k) ?? '{}'), SAVE_KEY);
@@ -252,7 +252,7 @@ test.describe('settings', () => {
 
   test('confirming the reset wipes', async ({ page }) => {
     await boot(page, { best: 4200, coins: 900, owned: ['straycat', 'hatpin'] });
-    await page.locator('.screen--centred').click();
+    await page.locator('[data-start]').click();
     await page.getByRole('button', { name: 'SETTINGS' }).click();
     await page.getByRole('button', { name: 'RESET PROGRESS' }).click();
     await page.getByRole('button', { name: 'RESET EVERYTHING' }).click();
@@ -267,7 +267,7 @@ test.describe('settings', () => {
 test.describe('layout at 393x852', () => {
   test('never scrolls horizontally on any screen', async ({ page }) => {
     await boot(page);
-    await page.locator('.screen--centred').click();
+    await page.locator('[data-start]').click();
 
     for (const name of ['GARAGE', 'SHOP', 'DAILY', 'SETTINGS', 'CREDITS']) {
       await page.getByRole('button', { name }).click();
@@ -281,7 +281,7 @@ test.describe('layout at 393x852', () => {
 
   test('keeps the primary action clear of the safe area', async ({ page }) => {
     await boot(page);
-    await page.locator('.screen--centred').click();
+    await page.locator('[data-start]').click();
 
     const play = await page.getByRole('button', { name: 'PLAY' }).boundingBox();
     const viewport = page.viewportSize();
@@ -298,7 +298,7 @@ test.describe('shop', () => {
     // ADO-46 asked for this and it was not written at the time: the whole point
     // of a shop is that what you bought is still there tomorrow
     await boot(page, { coins: 500 });
-    await page.locator('.screen--centred').click();
+    await page.locator('[data-start]').click();
     await page.locator('[data-go="shop"]').click();
 
     const first = page.locator('[data-upgrade]').first();
@@ -310,7 +310,7 @@ test.describe('shop', () => {
     expect(afterBuy.coins).toBeLessThan(500);
 
     await page.reload();
-    await page.locator('.screen--centred').click();
+    await page.locator('[data-start]').click();
     await page.locator('[data-go="shop"]').click();
 
     const afterReload = await stored(page);
@@ -320,7 +320,7 @@ test.describe('shop', () => {
 
   test('will not sell what the player cannot afford', async ({ page }) => {
     await boot(page, { coins: 0 });
-    await page.locator('.screen--centred').click();
+    await page.locator('[data-start]').click();
     await page.locator('[data-go="shop"]').click();
 
     // nothing is buyable, so the shortfall is named instead of a dead button

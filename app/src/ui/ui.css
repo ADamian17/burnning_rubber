@@ -1,44 +1,3 @@
-/* Design tokens — the same values the artboards and the design system use.
-   Change them here and in design/gen-ds.mjs together, or the two drift. */
-:root {
-  --ink: #0a0806;
-  --orange: #f28d35;
-  --hot: #f77503;
-  --lite: #ffb765;
-  --cream: #f5efe4;
-  --muted: #9c9184;
-  --gold: #ffc93c;
-  --red: #e4322b;
-  --green: #7fe59b;
-  --display: 'Underdog', 'Chalkboard SE', cursive;
-  --ui: 'Outfit', 'Avenir Next', system-ui, sans-serif;
-
-  /* real numbers inside a webview thanks to viewport-fit=cover */
-  /* One gap between a screen's header and whatever it shows first. It was 22px
-     on .section, 24px on the shop and nothing at all in the garage, which made
-     moving between screens feel like the title shifted. */
-  --gap-head: 24px;
-  --safe-top: env(safe-area-inset-top, 0px);
-  --safe-bottom: env(safe-area-inset-bottom, 0px);
-}
-
-/*
- * The React root.
- *
- * Was `#ui`, and was `display: none` until the old router set `data-open` on
- * it — a guard against painting an empty container before the first screen was
- * rendered into it. React has no such gap: whatever is mounted is what renders,
- * so the container is simply always shown.
- */
-#root {
-  position: fixed;
-  inset: 0;
-  font-family: var(--ui);
-  color: var(--cream);
-  background: var(--ink);
-  overflow: hidden;
-}
-
 /* ---------- shared components ---------- */
 
 .lbl {
@@ -220,6 +179,7 @@
   display: flex;
   gap: 12px;
 }
+
 
 
 
@@ -414,70 +374,6 @@
   font-weight: 800;
   letter-spacing: 1.6px;
   color: var(--muted);
-}
-
-/* ---------- overlays ---------- */
-
-/* covers the window, not the letterbox: a backdrop that stopped at the black
-   bars would look like a panel floating on a lit strip */
-.overlay {
-  position: fixed;
-  inset: 0;
-  z-index: 95;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: 22px;
-  background: rgba(6, 5, 4, 0.76);
-  pointer-events: auto;
-}
-
-.overlay__panel {
-  width: 100%;
-  max-width: 340px;
-  padding: 26px 22px 22px;
-  border: 3px solid #000;
-  border-radius: 18px;
-  text-align: center;
-  background: linear-gradient(180deg, #1f1a15, #120f0c);
-  box-shadow: 0 10px 0 #000;
-}
-
-.overlay__panel--danger {
-  border-color: var(--red);
-  background: linear-gradient(180deg, #1b100e, #120c0a);
-  box-shadow:
-    0 10px 0 #000,
-    0 0 44px rgba(228, 50, 43, 0.3);
-}
-
-.overlay__title {
-  margin: 0 0 16px;
-  font-family: var(--display);
-  font-size: 40px;
-  font-weight: 400;
-  line-height: 1.05;
-  color: var(--lite);
-  text-shadow: 4px 5px 0 #000;
-}
-
-.overlay__title--danger {
-  color: var(--red);
-}
-
-.overlay__copy {
-  margin: 0 0 12px;
-  font-size: 14px;
-  line-height: 1.55;
-  color: var(--muted);
-}
-
-.overlay__warn {
-  margin: 0 0 18px;
-  font-size: 11px;
-  font-weight: 900;
-  letter-spacing: 2.4px;
-  color: var(--red);
 }
 
 .unlock__art {

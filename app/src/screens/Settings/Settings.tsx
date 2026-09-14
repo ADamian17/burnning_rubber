@@ -1,16 +1,21 @@
-import { useNavigate } from "react-router-dom";
+import { useState } from "react";
 import FinePrint from "../../components/FinePrint/FinePrint";
 import ScreenHeader from "../../components/ScreenHeader/ScreenHeader";
 import Section from "../../components/Section/Section";
 import SectionTitle from "../../components/SectionTitle/SectionTitle";
-import useSettings from "../../store/useSettings/useSettings";
+import { usePlayerStore } from "../../store/player/usePlayerStore";
+import useSettings from "../../store/settings/useSettings";
 import Button from "../../ui/buttons/Button/Button";
+import Modal from "../../ui/overlay/Modal/Modal";
 import styles from "./Settings.module.scss";
 import ToggleRow from "./ToggleRow/ToggleRow";
 
 const Settings = () => {
-	const navigate = useNavigate();
 	const { haptics, music, sfx, reset } = useSettings((state) => state);
+	const best = usePlayerStore((state) => state.save.best);
+	const coins = usePlayerStore((state) => state.save.coins);
+	const wipeProgress = usePlayerStore((state) => state.reset);
+	const [confirming, setConfirming] = useState(false);
 
 	return (
 		<>
@@ -48,12 +53,42 @@ const Settings = () => {
 			</Section>
 
 			<div className={styles.danger}>
-				<Button data-reset onClick={() => navigate("reset")} variant="danger">
+				<Button data-reset onClick={() => setConfirming(true)} variant="danger">
 					RESET PROGRESS
 				</Button>
         
 				<FinePrint>BURNING RUBBER &middot; V2.0.0</FinePrint>
 			</div>
+
+			{confirming ? (
+				<Modal
+					onClose={() => setConfirming(false)}
+					title="RESET PROGRESS?"
+					tone="danger"
+				>
+					<p className={styles.copy}>
+						This erases your best score of <b>{best.toLocaleString()}</b>,{" "}
+						<b>{coins.toLocaleString()} coins</b>, and every car you have
+						unlocked.
+					</p>
+					<p className={styles.warn} data-warn>
+						THIS CANNOT BE UNDONE
+					</p>
+					<div className={styles.actions}>
+						{/* the safe action is the primary; destroying takes the deliberate tap */}
+						<Button onClick={() => setConfirming(false)}>KEEP MY PROGRESS</Button>
+						<Button
+							onClick={() => {
+								wipeProgress();
+								setConfirming(false);
+							}}
+							variant="danger"
+						>
+							RESET EVERYTHING
+						</Button>
+					</div>
+				</Modal>
+			) : null}
 		</>
 	);
 };

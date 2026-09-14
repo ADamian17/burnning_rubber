@@ -3,8 +3,6 @@ import type { RunResult, SaveState } from '../../game/state';
 import type { UpgradeId } from '../../game/upgrades';
 
 /** The audio and feel switches, which all behave identically. */
-export type Flag = 'haptics' | 'music' | 'sfx';
-
 /**
  * What the store holds.
  *
@@ -37,7 +35,6 @@ export interface PlayerActions {
   recordRun: (run: RunResult, day: string | null) => void;
   /** Wipe progress. Onboarding and the switches survive — a reset is not a new player. */
   reset: () => void;
-  toggle: (flag: Flag) => void;
 }
 
 export type PlayerStore = PlayerActions & PlayerState;

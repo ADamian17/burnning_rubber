@@ -96,16 +96,18 @@ export const usePlayerStore = create<PlayerStore>()(
 
 				reset: () => {
 					/*
-					 * Everything a fresh save has, except `onboarded` and the settings
-					 * flags. Built from revive(null) so a field added to SaveState
-					 * later is wiped by default rather than silently surviving a reset
-					 * nobody remembered to update.
+					 * Everything a fresh save has, except `onboarded` — sitting through
+					 * the tutorial again is a punishment for using a settings button.
+					 * Built from revive(null) so a field added to SaveState later is
+					 * wiped by default rather than silently surviving a reset nobody
+					 * remembered to update.
+					 *
+					 * The audio switches used to be spared here by name. They live in
+					 * `useSettings` now, so a progress reset cannot reach them at all.
 					 */
-					const { haptics, music, onboarded, sfx } = get().save;
-					commit({ ...revive(null), haptics, music, onboarded, sfx });
+					const { onboarded } = get().save;
+					commit({ ...revive(null), onboarded });
 				},
-
-				toggle: (flag) => commit({ [flag]: !get().save[flag] }),
 			};
 		},
 		{

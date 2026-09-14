@@ -1,6 +1,6 @@
 import clsx from "clsx";
-import useSettings from "../../../store/useSettings/useSettings";
-import type { SettingsState } from "../../../store/useSettings/useSettings.types";
+import useSettings from "../../../store/settings/useSettings";
+import type { SettingsState } from "../../../store/settings/useSettings.types";
 import Toggle from "../../../ui/controls/Toggle/Toggle";
 import styles from "./ToggleRow.module.scss";
 
