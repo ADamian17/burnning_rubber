@@ -2,13 +2,17 @@ import { create } from "zustand";
 import { persist } from "zustand/middleware";
 import { challengeFor, met, streakAfter } from "../../game/daily";
 import { PLAYERS } from "../../game/fleet";
-import { revive, SAVE_KEY, type SaveState } from "../../game/state";
+import { revive, SAVE_KEY } from "./save";
 import { nextCost } from "../../game/upgrades";
-import { playerStorage } from "./storage";
+import { playerStorage } from "./save";
 import type { PlayerState, PlayerStore } from "./usePlayerStore.types";
 
 /**
  * Everything about this player that outlives a run, and the rules that change it.
+ *
+ * The state is the save, flat — `usePlayerStore(s => s.coins)`, not
+ * `s.save.coins`. `partialize` is what keeps the actions out of what gets
+ * written; see `./usePlayerStore.types.ts` for why that trade was taken.
  *
  * Named for the player rather than for storage: `save` described the mechanism,
  * not the contents. What is in here is progress (best, coins), what they own
@@ -32,44 +36,39 @@ import type { PlayerState, PlayerStore } from "./usePlayerStore.types";
 export const usePlayerStore = create<PlayerStore>()(
 	persist(
 		(set, get) => {
-			/** Merge and publish. Persist does the writing. */
-			const commit = (patch: Partial<SaveState>): void => {
-				set((state) => ({ save: { ...state.save, ...patch } }));
-			};
-
 			return {
 				// a real, valid save from the start. revive(null) is the existing way
 				// to ask for defaults, so "fresh" is not defined in two places
-				save: revive(null),
+				...revive(null),
 
 				buyCar: (id) => {
-					const { coins, owned } = get().save;
+					const { coins, owned } = get();
 					const cost = PLAYERS[id].cost;
 					// re-checked here, not trusted from the view that drew the button:
 					// the render that offered it may be a frame behind the coins
 					if (owned.includes(id) || cost > coins) return;
-					commit({ coins: coins - cost, equipped: id, owned: [...owned, id] });
+					set({ coins: coins - cost, equipped: id, owned: [...owned, id] });
 				},
 
 				buyUpgrade: (id) => {
-					const { coins, upgrades } = get().save;
+					const { coins, upgrades } = get();
 					const cost = nextCost(id, upgrades[id]);
 					if (cost === null || cost > coins) return;
-					commit({
+					set({
 						coins: coins - cost,
 						upgrades: { ...upgrades, [id]: upgrades[id] + 1 },
 					});
 				},
 
-				completeOnboarding: () => commit({ onboarded: true }),
+				completeOnboarding: () => set({ onboarded: true }),
 
 				equip: (id) => {
-					if (!get().save.owned.includes(id)) return;
-					commit({ equipped: id });
+					if (!get().owned.includes(id)) return;
+					set({ equipped: id });
 				},
 
 				recordRun: (run, day) => {
-					const { best, coins, daily } = get().save;
+					const { best, coins, daily } = get();
 
 					/*
 					 * A daily pays out only the first time it is met on its day,
@@ -83,7 +82,7 @@ export const usePlayerStore = create<PlayerStore>()(
 							? challengeFor(day).reward
 							: 0;
 
-					commit({
+					set({
 						best: Math.max(best, run.score),
 						coins: coins + run.coins + earned,
 						daily:
@@ -105,15 +104,30 @@ export const usePlayerStore = create<PlayerStore>()(
 					 * The audio switches used to be spared here by name. They live in
 					 * `useSettings` now, so a progress reset cannot reach them at all.
 					 */
-					const { onboarded } = get().save;
-					commit({ ...revive(null), onboarded });
+					const { onboarded } = get();
+					set({ ...revive(null), onboarded });
 				},
 			};
 		},
 		{
 			name: SAVE_KEY,
-			// only `save` is written; the actions are not state
-			partialize: (state): PlayerState => ({ save: state.save }),
+			/*
+			 * Separates the data from the actions, which is the one job the old
+			 * `save` wrapper did for free. Listed by name rather than rest-spread
+			 * so the compiler checks it: `PlayerState` is `SaveState`, so a field
+			 * added to the save and forgotten here fails to typecheck rather than
+			 * silently stopping being persisted.
+			 */
+			partialize: (state): PlayerState => ({
+				best: state.best,
+				coins: state.coins,
+				daily: state.daily,
+				equipped: state.equipped,
+				lastRun: state.lastRun,
+				onboarded: state.onboarded,
+				owned: state.owned,
+				upgrades: state.upgrades,
+			}),
 			skipHydration: true,
 			storage: playerStorage,
 		},

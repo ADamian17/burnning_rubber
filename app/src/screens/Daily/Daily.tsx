@@ -28,7 +28,7 @@ const untilNext = (seconds: number): string => {
  */
 const Daily = () => {
   const navigate = useNavigate();
-  const daily = usePlayerStore((state) => state.save.daily);
+  const daily = usePlayerStore((state) => state.daily);
 
   const key = dayKey();
   const challenge = challengeFor(key);

@@ -1,7 +1,7 @@
 import { seedFrom } from '../engine/rng';
-import type { RunResult } from './state';
+import type { FinishedRun } from './run';
 
-/** What a day's challenge asks for. All three are already on a RunResult. */
+/** What a day's challenge asks for. All three are already on a FinishedRun. */
 export type DailyGoal = 'coins' | 'combo' | 'distance';
 
 export interface Challenge {
@@ -87,14 +87,14 @@ export const challengeFor = (key: string): Challenge => {
 export const seedForDay = (key: string): number => seedFrom(key);
 
 /** Whether a finished run met the day's challenge. */
-export const met = (challenge: Challenge, run: RunResult): boolean => {
+export const met = (challenge: Challenge, run: FinishedRun): boolean => {
   if (challenge.goal === 'coins') return run.coins >= challenge.target;
   if (challenge.goal === 'combo') return run.bestCombo >= challenge.target;
   return run.distance >= challenge.target;
 };
 
 /** How far a finished run got, in the challenge's own units. */
-export const progressOf = (challenge: Challenge, run: RunResult): number => {
+export const progressOf = (challenge: Challenge, run: FinishedRun): number => {
   if (challenge.goal === 'coins') return run.coins;
   if (challenge.goal === 'combo') return run.bestCombo;
   return run.distance;

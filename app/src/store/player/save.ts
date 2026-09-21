@@ -1,37 +1,40 @@
 import { Preferences } from "@capacitor/preferences";
-import { type DailyState, FRESH_DAILY } from "./daily";
-import { PLAYER_IDS, type PlayerId } from "./fleet";
+import { type DailyState, FRESH_DAILY } from "../../game/daily";
+import { PLAYER_IDS, type PlayerId } from "../../game/fleet";
+import type { FinishedRun } from "../../game/run";
 import {
 	FRESH_UPGRADES,
 	maxLevel,
 	UPGRADE_IDS,
 	type UpgradeLevels,
-} from "./upgrades";
+} from "../../game/upgrades";
+import type { PersistStorage } from "zustand/middleware";
 
-/** Storage key. Exported so the store's persist adapter names the same slot. */
+/**
+ * The save: its shape, how unknown JSON is narrowed into it, and where it is
+ * kept.
+ *
+ * This used to be `game/state.ts`, which made sense when it *was* the store —
+ * the old router called load and save directly. Zustand owns the state now, so
+ * a file defining the save had no business sitting in the game directory, where
+ * nothing else imported it.
+ *
+ * It is one file rather than three because the chain was `state.ts` doing the
+ * Preferences I/O, `storage.ts` adapting that for persist, and the store
+ * configuring persist — two of those hops existed only to hand a value along.
+ */
+
+/** Storage key. The store's persist config names the same slot. */
 export const SAVE_KEY = "burning-rubber:save";
 
 /**
- * How the car is steered.
+ * A run once it has been banked.
  *
- * Tap-lanes and tilt were dropped rather than built. Both were offered in
- * settings and neither was ever implemented, so choosing one silently gave you
- * drag under a different name — a setting that lies is worse than a setting
- * that is absent.
- *
- * Left as a union of one rather than collapsed away: re-adding a scheme should
- * be a type change the compiler walks you through, not a rediscovery.
+ * `isBest` is the one thing the engine could not tell you: it is a comparison
+ * against the previous best, which only the store holds.
  */
-export type ControlScheme = "drag";
-
-/** Result of the most recent run, so the summary survives a reload. */
-export interface RunResult {
-	/** Highest near-miss multiplier reached during the run. */
-	bestCombo: number;
-	coins: number;
-	distance: number;
+export interface RunResult extends FinishedRun {
 	isBest: boolean;
-	score: number;
 }
 
 export interface SaveState {
@@ -39,7 +42,6 @@ export interface SaveState {
 	/** Daily challenge progress: last day completed, and the run of them. */
 	daily: DailyState;
 	coins: number;
-	control: ControlScheme;
 	equipped: PlayerId;
 	lastRun: RunResult | null;
 	/** False until onboarding has been dismissed once. */
@@ -53,7 +55,6 @@ const FRESH: SaveState = {
 	best: 0,
 	daily: { ...FRESH_DAILY },
 	coins: 0,
-	control: "drag",
 	equipped: "straycat",
 	lastRun: null,
 	onboarded: false,
@@ -123,7 +124,15 @@ const reviveRun = (raw: RunResult | undefined | null): RunResult | null => {
 	};
 };
 
-/** Narrow unknown JSON to a SaveState, discarding anything that no longer exists. */
+/**
+ * Narrow unknown JSON to a SaveState, discarding anything that no longer exists.
+ *
+ * Discarding is the migration. A save written when steering was a stored
+ * preference carries a `control` key; nothing reads it here, so it is simply
+ * not copied across and disappears on the next write. No version number, no
+ * migration step — the narrowing is the only way in, so anything it does not
+ * name cannot survive.
+ */
 export const revive = (raw: unknown): SaveState => {
 	if (typeof raw !== "object" || raw === null) return { ...FRESH };
 	const value = raw as Partial<SaveState>;
@@ -139,9 +148,6 @@ export const revive = (raw: unknown): SaveState => {
 		best: Number.isFinite(value.best) ? Number(value.best) : 0,
 		coins: Number.isFinite(value.coins) ? Number(value.coins) : 0,
 		daily: reviveDaily(value.daily),
-		// a save from when tap-lanes or tilt could be chosen comes back as drag,
-		// which is what those players were getting anyway
-		control: "drag",
 		equipped,
 		lastRun: reviveRun(value.lastRun),
 		onboarded: value.onboarded === true,
@@ -150,22 +156,38 @@ export const revive = (raw: unknown): SaveState => {
 	};
 };
 
-export const loadState = async (): Promise<SaveState> => {
-	try {
-		const { value } = await Preferences.get({ key: SAVE_KEY });
-		return value ? revive(JSON.parse(value)) : { ...FRESH };
-	} catch {
-		// a corrupt or unreadable save should cost the player their progress, not
-		// the ability to launch the game
-		return { ...FRESH };
-	}
-};
-
-export const saveState = async (state: SaveState): Promise<void> => {
-	await Preferences.set({ key: SAVE_KEY, value: JSON.stringify(state) });
-};
-
-export const resetState = async (): Promise<SaveState> => {
-	await Preferences.remove({ key: SAVE_KEY });
-	return { ...FRESH };
+/**
+ * Persist's storage engine, over Capacitor Preferences.
+ *
+ * Written by hand rather than with `createJSONStorage` for one reason: the
+ * default writes zustand's `{ state, version }` envelope, and every save that
+ * already exists — on devices, and seeded by both e2e suites — is a bare
+ * `SaveState` object. Switching format would silently orphan them all.
+ *
+ * Because the store's state *is* the save, both directions are a straight
+ * hand-off. `revive` stays the single narrowing path in, and the catch stays
+ * with it: a corrupt save should cost the player their progress, not the
+ * ability to launch the game.
+ *
+ * `name` is ignored throughout — `SAVE_KEY` above is the one definition, and
+ * persist is configured with it so the two cannot drift.
+ */
+export const playerStorage: PersistStorage<SaveState> = {
+	getItem: async () => {
+		try {
+			const { value } = await Preferences.get({ key: SAVE_KEY });
+			return { state: value ? revive(JSON.parse(value)) : { ...FRESH } };
+		} catch {
+			return { state: { ...FRESH } };
+		}
+	},
+	removeItem: async () => {
+		await Preferences.remove({ key: SAVE_KEY });
+	},
+	setItem: async (_name, value) => {
+		await Preferences.set({
+			key: SAVE_KEY,
+			value: JSON.stringify(value.state),
+		});
+	},
 };

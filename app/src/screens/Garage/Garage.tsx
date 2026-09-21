@@ -25,7 +25,11 @@ import Coin from "../../components/Coin/Coin";
  * a template string destroyed it — mounting on route entry does that job now.
  */
 const Garage = () => {
-  const { coins, equipped, owned } = usePlayerStore((state) => state.save);
+  // one slice each: selecting the whole store would re-render the carousel on
+  // any change to the save, including ones this screen does not show
+  const coins = usePlayerStore((state) => state.coins);
+  const equipped = usePlayerStore((state) => state.equipped);
+  const owned = usePlayerStore((state) => state.owned);
   const buyCar = usePlayerStore((state) => state.buyCar);
   const equip = usePlayerStore((state) => state.equip);
 

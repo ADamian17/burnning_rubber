@@ -11,9 +11,23 @@ import styles from "./Settings.module.scss";
 import ToggleRow from "./ToggleRow/ToggleRow";
 
 const Settings = () => {
-	const { haptics, music, sfx, reset } = useSettings((state) => state);
-	const best = usePlayerStore((state) => state.save.best);
-	const coins = usePlayerStore((state) => state.save.coins);
+	/*
+	 * One slice each. Selecting the whole store returns a fresh object on every
+	 * `set`, so this screen re-rendered on any settings change rather than only
+	 * on the ones it shows — and it would keep doing so for fields added later
+	 * that it never reads.
+	 *
+	 * Both stores expose a `reset`, and they do very different things: one clears
+	 * three switches, the other wipes the save. Named apart here so a call site
+	 * cannot confuse them.
+	 */
+	const haptics = useSettings((state) => state.haptics);
+	const music = useSettings((state) => state.music);
+	const sfx = useSettings((state) => state.sfx);
+	const resetSettings = useSettings((state) => state.reset);
+
+	const best = usePlayerStore((state) => state.best);
+	const coins = usePlayerStore((state) => state.coins);
 	const wipeProgress = usePlayerStore((state) => state.reset);
 	const [confirming, setConfirming] = useState(false);
 
@@ -27,7 +41,7 @@ const Settings = () => {
 
 					<Button
 						data-reset-settings
-						onClick={() => reset()}
+						onClick={resetSettings}
 						size="small"
 						variant="secondary"
 					>

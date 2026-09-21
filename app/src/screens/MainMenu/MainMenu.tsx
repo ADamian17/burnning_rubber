@@ -13,8 +13,8 @@ import { usePlayerStore } from "../../store/player/usePlayerStore";
  */
 const MainMenu = () => {
   const navigate = useNavigate();
-  const best = usePlayerStore((state) => state.save.best);
-  const coins = usePlayerStore((state) => state.save.coins);
+  const best = usePlayerStore((state) => state.best);
+  const coins = usePlayerStore((state) => state.coins);
 
   return (
     <>

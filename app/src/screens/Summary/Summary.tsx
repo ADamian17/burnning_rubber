@@ -11,8 +11,8 @@ import Button from "../../ui/buttons/Button/Button";
  */
 const Summary = () => {
   const navigate = useNavigate();
-  const best = usePlayerStore((state) => state.save.best);
-  const last = usePlayerStore((state) => state.save.lastRun);
+  const best = usePlayerStore((state) => state.best);
+  const last = usePlayerStore((state) => state.lastRun);
 
   const run = last ?? {
     bestCombo: 1,

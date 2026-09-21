@@ -1,19 +1,24 @@
 import type { PlayerId } from '../../game/fleet';
-import type { RunResult, SaveState } from '../../game/state';
+import type { RunResult, SaveState } from './save';
 import type { UpgradeId } from '../../game/upgrades';
 
-/** The audio and feel switches, which all behave identically. */
 /**
- * What the store holds.
+ * What the store holds: the save itself, flat.
  *
- * One field, deliberately. `save` is nested rather than spread flat alongside
- * the actions so that it *is* exactly what gets persisted — flat, every write
- * would have to separate the data from the functions first, and adding an
- * action would mean remembering to exclude it from the write.
+ * An alias rather than a re-declaration of the same fields. Those two shapes
+ * have to stay identical — the store's state is written to disk verbatim — and
+ * writing them out twice is how they drift. It already had: the first attempt
+ * at flattening this listed six fields and silently lost `upgrades` and
+ * `daily`, which the shop and the daily screen read.
+ *
+ * Flat rather than nested under `save`, which is what it used to be. The
+ * nesting made persistence trivially correct — one key to write, no way for an
+ * action to leak into it — at the cost of every selector in the app reading
+ * `state.save.coins` to get a number. `partialize` now does that separation
+ * explicitly instead, and `saveState` serialises through JSON, which drops any
+ * function that slips past it.
  */
-export interface PlayerState {
-  save: SaveState;
-}
+export type PlayerState = SaveState;
 
 /**
  * What the store does.

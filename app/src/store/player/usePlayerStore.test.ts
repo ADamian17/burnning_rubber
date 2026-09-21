@@ -1,7 +1,7 @@
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 import { challengeFor, dayKey } from '../../game/daily';
 import { PLAYERS } from '../../game/fleet';
-import { revive } from '../../game/state';
+import { revive } from './save';
 import { UPGRADES, maxLevel } from '../../game/upgrades';
 import { usePlayerStore } from './usePlayerStore';
 
@@ -10,9 +10,18 @@ import { usePlayerStore } from './usePlayerStore';
  * a window that a node test does not have. Stubbed so the rules can be tested
  * without a DOM.
  */
-vi.mock('../../game/state', async () => {
-  const real = await vi.importActual<typeof import('../../game/state')>('../../game/state');
-  return { ...real, resetState: vi.fn(async () => revive(null)), saveState: vi.fn(async () => {}) };
+vi.mock('./save', async () => {
+  const real = await vi.importActual<typeof import('./save')>('./save');
+  return {
+    ...real,
+    // the whole adapter, not the read/write pair it used to wrap — those are
+    // inside it now, and leaving the real one in place reaches for Preferences
+    playerStorage: {
+      getItem: vi.fn(async () => ({ state: real.revive(null) })),
+      removeItem: vi.fn(async () => {}),
+      setItem: vi.fn(async () => {}),
+    },
+  };
 });
 
 /**
@@ -24,9 +33,9 @@ vi.mock('../../game/state', async () => {
  * Moving them into the store is what makes them testable at all.
  */
 const start = (patch: Partial<ReturnType<typeof revive>> = {}) =>
-  usePlayerStore.setState({ save: { ...revive(null), ...patch } });
+  usePlayerStore.setState({ ...revive(null), ...patch });
 
-const save = () => usePlayerStore.getState().save;
+const save = () => usePlayerStore.getState();
 
 beforeEach(() => start());
 

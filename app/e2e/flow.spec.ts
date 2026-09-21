@@ -16,7 +16,6 @@ const SAVE_KEY = 'CapacitorStorage.burning-rubber:save';
 interface Save {
   best: number;
   coins: number;
-  control: string;
   equipped: string;
   haptics: boolean;
   lastRun: null;
@@ -29,7 +28,6 @@ interface Save {
 const save = (patch: Partial<Save> = {}): Save => ({
   best: 0,
   coins: 0,
-  control: 'drag',
   equipped: 'straycat',
   haptics: true,
   lastRun: null,

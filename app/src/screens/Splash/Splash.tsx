@@ -20,7 +20,7 @@ import { usePlayerStore } from "../../store/player/usePlayerStore";
  */
 const Splash = () => {
   const navigate = useNavigate();
-  const onboarded = usePlayerStore((state) => state.save.onboarded);
+  const onboarded = usePlayerStore((state) => state.onboarded);
 
   const enter = () =>
     navigate(onboarded ? "/menu" : "/onboarding", { replace: true });

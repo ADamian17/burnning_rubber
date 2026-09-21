@@ -14,7 +14,6 @@ import {
   powerSeconds
 } from './upgrades';
 import { PLAYERS, PLAYER_IDS, SPRITE_MANIFEST, TRAFFIC, TRAFFIC_IDS, slimness } from './fleet';
-import { revive } from './state';
 
 /**
  * These are invariant tests, not unit tests.
@@ -97,31 +96,6 @@ describe('the fleet', () => {
   });
 });
 
-describe('save narrowing', () => {
-  it('survives junk instead of throwing', () => {
-    for (const junk of [null, undefined, 42, 'nope', [], {}]) {
-      expect(() => revive(junk)).not.toThrow();
-    }
-    expect(revive(null).equipped).toBe('straycat');
-  });
-
-  it('drops cars that no longer exist and never strands the player', () => {
-    const save = revive({ owned: ['hatpin', 'delorean'], equipped: 'delorean', coins: 10 });
-    expect(save.owned).not.toContain('delorean');
-    expect(save.owned).toContain('straycat');
-    // equipping a car you don't own would render an empty garage
-    expect(save.owned).toContain(save.equipped);
-  });
-
-  it('brings every old control scheme back as drag', () => {
-    // tap-lanes and tilt were offered in settings and never implemented, so a
-    // save holding one describes a player who was getting drag regardless
-    for (const control of ['telepathy', 'tapLanes', 'tilt', undefined]) {
-      expect(revive({ control }).control).toBe('drag');
-    }
-  });
-
-});
 
 describe('pickups', () => {
   it('keeps every pickup far smaller than the narrowest car', () => {
@@ -236,16 +210,6 @@ describe('near-miss combo', () => {
     expect(COMBO_WINDOW).toBeLessThan(10);
   });
 
-  it('defaults the combo on a run recorded before combos existed', () => {
-    // a returning player's lastRun has no bestCombo; the summary must not
-    // render "×undefined"
-    const save = revive({ lastRun: { coins: 3, distance: 900, isBest: false, score: 400 } });
-    expect(save.lastRun?.bestCombo).toBe(1);
-  });
-
-  it('keeps a junk run summary from reaching the screen', () => {
-    expect(revive({ lastRun: 'nope' }).lastRun).toBeNull();
-  });
 });
 
 describe('shop upgrades', () => {
@@ -294,17 +258,4 @@ describe('shop upgrades', () => {
     expect(powerSeconds('magnet', maxed)).toBe(powerSeconds('magnet', FRESH_UPGRADES));
   });
 
-  it('clamps a tampered save to levels the shop can sell', () => {
-    // a level above the cap would hand out an effect nobody paid for, and a
-    // fractional one feeds NaN into a power's duration
-    const save = revive({ upgrades: { shield: 99, magnet: -4, slowmo: 1.7 } });
-    expect(save.upgrades.shield).toBe(maxLevel('shield'));
-    expect(save.upgrades.magnet).toBe(0);
-    expect(save.upgrades.slowmo).toBe(1);
-  });
-
-  it('gives a save with no upgrades a full set at zero', () => {
-    expect(revive({}).upgrades).toEqual(FRESH_UPGRADES);
-    expect(revive({ upgrades: 'nope' }).upgrades).toEqual(FRESH_UPGRADES);
-  });
 });

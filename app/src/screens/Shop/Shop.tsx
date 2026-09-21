@@ -69,8 +69,8 @@ const UpgradeCard = ({ coins, id, levels }: CardProps) => {
 };
 
 const Shop = () => {
-  const coins = usePlayerStore((state) => state.save.coins);
-  const upgrades = usePlayerStore((state) => state.save.upgrades);
+  const coins = usePlayerStore((state) => state.coins);
+  const upgrades = usePlayerStore((state) => state.upgrades);
 
   return (
     <>

@@ -30,7 +30,6 @@ const SAVE_KEY = 'CapacitorStorage.burning-rubber:save';
 const SAVE = {
   best: 12_480,
   coins: 2_600,
-  control: 'drag',
   daily: { lastDone: null, streak: 3 },
   equipped: 'straycat',
   haptics: true,
