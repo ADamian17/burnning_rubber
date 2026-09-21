@@ -1,6 +1,6 @@
 import { create } from "zustand";
 import { persist } from "zustand/middleware";
-import { challengeFor, met, streakAfter } from "../../game/daily";
+import { challengeFor, met, streakAfter } from "../../features/daily/challenge";
 import { PLAYERS } from "../../game/fleet";
 import { revive, SAVE_KEY } from "./save";
 import { nextCost } from "../../game/upgrades";

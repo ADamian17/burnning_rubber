@@ -1,5 +1,5 @@
-import { seedFrom } from '../engine/rng';
-import type { FinishedRun } from './run';
+import { seedFrom } from '../../lib/rng';
+import type { FinishedRun } from '../../game/run';
 
 /** What a day's challenge asks for. All three are already on a FinishedRun. */
 export type DailyGoal = 'coins' | 'combo' | 'distance';

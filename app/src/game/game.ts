@@ -1,7 +1,7 @@
-import type { SpriteSheet } from '../engine/sprites';
-import { STEP } from '../engine/loop';
-import { createRng, pick } from '../engine/rng';
-import type { Stage } from '../engine/canvas';
+import type { SpriteSheet } from '../features/run/sprites';
+import { STEP } from '../features/run/loop';
+import { createRng, pick } from '../lib/rng';
+import type { Stage } from '../features/run/canvas';
 import {
   COLORS,
   DESIGN_HEIGHT,

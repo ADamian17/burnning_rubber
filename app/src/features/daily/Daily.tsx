@@ -8,7 +8,7 @@ import {
   dayKey,
   secondsUntilNextDay,
   seedForDay,
-} from "../../game/daily";
+} from "./challenge";
 import { usePlayerStore } from "../../store/player/usePlayerStore";
 import Button from "../../ui/buttons/Button/Button";
 

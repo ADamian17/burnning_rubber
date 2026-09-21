@@ -1,12 +1,12 @@
 import { describe, expect, it } from 'vitest';
-import { STEP } from '../engine/loop';
-import { createRng, seedFrom } from '../engine/rng';
-import { challengeFor, dayKey, met, seedForDay, streakAfter, FRESH_DAILY } from './daily';
+import { STEP } from '../features/run/loop';
+import { createRng, seedFrom } from '../lib/rng';
+import { challengeFor, dayKey, met, seedForDay, streakAfter, FRESH_DAILY } from '../features/daily/challenge';
 import { createGame } from './game';
 import { FRESH_UPGRADES } from './upgrades';
-import type { SpriteSheet } from '../engine/sprites';
+import type { SpriteSheet } from '../features/run/sprites';
 import type { SpriteId } from './fleet';
-import type { Stage } from '../engine/canvas';
+import type { Stage } from '../features/run/canvas';
 
 /**
  * Determinism tests for the seeded road.
@@ -23,6 +23,8 @@ const stage = (): Stage => ({
   ctx: {} as CanvasRenderingContext2D,
   dpr: 1,
   height: 852,
+  // never called here: `update` does not measure, and nothing resizes a stub
+  resize: () => {},
   width: 393
 });
 

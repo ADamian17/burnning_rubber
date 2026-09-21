@@ -1,5 +1,5 @@
 import { Preferences } from "@capacitor/preferences";
-import { type DailyState, FRESH_DAILY } from "../../game/daily";
+import { type DailyState, FRESH_DAILY } from "../../features/daily/challenge";
 import { PLAYER_IDS, type PlayerId } from "../../game/fleet";
 import type { FinishedRun } from "../../game/run";
 import {

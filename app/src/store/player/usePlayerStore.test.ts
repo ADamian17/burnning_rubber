@@ -1,5 +1,5 @@
 import { beforeEach, describe, expect, it, vi } from 'vitest';
-import { challengeFor, dayKey } from '../../game/daily';
+import { challengeFor, dayKey } from '../../features/daily/challenge';
 import { PLAYERS } from '../../game/fleet';
 import { revive } from './save';
 import { UPGRADES, maxLevel } from '../../game/upgrades';

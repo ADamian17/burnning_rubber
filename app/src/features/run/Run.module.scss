@@ -1,0 +1,31 @@
+/*
+ * The canvas fills the screen frame rather than the window, and bleeds out
+ * through the frame's padding so the road runs edge to edge.
+ *
+ * The negative margins cancel `.screen`'s padding exactly, safe areas included.
+ * That is deliberate: the game letterboxes itself against its 393×852 design
+ * box and positions its own HUD clear of the notch and the thumb zone, so it
+ * wants the whole box. Padding here would letterbox it twice — once by the
+ * frame, once by the engine — and inset the road for no reason.
+ *
+ * `align-self: stretch` rather than `width: 100%`, because `.screen` centres
+ * its children on the cross axis; stretching is what lets the negative margins
+ * widen the box instead of just shifting it left.
+ *
+ * It needs an explicit size either way: an unsized canvas reports its intrinsic
+ * 300×150, and `createStage` measures the element — so without this the game
+ * would draw a correct picture at the wrong scale instead of failing visibly.
+ *
+ * `display: block` because a canvas is inline by default, and the line box
+ * under an inline element would leave a few pixels of ink below the road.
+ */
+.stage {
+  display: block;
+  flex: 1 1 auto;
+  align-self: stretch;
+  min-height: 0;
+  margin: calc(-1 * (var(--safe-top) + 8px)) -16px
+    calc(-1 * (var(--safe-bottom) + 18px));
+  /* every touch belongs to the game, never to the scroller */
+  touch-action: none;
+}

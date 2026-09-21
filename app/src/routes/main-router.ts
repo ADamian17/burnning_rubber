@@ -1,15 +1,15 @@
 import { createMemoryRouter } from "react-router-dom";
 import RootLayout from "../layouts/RootLayout";
-import Credits from "../screens/Credits/Credits";
-import Daily from "../screens/Daily/Daily";
-import Garage from "../screens/Garage/Garage";
-import MainMenu from "../screens/MainMenu/MainMenu";
-import Onboarding from "../screens/Onboarding/Onboarding";
-import Run from "../screens/Run/Run";
-import Settings from "../screens/Settings/Settings";
-import Shop from "../screens/Shop/Shop";
-import Splash from "../screens/Splash/Splash";
-import Summary from "../screens/Summary/Summary";
+import Credits from "../features/credits/Credits";
+import Daily from "../features/daily/Daily";
+import Garage from "../features/garage/Garage";
+import MainMenu from "../features/menu/MainMenu";
+import Onboarding from "../features/onboarding/Onboarding";
+import Run from "../features/run/Run";
+import Settings from "../features/settings/Settings";
+import Shop from "../features/shop/Shop";
+import Splash from "../features/splash/Splash";
+import Summary from "../features/summary/Summary";
 import { hydrate } from "../store/player/usePlayerStore";
 
 /**
