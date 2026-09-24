@@ -1,6 +1,7 @@
 import type { PlayerId } from '../../game/fleet';
-import type { RunResult, SaveState } from './save';
+import type { FinishedRun } from '../../game/run';
 import type { UpgradeId } from '../../game/upgrades';
+import type { SaveState } from './save';
 
 /**
  * What the store holds: the save itself, flat.
@@ -36,8 +37,15 @@ export interface PlayerActions {
   buyUpgrade: (id: UpgradeId) => void;
   completeOnboarding: () => void;
   equip: (id: PlayerId) => void;
-  /** Bank a finished run, paying the daily if `day` was met for the first time. */
-  recordRun: (run: RunResult, day: string | null) => void;
+  /**
+   * Bank a finished run, paying the daily if `day` was met for the first time.
+   *
+   * Takes a `FinishedRun` — what the engine can actually report. `isBest` is
+   * added here, because it is a comparison against the previous best and the
+   * store is the only thing holding one. Asking the caller for it would mean
+   * reading the store to write to the store.
+   */
+  recordRun: (run: FinishedRun, day: string | null) => void;
   /** Wipe progress. Onboarding and the switches survive — a reset is not a new player. */
   reset: () => void;
 }

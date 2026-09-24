@@ -133,6 +133,37 @@ describe('recording a run', () => {
   });
 });
 
+describe('stamping isBest', () => {
+  // a FinishedRun: what the engine can report, with no isBest on it
+  const finished = { bestCombo: 1, coins: 0, distance: 100, score: 0 };
+
+  /*
+   * The engine reports a FinishedRun, which has no isBest — it cannot know what
+   * the score had to beat. The store adds it, and getting the comparison
+   * backwards would put NEW BEST! on every summary.
+   */
+  it('marks a run that beat the previous best', () => {
+    start({ best: 100 });
+    usePlayerStore.getState().recordRun({ ...finished, score: 101 }, null);
+    expect(save().lastRun?.isBest).toBe(true);
+    expect(save().best).toBe(101);
+  });
+
+  it('does not mark a run that only equalled it', () => {
+    start({ best: 100 });
+    usePlayerStore.getState().recordRun({ ...finished, score: 100 }, null);
+    expect(save().lastRun?.isBest).toBe(false);
+    expect(save().best).toBe(100);
+  });
+
+  it('does not mark a worse run, and leaves the best alone', () => {
+    start({ best: 100 });
+    usePlayerStore.getState().recordRun({ ...finished, score: 40 }, null);
+    expect(save().lastRun?.isBest).toBe(false);
+    expect(save().best).toBe(100);
+  });
+});
+
 describe('reset', () => {
   it('wipes progress but leaves the player onboarded', () => {
     // sitting through the tutorial again is a punishment for using a settings

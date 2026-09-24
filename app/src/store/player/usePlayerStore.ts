@@ -89,7 +89,9 @@ export const usePlayerStore = create<PlayerStore>()(
 							earned > 0 && day !== null
 								? { lastDone: day, streak: streakAfter(daily, day) }
 								: daily,
-						lastRun: run,
+						// stamped here rather than taken on trust: only this store knows
+						// what the score had to beat
+						lastRun: { ...run, isBest: run.score > best },
 					});
 				},
 
