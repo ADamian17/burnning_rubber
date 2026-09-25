@@ -62,3 +62,19 @@
 .titleDanger {
   color: var(--red);
 }
+
+/*
+ * The focus ring, in the game's own colours.
+ *
+ * `showModal()` moves focus to the first control, which is correct — a keyboard
+ * user lands on the safe action — but the user-agent ring is browser blue, and
+ * it is the loudest thing on an otherwise orange-on-black panel. Same treatment
+ * as the segmented control, so focus looks the same wherever it lands.
+ *
+ * `:focus-visible` rather than `:focus`, so a pointer tap on a button does not
+ * leave a ring behind it.
+ */
+.panel :focus-visible {
+  outline: 3px solid var(--lite);
+  outline-offset: 2px;
+}
