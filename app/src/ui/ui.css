@@ -91,24 +91,6 @@
 
 /* ---------- router surfaces ---------- */
 
-/* during a run the layer must not swallow the steering drag */
-#root[data-route='run'] {
-  background: transparent;
-  pointer-events: none;
-}
-
-.run-layer {
-  position: absolute;
-  inset: 0;
-}
-
-.run-layer__pause {
-  position: absolute;
-  right: 16px;
-  top: calc(var(--safe-top) + 12px);
-  pointer-events: auto;
-}
-
 /* ---------- wordmark ---------- */
 
 .wordmark {
@@ -180,11 +162,6 @@
   gap: 12px;
 }
 
-
-
-
-
-
 .row {
   display: flex;
   align-items: center;
@@ -206,8 +183,6 @@
   gap: 4px;
 }
 
-
-
 .row__value {
   font-size: 16px;
   font-weight: 800;
@@ -223,8 +198,6 @@
   line-height: 1.4;
   color: var(--muted);
 }
-
-
 
 /* ---------- onboarding ---------- */
 
@@ -405,21 +378,6 @@
 /* reserve the shortfall line's space so the layout doesn't jump per car */
 .garage__actions {
   min-height: 106px;
-}
-
-/* The canvas letterboxes to the design aspect; this frame mirrors that maths
-   (scale = min(w/393, h/852)) so the pause button lands on the road instead
-   of floating in the black bar beside it. */
-.run-layer {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.run-layer__frame {
-  position: relative;
-  width: min(100vw, calc(100vh * 393 / 852), 393px);
-  height: min(100vh, calc(100vw * 852 / 393), 852px);
 }
 
 /* both plates share the row evenly instead of BEST eating the space */

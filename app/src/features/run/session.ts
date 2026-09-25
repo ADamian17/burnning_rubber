@@ -74,6 +74,20 @@ export const pause = (): void => current?.loop.stop();
 
 export const resume = (): void => current?.loop.start();
 
+/**
+ * Draw a fresh road and set the clock going again.
+ *
+ * `game.restart()` rather than a new game, so the car, upgrades and seed the
+ * run began with are kept — restarting is another go at the same challenge,
+ * which matters for a daily. It also means the canvas, sprites and input
+ * bindings all survive, so there is nothing to tear down.
+ */
+export const restart = (): void => {
+  if (!current) return;
+  current.game.restart();
+  current.loop.start();
+};
+
 export const start = async ({
   canvas,
   car,

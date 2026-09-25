@@ -127,7 +127,7 @@ test.describe('screens', () => {
     await page.locator('[data-play]').click();
     // proves the picture is the run and not the summary the crash routes to —
     // without this the snapshot happily records the wrong screen
-    await expect(page.locator('.run-layer')).toBeVisible();
+    await expect(page.locator('[data-stage]')).toBeVisible();
     await expect(page.locator('[data-modal]')).toHaveCount(0);
     await shot(page, 'run');
   });
@@ -136,7 +136,7 @@ test.describe('screens', () => {
     await boot(page);
     await page.locator('[data-start]').click();
     await page.locator('[data-play]').click();
-    await expect(page.locator('.run-layer')).toBeVisible();
+    await expect(page.locator('[data-stage]')).toBeVisible();
     await page.locator('[data-pause]').click();
     await expect(page.locator('[data-modal]')).toBeVisible();
     await shot(page, 'pause');
