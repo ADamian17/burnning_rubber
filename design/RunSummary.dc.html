@@ -1,0 +1,140 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Underdog&family=Outfit:wght@400;500;600;700;800;900&display=swap">
+  <style>
+    :root{
+      --ink:#0A0806; --orange:#F28D35; --hot:#f77503; --lite:#FFB765;
+      --cream:#F5EFE4; --muted:#9C9184; --gold:#FFC93C; --red:#E4322B;
+      --lane:#EFE9DC;
+      --display:'Underdog','Chalkboard SE','Comic Sans MS',cursive;
+      --ui:'Outfit','Avenir Next','Segoe UI',system-ui,sans-serif;
+    }
+    *{box-sizing:border-box;}
+    body{margin:0;font-family:var(--ui);background:#000;color:var(--cream);-webkit-font-smoothing:antialiased;}
+    a{color:var(--orange);} a:hover{color:var(--hot);}
+    .screen{position:relative;width:393px;height:852px;overflow:hidden;background:var(--ink);}
+    .scan{position:absolute;inset:0;z-index:90;pointer-events:none;
+      background:repeating-linear-gradient(180deg,rgba(0,0,0,.22) 0 1px,rgba(0,0,0,0) 1px 3px);}
+    .vig{position:absolute;inset:0;z-index:91;pointer-events:none;
+      background:radial-gradient(125% 78% at 50% 42%,rgba(0,0,0,0) 34%,rgba(0,0,0,.64) 100%);}
+    .row{display:flex;align-items:center;justify-content:space-between;padding:14px 17px;
+      background:rgba(10,8,6,.8);border:2px solid #000;border-radius:12px;
+      box-shadow:0 4px 0 #000, inset 0 1px 0 rgba(255,183,101,.13);}
+    .row-l{font-size:10px;font-weight:900;letter-spacing:2.4px;color:var(--muted);}
+    .row-v{font-weight:900;font-size:25px;font-variant-numeric:tabular-nums;text-shadow:0 2px 0 #000;}
+    .btn{height:60px;border-radius:13px;border:3px solid #000;display:flex;align-items:center;justify-content:center;gap:10px;
+      font-family:var(--display);letter-spacing:1.2px;}
+  </style>
+</helmet>
+
+<div class="screen">
+
+  <!-- wreck glow -->
+  <div style="position:absolute;left:50%;top:60px;width:640px;height:640px;margin-left:-320px;border-radius:50%;
+              background:radial-gradient(circle,rgba(228,50,43,.22) 0%,rgba(247,117,3,.10) 40%,rgba(0,0,0,0) 66%);"></div>
+  <!-- skid marks -->
+  <svg viewBox="0 0 393 852" width="393" height="852" style="position:absolute;inset:0;opacity:.5;">
+    <g fill="none" stroke="#141110" stroke-width="13" stroke-linecap="round">
+      <path d="M128 852 Q136 720 186 636"/><path d="M182 852 Q190 726 238 642"/>
+    </g>
+  </svg>
+
+  <div style="position:absolute;inset:0;z-index:10;display:flex;flex-direction:column;align-items:center;">
+    <div style="height:80px;flex:none;"></div>
+
+    <div style="flex:none;text-align:center;transform:rotate(-3deg);">
+      <div style="font-family:var(--display);font-size:64px;line-height:1;color:var(--red);
+                  text-shadow:5px 6px 0 #000, 0 0 30px rgba(228,50,43,.55);">WRECKED!</div>
+    </div>
+
+    <div style="height:22px;flex:none;"></div>
+
+    <!-- NEW BEST celebration -->
+    <div style="position:relative;flex:none;">
+      <div style="position:absolute;left:50%;top:50%;width:330px;height:330px;margin:-165px 0 0 -165px;
+                  border-radius:50%;opacity:.55;
+                  background:repeating-conic-gradient(from 0deg,rgba(247,117,3,.55) 0deg 5deg,rgba(0,0,0,0) 5deg 11deg);
+                  -webkit-mask-image:radial-gradient(circle,#000 22%,rgba(0,0,0,0) 62%);
+                  mask-image:radial-gradient(circle,#000 22%,rgba(0,0,0,0) 62%);"></div>
+      <div style="position:relative;padding:7px 22px;border-radius:8px;transform:rotate(-3deg);
+                  background:linear-gradient(180deg,var(--gold),#E09A0B);border:3px solid #000;
+                  box-shadow:0 5px 0 #000, 0 0 26px rgba(255,201,60,.5);">
+        <span style="font-family:var(--display);font-size:23px;color:#2A1B02;letter-spacing:2px;">NEW BEST!</span>
+      </div>
+    </div>
+
+    <div style="height:14px;flex:none;"></div>
+
+    <div style="flex:none;text-align:center;">
+      <div style="font-size:10px;font-weight:900;letter-spacing:3.4px;color:var(--muted);">FINAL SCORE</div>
+      <div style="font-weight:900;font-size:78px;line-height:1.04;color:var(--lite);font-variant-numeric:tabular-nums;
+                  text-shadow:0 5px 0 #000, 0 0 36px rgba(247,117,3,.55);">13,110</div>
+      <div style="margin-top:2px;font-size:12px;font-weight:800;letter-spacing:1.6px;color:var(--muted);">
+        PREVIOUS BEST <span style="color:#6E645B;text-decoration:line-through;">12,480</span>
+      </div>
+    </div>
+
+    <div style="height:26px;flex:none;"></div>
+
+    <div style="width:337px;flex:none;display:flex;flex-direction:column;gap:10px;">
+      <div class="row">
+        <span class="row-l">DISTANCE</span>
+        <span class="row-v">3.7<span style="font-size:12px;color:var(--muted);letter-spacing:1px;"> KM</span></span>
+      </div>
+      <div class="row">
+        <span class="row-l">COINS EARNED</span>
+        <span style="display:flex;align-items:center;gap:9px;">
+          <svg viewBox="0 0 24 24" width="22" height="22">
+            <circle cx="12" cy="12" r="9.4" fill="#C98A0E"/>
+            <circle cx="12" cy="12" r="9.4" fill="none" stroke="#6B4708" stroke-width="1.6"/>
+            <circle cx="12" cy="12" r="6.4" fill="#FFC93C"/>
+            <path d="M9.4 12h5.2M12 9.4v5.2" stroke="#8A5B08" stroke-width="1.9" stroke-linecap="round"/>
+          </svg>
+          <span class="row-v" style="color:var(--gold);">+48</span>
+        </span>
+      </div>
+      <div class="row">
+        <span class="row-l">BEST COMBO</span>
+        <span class="row-v" style="color:var(--orange);">&times;7</span>
+      </div>
+    </div>
+
+    <div style="flex:1 1 auto;"></div>
+
+    <div style="width:337px;flex:none;">
+      <div class="btn" style="background:linear-gradient(180deg,#FFC684 0%,var(--orange) 42%,var(--hot) 100%);color:#1A0F04;
+                  height:74px;font-size:33px;
+                  box-shadow:0 8px 0 #000, 0 13px 24px rgba(0,0,0,.55), inset 0 2px 0 rgba(255,255,255,.4);">
+        <svg viewBox="0 0 24 24" width="25" height="25" fill="none" stroke="#1A0F04" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M20.4 11.6a8.4 8.4 0 1 1-2.6-6"/><path d="M20.6 3.6v5.4h-5.4"/>
+        </svg>
+        <span>RETRY</span>
+      </div>
+      <div style="height:12px;"></div>
+      <div style="display:flex;gap:12px;">
+        <div class="btn" style="flex:1 1 0;font-size:22px;background:linear-gradient(180deg,#241E17,#171310);color:var(--cream);
+                    box-shadow:0 6px 0 #000, inset 0 1px 0 rgba(255,183,101,.14);">GARAGE</div>
+        <div class="btn" style="flex:1 1 0;font-size:22px;background:linear-gradient(180deg,#241E17,#171310);color:var(--cream);
+                    box-shadow:0 6px 0 #000, inset 0 1px 0 rgba(255,183,101,.14);">MENU</div>
+      </div>
+    </div>
+
+    <div style="height:52px;flex:none;"></div>
+  </div>
+
+  <div class="scan"></div>
+  <div class="vig"></div>
+</div>
+</x-dc>
+<script data-dc-script data-props='{"$preview":{"width":393,"height":852}}'>
+class Component extends DCLogic {}
+</script>
+</body>
+</html>

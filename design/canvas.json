@@ -1,0 +1,132 @@
+{
+  "artboards": [
+    {
+      "file": "Splash.dc.html",
+      "x": 0,
+      "y": 0,
+      "w": 393,
+      "h": 852,
+      "title": "1 · Splash"
+    },
+    {
+      "file": "MainMenu.dc.html",
+      "x": 473,
+      "y": 0,
+      "w": 393,
+      "h": 852,
+      "title": "2 · Main Menu"
+    },
+    {
+      "file": "Onboarding.dc.html",
+      "x": 946,
+      "y": 0,
+      "w": 393,
+      "h": 852,
+      "title": "3 · Onboarding"
+    },
+    {
+      "file": "Main.dc.html",
+      "x": 1419,
+      "y": 0,
+      "w": 393,
+      "h": 852,
+      "title": "4 · Gameplay HUD"
+    },
+    {
+      "file": "PowerUpActive.dc.html",
+      "x": 1892,
+      "y": 0,
+      "w": 393,
+      "h": 852,
+      "title": "5 · HUD · Power-ups Active"
+    },
+    {
+      "file": "Pause.dc.html",
+      "x": 0,
+      "y": 972,
+      "w": 393,
+      "h": 852,
+      "title": "6 · Pause"
+    },
+    {
+      "file": "RunSummary.dc.html",
+      "x": 473,
+      "y": 972,
+      "w": 393,
+      "h": 852,
+      "title": "7 · Run Summary"
+    },
+    {
+      "file": "Garage.dc.html",
+      "x": 946,
+      "y": 972,
+      "w": 393,
+      "h": 852,
+      "title": "8 · Garage"
+    },
+    {
+      "file": "Settings.dc.html",
+      "x": 1419,
+      "y": 972,
+      "w": 393,
+      "h": 852,
+      "title": "9 · Settings"
+    },
+    {
+      "file": "Sprites.dc.html",
+      "x": 1892,
+      "y": 972,
+      "w": 786,
+      "h": 852,
+      "title": "10 · Sprites & Button States"
+    },
+    {
+      "file": "Fleet.dc.html",
+      "x": 0,
+      "y": 1944,
+      "w": 900,
+      "h": 1000,
+      "title": "11 · Vehicle Fleet"
+    }
+  ],
+  "annotations": [
+    {
+      "id": "read-me",
+      "x": 0,
+      "y": -232,
+      "w": 420,
+      "text": "BURNING RUBBER — mobile redesign, v1 direction.\n\nAll screens are iPhone portrait 393×852. Top and bottom safe areas are left EMPTY on purpose — the real status bar and home indicator draw there, so nothing is painted underneath.\n\nPalette and display type are lifted from the existing game: #F28D35 / #f77503 on near-black, Underdog for display. HUD numerals are Outfit."
+    },
+    {
+      "id": "open-question",
+      "x": 946,
+      "y": -232,
+      "w": 420,
+      "text": "OPEN DECISION — steering.\n\nEverything here assumes DRAG: hold low on the screen, the car tracks your thumb. That assumption is what reserves the bottom 35%.\n\nTap-lanes or tilt would free that space and change the HUD layout. Settings shows all three as a picker, but one has to be the default."
+    },
+    {
+      "id": "thumb-zone",
+      "x": 1419,
+      "y": -232,
+      "w": 420,
+      "text": "THUMB ZONE — the rule these two screens obey.\n\nNo HUD element sits below y=554 (the bottom 35%). Score, coins, pause, power-up pills and the combo burst all live above it.\n\nThe car and the road still occupy that space — it is playfield, not chrome."
+    },
+    {
+      "id": "lane-scale",
+      "x": 1892,
+      "y": -232,
+      "w": 420,
+      "text": "LANE MATH — worth checking against a real phone.\n\n393pt ÷ 4 lanes = 98pt per lane, dividers at 98.25 / 196.5 / 294.75.\n\nEvery vehicle is now an original SVG drawn for this game, sized to a deliberate footprint — see artboard 11. Width is the number the engine must not drift from."
+    },
+    {
+      "id": "fleet-note",
+      "x": 0,
+      "y": 1780,
+      "w": 560,
+      "text": "VEHICLE FLEET — replaces the 2019 sprites entirely.\n\nThe old cars were pulled off the internet six years ago and are not safe to ship in a store submission. These are drawn from scratch: 9 chassis, one body hex each, 68KB for the lot versus 8.4MB of PNGs.\n\nTraffic varies by FOOTPRINT, not paint — that is what decides whether a gap is passable."
+    }
+  ],
+  "launch": {
+    "view": "canvas"
+  }
+}

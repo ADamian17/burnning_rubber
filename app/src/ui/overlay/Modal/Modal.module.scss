@@ -1,0 +1,80 @@
+/*
+ * The dialog element is stripped to nothing and the panel inside it carries the
+ * whole look. That is not tidiness: backdrop clicks are detected by the event
+ * target being the dialog itself, and a dialog with its own padding would report
+ * a click on that padding the same way — dismissing when you press just inside
+ * the panel's edge. With the box collapsed onto the panel, only `::backdrop` is
+ * left to hit.
+ */
+.dialog {
+  /*
+   * The user-agent centres a modal dialog with `margin: auto`. The global
+   * `* { margin: 0 }` reset in style.css wins over that, so without this the
+   * panel pins to the top-left corner. Set here rather than by exempting
+   * `dialog` from the reset, so the rule travels with the component.
+   */
+  margin: auto;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  color: inherit;
+  /* 22px of gutter either side, so the panel never touches a narrow screen */
+  width: 100%;
+  max-width: min(340px, calc(100vw - 44px));
+  max-height: none;
+  /* the panel's hard shadow sits outside its box and would otherwise be clipped */
+  overflow: visible;
+}
+
+/* covers the window, not the letterbox: a scrim that stopped at the black bars
+   would look like a panel floating on a lit strip */
+.dialog::backdrop {
+  background: rgba(6, 5, 4, 0.76);
+}
+
+.panel {
+  padding: 26px 22px 22px;
+  border: 3px solid #000;
+  border-radius: 18px;
+  text-align: center;
+  background: linear-gradient(180deg, #1f1a15, #120f0c);
+  box-shadow: 0 10px 0 #000;
+}
+
+.danger {
+  border-color: var(--red);
+  background: linear-gradient(180deg, #1b100e, #120c0a);
+  box-shadow:
+    0 10px 0 #000,
+    0 0 44px rgba(228, 50, 43, 0.3);
+}
+
+.title {
+  margin: 0 0 16px;
+  font-family: var(--display);
+  font-size: 40px;
+  font-weight: 400;
+  line-height: 1.05;
+  color: var(--lite);
+  text-shadow: 4px 5px 0 #000;
+}
+
+.titleDanger {
+  color: var(--red);
+}
+
+/*
+ * The focus ring, in the game's own colours.
+ *
+ * `showModal()` moves focus to the first control, which is correct — a keyboard
+ * user lands on the safe action — but the user-agent ring is browser blue, and
+ * it is the loudest thing on an otherwise orange-on-black panel. Same treatment
+ * as the segmented control, so focus looks the same wherever it lands.
+ *
+ * `:focus-visible` rather than `:focus`, so a pointer tap on a button does not
+ * leave a ring behind it.
+ */
+.panel :focus-visible {
+  outline: 3px solid var(--lite);
+  outline-offset: 2px;
+}

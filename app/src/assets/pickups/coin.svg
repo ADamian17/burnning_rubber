@@ -1,0 +1,22 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="34" height="34" viewBox="0 0 34 34">
+  <defs>
+    <linearGradient id="face" x1="0" y1="0" x2="0.6" y2="1">
+      <stop offset="0%"   stop-color="#ffe08e"/>
+      <stop offset="46%"  stop-color="#FFC93C"/>
+      <stop offset="100%" stop-color="#a88528"/>
+    </linearGradient>
+  </defs>
+
+  <!-- rim: the dark ring is what separates it from the cream lane markings -->
+  <circle cx="17" cy="17" r="14.1" fill="url(#face)" stroke="#0A0806" stroke-width="2.9"/>
+  <circle cx="17" cy="17" r="10.434" fill="none"
+          stroke="#a88528" stroke-width="1.798"/>
+
+  <!-- struck bar, the fleet's decal motif at coin scale -->
+  <rect x="12.206" y="15.308" width="9.588000000000001" height="3.384"
+        rx="1.128" fill="#8a6d20"/>
+
+  <!-- single specular hit; two highlights read as noise at speed -->
+  <ellipse cx="12.206" cy="11.36" rx="3.666" ry="2.3970000000000002"
+           fill="#ffedbd" opacity="0.9"/>
+</svg>

@@ -1,0 +1,25 @@
+.base {
+  width: 48px;
+  height: 48px;
+  flex: none;
+  border: 2px solid #000;
+  border-radius: 11px;
+  background: linear-gradient(180deg, #241e17, #171310);
+  box-shadow: 0 4px 0 #000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+
+  &:active {
+    transform: translateY(4px);
+    box-shadow: 0 1px 0 #000;
+  }
+
+  /* keyed off the attribute rather than a cva variant: disabled only fades this
+     button, it does not restyle it, so there is no second fill to choose */
+  &[disabled] {
+    opacity: 0.35;
+    cursor: default;
+  }
+}

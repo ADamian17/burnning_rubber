@@ -1,0 +1,8 @@
+# @parcel/watcher is an optional native dependency of sass, used only by sass's
+# own --watch. Vite watches this project, so there is nothing to gain from
+# compiling a native module for it.
+#
+# This lives here rather than in package.json because pnpm 11 stopped reading
+# the "pnpm" field there.
+allowBuilds:
+  '@parcel/watcher': false

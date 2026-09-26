@@ -1,0 +1,132 @@
+<!-- @dsCard group="Foundations" -->
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Color — Burning Rubber</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Underdog&family=Outfit:wght@400;500;600;700;800;900&display=swap">
+<style>
+  :root{
+    --ink:#0A0806; --panel:#14100C; --panel2:#1E1813; --edge:#3A2E22;
+    --orange:#F28D35; --hot:#f77503; --lite:#FFB765;
+    --cream:#F5EFE4; --muted:#9C9184;
+    --red:#E4322B; --gold:#FFC93C; --cyan:#35D6F2; --magenta:#F2359B;
+    --asphalt:#26241F; --lane:#EFE9DC;
+    --display:'Underdog','Chalkboard SE','Comic Sans MS',cursive;
+    --ui:'Outfit','Avenir Next','Segoe UI',system-ui,sans-serif;
+  }
+  *{box-sizing:border-box;}
+  body{margin:0;padding:28px;background:var(--ink);color:var(--cream);font-family:var(--ui);
+       -webkit-font-smoothing:antialiased;}
+  a{color:var(--orange);} a:hover{color:var(--hot);}
+  .cap{font-size:8.5px;font-weight:900;letter-spacing:2.2px;color:#6A6058;margin-bottom:8px;}
+  .grp{display:flex;flex-direction:column;gap:22px;}
+  .rowx{display:flex;gap:14px;align-items:flex-start;}
+  .b{border-radius:12px;border:3px solid #000;display:flex;align-items:center;justify-content:center;
+     gap:10px;font-family:var(--display);letter-spacing:1.2px;}
+  .b-primary{background:linear-gradient(180deg,#FFC684,var(--orange) 42%,var(--hot));color:#1A0F04;
+     box-shadow:0 7px 0 #000, 0 12px 20px rgba(0,0,0,.5), inset 0 2px 0 rgba(255,255,255,.4);}
+  .b-sec{background:linear-gradient(180deg,#241E17,#171310);color:var(--cream);
+     box-shadow:0 6px 0 #000, inset 0 1px 0 rgba(255,183,101,.14);}
+  .plate{background:rgba(10,8,6,.86);border:2px solid #000;border-radius:9px;
+     box-shadow:0 3px 0 #000, inset 0 1px 0 rgba(255,183,101,.18);}
+  .lbl{font-size:9.5px;font-weight:800;letter-spacing:2.3px;color:var(--muted);}
+  .num{font-weight:900;font-variant-numeric:tabular-nums;color:var(--cream);text-shadow:0 2px 0 rgba(0,0,0,.9);}
+  .chip{display:inline-flex;align-items:center;gap:5px;padding:5px 12px;border-radius:6px;
+     border:2px solid #000;font-size:9px;font-weight:900;letter-spacing:1.9px;}
+  .meter{display:flex;gap:3px;}
+  .pip{width:12px;height:9px;border-radius:2px;background:#2B241D;border:1px solid #000;}
+  .pip-on{background:linear-gradient(180deg,var(--lite),var(--hot));}
+</style>
+</head>
+<body>
+
+      <div class="cap">CORE</div>
+      <div class="rowx" style="flex-wrap:wrap;">
+        
+  <div style="flex:none;width:126px;">
+    <div style="height:74px;border-radius:11px;border:3px solid #000;background:#F28D35;
+                box-shadow:0 5px 0 #000, inset 0 1px 0 rgba(255,255,255,.18);"></div>
+    <div style="margin-top:9px;font-size:11px;font-weight:900;letter-spacing:1.3px;">ORANGE</div>
+    <div style="margin-top:2px;font-size:10.5px;color:var(--muted);font-variant-numeric:tabular-nums;">#F28D35</div>
+    <div style="margin-top:3px;font-size:10px;color:#6A6058;line-height:1.35;">Primary. Buttons, focus, brand.</div>
+  </div>
+        
+  <div style="flex:none;width:126px;">
+    <div style="height:74px;border-radius:11px;border:3px solid #000;background:#f77503;
+                box-shadow:0 5px 0 #000, inset 0 1px 0 rgba(255,255,255,.18);"></div>
+    <div style="margin-top:9px;font-size:11px;font-weight:900;letter-spacing:1.3px;">HOT</div>
+    <div style="margin-top:2px;font-size:10.5px;color:var(--muted);font-variant-numeric:tabular-nums;">#f77503</div>
+    <div style="margin-top:3px;font-size:10px;color:#6A6058;line-height:1.35;">Gradient floor, pressed states.</div>
+  </div>
+        
+  <div style="flex:none;width:126px;">
+    <div style="height:74px;border-radius:11px;border:3px solid #000;background:#FFB765;
+                box-shadow:0 5px 0 #000, inset 0 1px 0 rgba(255,255,255,.18);"></div>
+    <div style="margin-top:9px;font-size:11px;font-weight:900;letter-spacing:1.3px;">LITE</div>
+    <div style="margin-top:2px;font-size:10.5px;color:var(--muted);font-variant-numeric:tabular-nums;">#FFB765</div>
+    <div style="margin-top:3px;font-size:10px;color:#6A6058;line-height:1.35;">Gradient ceiling, display type.</div>
+  </div>
+        
+  <div style="flex:none;width:126px;">
+    <div style="height:74px;border-radius:11px;border:3px solid #000;background:#F5EFE4;
+                box-shadow:0 5px 0 #000, inset 0 1px 0 rgba(255,255,255,.18);"></div>
+    <div style="margin-top:9px;font-size:11px;font-weight:900;letter-spacing:1.3px;">CREAM</div>
+    <div style="margin-top:2px;font-size:10.5px;color:var(--muted);font-variant-numeric:tabular-nums;">#F5EFE4</div>
+    <div style="margin-top:3px;font-size:10px;color:#6A6058;line-height:1.35;">Body copy on dark.</div>
+  </div>
+        
+  <div style="flex:none;width:126px;">
+    <div style="height:74px;border-radius:11px;border:3px solid #000;background:#0A0806;
+                box-shadow:0 5px 0 #000, inset 0 1px 0 rgba(255,255,255,.18);"></div>
+    <div style="margin-top:9px;font-size:11px;font-weight:900;letter-spacing:1.3px;">INK</div>
+    <div style="margin-top:2px;font-size:10.5px;color:var(--muted);font-variant-numeric:tabular-nums;">#0A0806</div>
+    <div style="margin-top:3px;font-size:10px;color:#6A6058;line-height:1.35;">Ground. Warm, never pure black.</div>
+  </div>
+      </div>
+      <div class="cap" style="margin-top:30px;">POWER-UPS &mdash; deliberately outside the orange family so they read as foreign objects</div>
+      <div class="rowx" style="flex-wrap:wrap;">
+        
+  <div style="flex:none;width:126px;">
+    <div style="height:74px;border-radius:11px;border:3px solid #000;background:#35D6F2;
+                box-shadow:0 5px 0 #000, inset 0 1px 0 rgba(255,255,255,.18);"></div>
+    <div style="margin-top:9px;font-size:11px;font-weight:900;letter-spacing:1.3px;">CYAN</div>
+    <div style="margin-top:2px;font-size:10.5px;color:var(--muted);font-variant-numeric:tabular-nums;">#35D6F2</div>
+    <div style="margin-top:3px;font-size:10px;color:#6A6058;line-height:1.35;">Shield.</div>
+  </div>
+        
+  <div style="flex:none;width:126px;">
+    <div style="height:74px;border-radius:11px;border:3px solid #000;background:#8BE9FA;
+                box-shadow:0 5px 0 #000, inset 0 1px 0 rgba(255,255,255,.18);"></div>
+    <div style="margin-top:9px;font-size:11px;font-weight:900;letter-spacing:1.3px;">ICE</div>
+    <div style="margin-top:2px;font-size:10.5px;color:var(--muted);font-variant-numeric:tabular-nums;">#8BE9FA</div>
+    <div style="margin-top:3px;font-size:10px;color:#6A6058;line-height:1.35;">Slow-mo.</div>
+  </div>
+        
+  <div style="flex:none;width:126px;">
+    <div style="height:74px;border-radius:11px;border:3px solid #000;background:#F2359B;
+                box-shadow:0 5px 0 #000, inset 0 1px 0 rgba(255,255,255,.18);"></div>
+    <div style="margin-top:9px;font-size:11px;font-weight:900;letter-spacing:1.3px;">MAGENTA</div>
+    <div style="margin-top:2px;font-size:10.5px;color:var(--muted);font-variant-numeric:tabular-nums;">#F2359B</div>
+    <div style="margin-top:3px;font-size:10px;color:#6A6058;line-height:1.35;">Magnet.</div>
+  </div>
+        
+  <div style="flex:none;width:126px;">
+    <div style="height:74px;border-radius:11px;border:3px solid #000;background:#FFC93C;
+                box-shadow:0 5px 0 #000, inset 0 1px 0 rgba(255,255,255,.18);"></div>
+    <div style="margin-top:9px;font-size:11px;font-weight:900;letter-spacing:1.3px;">GOLD</div>
+    <div style="margin-top:2px;font-size:10.5px;color:var(--muted);font-variant-numeric:tabular-nums;">#FFC93C</div>
+    <div style="margin-top:3px;font-size:10px;color:#6A6058;line-height:1.35;">Coins, new-best.</div>
+  </div>
+        
+  <div style="flex:none;width:126px;">
+    <div style="height:74px;border-radius:11px;border:3px solid #000;background:#E4322B;
+                box-shadow:0 5px 0 #000, inset 0 1px 0 rgba(255,255,255,.18);"></div>
+    <div style="margin-top:9px;font-size:11px;font-weight:900;letter-spacing:1.3px;">RED</div>
+    <div style="margin-top:2px;font-size:10.5px;color:var(--muted);font-variant-numeric:tabular-nums;">#E4322B</div>
+    <div style="margin-top:3px;font-size:10px;color:#6A6058;line-height:1.35;">Crash, destructive.</div>
+  </div>
+      </div>
+</body>
+</html>

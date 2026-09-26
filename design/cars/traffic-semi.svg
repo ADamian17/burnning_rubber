@@ -1,0 +1,68 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 76 234" width="76" height="234">
+  
+  <defs>
+    <linearGradient id="bsemi" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0%"   stop-color="#ce817c"/>
+      <stop offset="20%"  stop-color="#B0332B"/>
+      <stop offset="68%"  stop-color="#B0332B"/>
+      <stop offset="100%" stop-color="#6a1f1a"/>
+    </linearGradient>
+    <linearGradient id="gsemi" x1="0" y1="0" x2="0.4" y2="1">
+      <stop offset="0%"   stop-color="#415866"/>
+      <stop offset="52%"  stop-color="#161F27"/>
+      <stop offset="100%" stop-color="#40474e"/>
+    </linearGradient>
+  </defs>
+  
+  <rect x="0" y="176" width="13" height="26" rx="3.9" fill="#121010"/>
+  <rect x="2.86" y="180.16" width="7.280000000000001" height="17.68" rx="2.08"
+        fill="none" stroke="#2E2926" stroke-width="1.5" stroke-dasharray="2.6 3"/>
+  <rect x="63" y="176" width="13" height="26" rx="3.9" fill="#121010"/>
+  <rect x="65.86" y="180.16" width="7.280000000000001" height="17.68" rx="2.08"
+        fill="none" stroke="#2E2926" stroke-width="1.5" stroke-dasharray="2.6 3"/>
+  
+  <rect x="0" y="202" width="13" height="26" rx="3.9" fill="#121010"/>
+  <rect x="2.86" y="206.16" width="7.280000000000001" height="17.68" rx="2.08"
+        fill="none" stroke="#2E2926" stroke-width="1.5" stroke-dasharray="2.6 3"/>
+  <rect x="63" y="202" width="13" height="26" rx="3.9" fill="#121010"/>
+  <rect x="65.86" y="206.16" width="7.280000000000001" height="17.68" rx="2.08"
+        fill="none" stroke="#2E2926" stroke-width="1.5" stroke-dasharray="2.6 3"/>
+  <rect x="5" y="70" width="66" height="160" rx="8" fill="#c3645e" stroke="#000" stroke-width="2.9"/>
+  <rect x="11" y="77" width="54" height="146" rx="4" fill="none" stroke="#822620" stroke-width="1.7"/>
+  <rect x="11" y="92" width="54" height="2.4" rx="1.2" fill="#892822" opacity=".6"/><rect x="11" y="118" width="54" height="2.4" rx="1.2" fill="#892822" opacity=".6"/><rect x="11" y="144" width="54" height="2.4" rx="1.2" fill="#892822" opacity=".6"/><rect x="11" y="170" width="54" height="2.4" rx="1.2" fill="#892822" opacity=".6"/><rect x="11" y="196" width="54" height="2.4" rx="1.2" fill="#892822" opacity=".6"/>
+  <rect x="16" y="108" width="44" height="60" rx="4" fill="#E8E3D8"/>
+  <rect x="5" y="70" width="11" height="160" fill="#FFF" opacity=".10"/>
+  <rect x="60" y="70" width="11" height="160" fill="#000" opacity=".18"/>
+  <rect x="27" y="60" width="22" height="14" rx="3" fill="#171412" stroke="#000" stroke-width="1.8"/>
+  
+  <rect x="0" y="20" width="14" height="28" rx="4.2" fill="#121010"/>
+  <rect x="3.08" y="24.48" width="7.840000000000001" height="19.040000000000003" rx="2.24"
+        fill="none" stroke="#2E2926" stroke-width="1.5" stroke-dasharray="2.6 3"/>
+  <rect x="62" y="20" width="14" height="28" rx="4.2" fill="#121010"/>
+  <rect x="65.08" y="24.48" width="7.840000000000001" height="19.040000000000003" rx="2.24"
+        fill="none" stroke="#2E2926" stroke-width="1.5" stroke-dasharray="2.6 3"/>
+  <rect x="8" y="4" width="60" height="60" rx="13" fill="url(#bsemi)" stroke="#000" stroke-width="2.9"/>
+  <clipPath id="ksemi"><rect x="8" y="4" width="60" height="60" rx="13"/></clipPath>
+  <g clip-path="url(#ksemi)">
+  <rect x="0" y="0" width="11" height="234" fill="#FFF" opacity=".13"/>
+  <rect x="65" y="0" width="11" height="234" fill="#000" opacity=".22"/></g>
+  <path d="M23 12L53 12L60 30L16 30Z" fill="url(#gsemi)"
+         stroke="#000" stroke-width="1.9" stroke-linejoin="round"/>
+  <rect x="17" y="34" width="42" height="24" rx="6" fill="none" stroke="#71211c" stroke-width="1.7"/>
+  <rect x="2" y="30" width="7" height="28" rx="3.4" fill="#96938C" stroke="#000" stroke-width="1.7"/>
+  <rect x="67" y="30" width="7" height="28" rx="3.4" fill="#78756F" stroke="#000" stroke-width="1.7"/>
+  
+  <rect x="11.6" y="4.6" width="19.8" height="9" rx="4.5" fill="#FFF6DC" opacity=".32"/>
+  <rect x="13" y="6" width="17" height="6.2" rx="2.9523809523809526" fill="#FFF6DC" stroke="#000" stroke-width="1.2"/>
+  <rect x="14.6" y="7.1" width="13.8" height="2.2142857142857144" rx="1.0333333333333334" fill="#FFF" opacity=".6"/>
+  <rect x="44.6" y="4.6" width="19.8" height="9" rx="4.5" fill="#FFF6DC" opacity=".32"/>
+  <rect x="46" y="6" width="17" height="6.2" rx="2.9523809523809526" fill="#FFF6DC" stroke="#000" stroke-width="1.2"/>
+  <rect x="47.6" y="7.1" width="13.8" height="2.2142857142857144" rx="1.0333333333333334" fill="#FFF" opacity=".6"/>
+  
+  <rect x="11.6" y="218.6" width="19.8" height="9.2" rx="4.6" fill="#F0402F" opacity=".32"/>
+  <rect x="13" y="220" width="17" height="6.4" rx="3.0476190476190474" fill="#F0402F" stroke="#000" stroke-width="1.2"/>
+  <rect x="14.6" y="221.1" width="13.8" height="2.285714285714286" rx="1.0666666666666667" fill="#FFF" opacity=".6"/>
+  <rect x="44.6" y="218.6" width="19.8" height="9.2" rx="4.6" fill="#F0402F" opacity=".32"/>
+  <rect x="46" y="220" width="17" height="6.4" rx="3.0476190476190474" fill="#F0402F" stroke="#000" stroke-width="1.2"/>
+  <rect x="47.6" y="221.1" width="13.8" height="2.285714285714286" rx="1.0666666666666667" fill="#FFF" opacity=".6"/>
+</svg>

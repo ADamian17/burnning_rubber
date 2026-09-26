@@ -1,0 +1,16 @@
+.meter {
+  display: flex;
+  gap: 3px;
+}
+
+.pip {
+  width: 12px;
+  height: 9px;
+  border: 1px solid #000;
+  border-radius: 2px;
+  background: #2b241d;
+}
+
+.lit {
+  background: linear-gradient(180deg, var(--lite), var(--hot));
+}

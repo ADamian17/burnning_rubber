@@ -1,0 +1,63 @@
+<!-- @dsCard group="Buttons" -->
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Secondary button — Burning Rubber</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Underdog&family=Outfit:wght@400;500;600;700;800;900&display=swap">
+<style>
+  :root{
+    --ink:#0A0806; --panel:#14100C; --panel2:#1E1813; --edge:#3A2E22;
+    --orange:#F28D35; --hot:#f77503; --lite:#FFB765;
+    --cream:#F5EFE4; --muted:#9C9184;
+    --red:#E4322B; --gold:#FFC93C; --cyan:#35D6F2; --magenta:#F2359B;
+    --asphalt:#26241F; --lane:#EFE9DC;
+    --display:'Underdog','Chalkboard SE','Comic Sans MS',cursive;
+    --ui:'Outfit','Avenir Next','Segoe UI',system-ui,sans-serif;
+  }
+  *{box-sizing:border-box;}
+  body{margin:0;padding:28px;background:var(--ink);color:var(--cream);font-family:var(--ui);
+       -webkit-font-smoothing:antialiased;}
+  a{color:var(--orange);} a:hover{color:var(--hot);}
+  .cap{font-size:8.5px;font-weight:900;letter-spacing:2.2px;color:#6A6058;margin-bottom:8px;}
+  .grp{display:flex;flex-direction:column;gap:22px;}
+  .rowx{display:flex;gap:14px;align-items:flex-start;}
+  .b{border-radius:12px;border:3px solid #000;display:flex;align-items:center;justify-content:center;
+     gap:10px;font-family:var(--display);letter-spacing:1.2px;}
+  .b-primary{background:linear-gradient(180deg,#FFC684,var(--orange) 42%,var(--hot));color:#1A0F04;
+     box-shadow:0 7px 0 #000, 0 12px 20px rgba(0,0,0,.5), inset 0 2px 0 rgba(255,255,255,.4);}
+  .b-sec{background:linear-gradient(180deg,#241E17,#171310);color:var(--cream);
+     box-shadow:0 6px 0 #000, inset 0 1px 0 rgba(255,183,101,.14);}
+  .plate{background:rgba(10,8,6,.86);border:2px solid #000;border-radius:9px;
+     box-shadow:0 3px 0 #000, inset 0 1px 0 rgba(255,183,101,.18);}
+  .lbl{font-size:9.5px;font-weight:800;letter-spacing:2.3px;color:var(--muted);}
+  .num{font-weight:900;font-variant-numeric:tabular-nums;color:var(--cream);text-shadow:0 2px 0 rgba(0,0,0,.9);}
+  .chip{display:inline-flex;align-items:center;gap:5px;padding:5px 12px;border-radius:6px;
+     border:2px solid #000;font-size:9px;font-weight:900;letter-spacing:1.9px;}
+  .meter{display:flex;gap:3px;}
+  .pip{width:12px;height:9px;border-radius:2px;background:#2B241D;border:1px solid #000;}
+  .pip-on{background:linear-gradient(180deg,var(--lite),var(--hot));}
+</style>
+</head>
+<body>
+
+      <div class="cap">DEFAULT / PRESSED</div>
+      <div class="rowx" style="max-width:360px;">
+        <div class="b b-sec" style="flex:1 1 0;height:56px;font-size:21px;">GARAGE</div>
+        <div style="flex:1 1 0;height:62px;position:relative;">
+          <div class="b" style="position:absolute;top:5px;left:0;right:0;height:56px;font-size:21px;color:var(--lite);
+               background:linear-gradient(180deg,#171310,#241E17);
+               box-shadow:0 1px 0 #000, inset 0 3px 7px rgba(0,0,0,.6);">GARAGE</div></div>
+      </div>
+      <div class="cap" style="margin-top:30px;">WITH ICON, STACKED</div>
+      <div style="max-width:360px;display:flex;flex-direction:column;gap:12px;">
+        <div class="b b-sec" style="height:62px;font-size:27px;">
+          <svg viewBox="0 0 24 24" width="21" height="21" fill="none" stroke="#F28D35" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M20.4 11.6a8.4 8.4 0 1 1-2.6-6"/><path d="M20.6 3.6v5.4h-5.4"/></svg>RESTART</div>
+        <div class="b b-sec" style="height:62px;font-size:27px;color:#C9BEB2;">
+          <svg viewBox="0 0 24 24" width="21" height="21" fill="none" stroke="#8E8377" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M9.4 20.4H5.6a2 2 0 0 1-2-2V5.6a2 2 0 0 1 2-2h3.8"/><path d="M15.4 16.4 20.4 12l-5-4.4"/><path d="M20.4 12H9.6"/></svg>QUIT</div>
+      </div>
+</body>
+</html>

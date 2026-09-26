@@ -1,0 +1,162 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Underdog&family=Outfit:wght@400;500;600;700;800;900&display=swap">
+  <style>
+    :root{
+      --ink:#0A0806; --orange:#F28D35; --hot:#f77503; --lite:#FFB765;
+      --cream:#F5EFE4; --muted:#9C9184; --gold:#FFC93C; --cyan:#35D6F2; --red:#E4322B;
+      --lane:#EFE9DC;
+      --display:'Underdog','Chalkboard SE','Comic Sans MS',cursive;
+      --ui:'Outfit','Avenir Next','Segoe UI',system-ui,sans-serif;
+    }
+    *{box-sizing:border-box;}
+    body{margin:0;font-family:var(--ui);background:#000;color:var(--cream);-webkit-font-smoothing:antialiased;}
+    a{color:var(--orange);} a:hover{color:var(--hot);}
+    .sheet{position:relative;width:900px;height:1000px;overflow:hidden;padding:34px 38px;
+      background:linear-gradient(180deg,#0D0A08,#0A0806);}
+    .scan{position:absolute;inset:0;z-index:90;pointer-events:none;
+      background:repeating-linear-gradient(180deg,rgba(0,0,0,.18) 0 1px,rgba(0,0,0,0) 1px 3px);}
+    .h{font-size:9.5px;font-weight:900;letter-spacing:3.4px;color:var(--orange);}
+    .sub{font-size:11px;color:var(--muted);margin-top:6px;line-height:1.5;}
+    /* one lane, drawn at true 98.25pt so a sprite can be judged inside it */
+    .lane{position:relative;width:98.25px;height:250px;flex:none;border-radius:5px;overflow:hidden;
+      background:linear-gradient(180deg,#221F1B,#2B2823 30%,#26241F);
+      border-left:3px dashed rgba(239,233,220,.42);border-right:3px dashed rgba(239,233,220,.42);
+      display:flex;align-items:center;justify-content:center;}
+    .cell{display:flex;flex-direction:column;align-items:center;width:120px;flex:none;}
+    .nm{margin-top:11px;font-family:var(--display);font-size:17px;line-height:1;text-align:center;}
+    .dim{margin-top:4px;font-size:10px;font-weight:900;letter-spacing:1.4px;color:var(--orange);
+      font-variant-numeric:tabular-nums;}
+    .slack{margin-top:2px;font-size:9.5px;font-weight:700;letter-spacing:.6px;color:var(--muted);}
+    .pips{display:flex;gap:2.5px;margin-top:7px;}
+    .pip{width:9px;height:7px;border-radius:2px;background:#2B241D;border:1px solid #000;}
+    .on{background:linear-gradient(180deg,var(--lite),var(--hot));}
+  </style>
+</helmet>
+
+<div class="sheet">
+
+  <div class="h">PLAYER FLEET &mdash; WIDTH IS A STAT</div>
+  <div class="sub" style="max-width:660px;">
+    Each car sits in one true-scale lane (98.25pt, dashed edges). The gap either side is
+    literally how much room you have to miss by &mdash; a Hatpin forgives 52pt of error,
+    a Boarhound forgives 26pt. That is the trade the garage is selling.
+  </div>
+
+  <div style="margin-top:22px;display:flex;gap:26px;">
+    <div class="cell">
+      <div class="lane"><img src="straycat.svg" alt="" style="width:60px;height:122px;filter:drop-shadow(0 8px 10px rgba(0,0,0,.7));"></div>
+      <div class="nm" style="color:#E8695E;">STRAY CAT</div>
+      <div class="dim">60 &times; 122</div>
+      <div class="slack">38pt of slack &middot; free</div>
+      <div class="pips"><i class="pip on"></i><i class="pip on"></i><i class="pip on"></i><i class="pip"></i><i class="pip"></i><i class="pip"></i></div>
+    </div>
+    <div class="cell">
+      <div class="lane"><img src="hatpin.svg" alt="" style="width:46px;height:112px;filter:drop-shadow(0 8px 10px rgba(0,0,0,.7));"></div>
+      <div class="nm" style="color:var(--cyan);">HATPIN</div>
+      <div class="dim">46 &times; 112</div>
+      <div class="slack">52pt of slack &middot; 600</div>
+      <div class="pips"><i class="pip on"></i><i class="pip on"></i><i class="pip on"></i><i class="pip"></i><i class="pip"></i><i class="pip"></i></div>
+    </div>
+    <div class="cell">
+      <div class="lane"><img src="boarhound.svg" alt="" style="width:72px;height:128px;filter:drop-shadow(0 8px 10px rgba(0,0,0,.7));"></div>
+      <div class="nm" style="color:var(--orange);">BOARHOUND</div>
+      <div class="dim">72 &times; 128</div>
+      <div class="slack">26pt of slack &middot; 1,200</div>
+      <div class="pips"><i class="pip on"></i><i class="pip on"></i><i class="pip on"></i><i class="pip on"></i><i class="pip on"></i><i class="pip on"></i></div>
+    </div>
+    <div class="cell">
+      <div class="lane"><img src="donkeywork.svg" alt="" style="width:68px;height:142px;filter:drop-shadow(0 8px 10px rgba(0,0,0,.7));"></div>
+      <div class="nm" style="color:#5FC77E;">DONKEY WORK</div>
+      <div class="dim">68 &times; 142</div>
+      <div class="slack">30pt of slack &middot; 1,800</div>
+      <div class="pips"><i class="pip on"></i><i class="pip on"></i><i class="pip"></i><i class="pip"></i><i class="pip"></i><i class="pip"></i></div>
+    </div>
+    <div style="flex:1 1 auto;padding-left:6px;">
+      <div style="font-size:10px;font-weight:900;letter-spacing:2.4px;color:#6A6058;">READING THE PIPS</div>
+      <div style="margin-top:9px;font-size:11.5px;color:var(--muted);line-height:1.6;">
+        Pips show <b style="color:var(--cream);">top speed</b> only. Handling and grip live on the
+        car card &mdash; they are felt, not compared.
+        <br><br>
+        Hatpin and Stray Cat share a speed rating on purpose: the Hatpin is bought for its
+        width, not its pace, and the pips should not pretend otherwise.
+      </div>
+    </div>
+  </div>
+
+  <div style="margin-top:34px;height:2px;background:linear-gradient(90deg,#2A241E,rgba(42,36,30,0));"></div>
+
+  <div style="margin-top:26px;" class="h">TRAFFIC &mdash; THE DIFFICULTY CURVE IS A FOOTPRINT CURVE</div>
+  <div class="sub" style="max-width:660px;">
+    Five distinct threats, not one threat in five colours. Colour is decoration; width and
+    length are what decide whether a gap can be taken and how long you are committed once
+    you take it.
+  </div>
+
+  <div style="margin-top:22px;display:flex;gap:22px;align-items:flex-start;">
+    <div class="cell" style="width:104px;">
+      <div class="lane" style="height:280px;"><img src="traffic-compact.svg" alt="" style="width:46px;height:96px;transform:rotate(180deg);filter:drop-shadow(0 8px 10px rgba(0,0,0,.7));"></div>
+      <div class="nm" style="color:#E4C63C;">FLEA</div>
+      <div class="dim">46 &times; 96</div>
+      <div class="slack">threat 1</div>
+    </div>
+    <div class="cell" style="width:104px;">
+      <div class="lane" style="height:280px;"><img src="traffic-sedan.svg" alt="" style="width:62px;height:128px;transform:rotate(180deg);filter:drop-shadow(0 8px 10px rgba(0,0,0,.7));"></div>
+      <div class="nm" style="color:#5C87D8;">COMMUTER</div>
+      <div class="dim">62 &times; 128</div>
+      <div class="slack">threat 2</div>
+    </div>
+    <div class="cell" style="width:104px;">
+      <div class="lane" style="height:280px;"><img src="traffic-patrol.svg" alt="" style="width:62px;height:128px;transform:rotate(180deg);filter:drop-shadow(0 8px 10px rgba(0,0,0,.7));"></div>
+      <div class="nm">PATROL</div>
+      <div class="dim">62 &times; 128</div>
+      <div class="slack">threat 2</div>
+    </div>
+    <div class="cell" style="width:104px;">
+      <div class="lane" style="height:280px;"><img src="traffic-van.svg" alt="" style="width:70px;height:158px;transform:rotate(180deg);filter:drop-shadow(0 8px 10px rgba(0,0,0,.7));"></div>
+      <div class="nm" style="color:#D6D0C4;">PARCEL</div>
+      <div class="dim">70 &times; 158</div>
+      <div class="slack">threat 3</div>
+    </div>
+    <div class="cell" style="width:104px;">
+      <div class="lane" style="height:280px;"><img src="traffic-box.svg" alt="" style="width:74px;height:182px;transform:rotate(180deg);filter:drop-shadow(0 8px 10px rgba(0,0,0,.7));"></div>
+      <div class="nm" style="color:#8FB4C4;">COLD STORE</div>
+      <div class="dim">74 &times; 182</div>
+      <div class="slack">threat 4</div>
+    </div>
+    <div class="cell" style="width:104px;">
+      <div class="lane" style="height:280px;"><img src="traffic-semi.svg" alt="" style="width:76px;height:234px;transform:rotate(180deg);filter:drop-shadow(0 8px 10px rgba(0,0,0,.7));"></div>
+      <div class="nm" style="color:#D9615A;">LEVIATHAN</div>
+      <div class="dim">76 &times; 234</div>
+      <div class="slack">threat 5 &middot; boss</div>
+    </div>
+    <div style="flex:1 1 auto;padding-left:4px;">
+      <div style="font-size:10px;font-weight:900;letter-spacing:2.4px;color:#6A6058;">THE ONE THAT MATTERS</div>
+      <div style="margin-top:9px;font-size:11.5px;color:var(--muted);line-height:1.6;">
+        <b style="color:var(--cream);">Parcel leaves 28pt of lane.</b> A Hatpin (46) fits beside it.
+        A Boarhound (72) does not. That single relationship is what turns the garage from a
+        skin shop into a decision &mdash; and it costs nothing to implement, because the
+        collision box already exists.
+      </div>
+    </div>
+  </div>
+
+  <div style="position:absolute;left:38px;bottom:26px;font-size:10px;font-weight:700;letter-spacing:2px;color:#4E463F;">
+    ALL VEHICLES DRAWN FROM SCRATCH AS SVG &nbsp;&middot;&nbsp; 9 CHASSIS &nbsp;&middot;&nbsp; 68KB TOTAL &nbsp;&middot;&nbsp; RECOLOURABLE AT RUNTIME
+  </div>
+
+  <div class="scan"></div>
+</div>
+</x-dc>
+<script data-dc-script data-props='{"$preview":{"width":900,"height":1000}}'>
+class Component extends DCLogic {}
+</script>
+</body>
+</html>

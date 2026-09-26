@@ -1,0 +1,1367 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<meta name="design_doc_mode" content="canvas">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Underdog&family=Outfit:wght@400;500;600;700;800;900&display=swap">
+<style>
+
+  :root{
+    --ink:#0A0806; --panel:#14100C; --panel2:#1E1813; --edge:#3A2E22;
+    --orange:#F28D35; --hot:#f77503; --lite:#FFB765;
+    --cream:#F5EFE4; --muted:#9C9184;
+    --red:#E4322B; --gold:#FFC93C; --cyan:#35D6F2; --magenta:#F2359B;
+    --asphalt:#26241F; --lane:#EFE9DC;
+    --display:'Underdog','Chalkboard SE','Comic Sans MS',cursive;
+    --ui:'Outfit','Avenir Next','Segoe UI',system-ui,sans-serif;
+  }
+  *{box-sizing:border-box;}
+  body{margin:0;padding:28px;background:var(--ink);color:var(--cream);font-family:var(--ui);
+       -webkit-font-smoothing:antialiased;}
+  a{color:var(--orange);} a:hover{color:var(--hot);}
+  .cap{font-size:8.5px;font-weight:900;letter-spacing:2.2px;color:#6A6058;margin-bottom:8px;}
+  .grp{display:flex;flex-direction:column;gap:22px;}
+  .rowx{display:flex;gap:14px;align-items:flex-start;}
+  .b{border-radius:12px;border:3px solid #000;display:flex;align-items:center;justify-content:center;
+     gap:10px;font-family:var(--display);letter-spacing:1.2px;}
+  .b-primary{background:linear-gradient(180deg,#FFC684,var(--orange) 42%,var(--hot));color:#1A0F04;
+     box-shadow:0 7px 0 #000, 0 12px 20px rgba(0,0,0,.5), inset 0 2px 0 rgba(255,255,255,.4);}
+  .b-sec{background:linear-gradient(180deg,#241E17,#171310);color:var(--cream);
+     box-shadow:0 6px 0 #000, inset 0 1px 0 rgba(255,183,101,.14);}
+  .plate{background:rgba(10,8,6,.86);border:2px solid #000;border-radius:9px;
+     box-shadow:0 3px 0 #000, inset 0 1px 0 rgba(255,183,101,.18);}
+  .lbl{font-size:9.5px;font-weight:800;letter-spacing:2.3px;color:var(--muted);}
+  .num{font-weight:900;font-variant-numeric:tabular-nums;color:var(--cream);text-shadow:0 2px 0 rgba(0,0,0,.9);}
+  .chip{display:inline-flex;align-items:center;gap:5px;padding:5px 12px;border-radius:6px;
+     border:2px solid #000;font-size:9px;font-weight:900;letter-spacing:1.9px;}
+  .meter{display:flex;gap:3px;}
+  .pip{width:12px;height:9px;border-radius:2px;background:#2B241D;border:1px solid #000;}
+  .pip-on{background:linear-gradient(180deg,var(--lite),var(--hot));}
+
+/* the previews each set their own body padding; here they are nested, so the
+   page owns the outer spacing instead */
+body{margin:0;padding:0;background:#070605;}
+</style>
+</helmet>
+<div style="display:flex;flex-direction:column;gap:44px;padding:44px;background:#070605;width:1000px;box-sizing:border-box;font-family:'Outfit','Avenir Next',system-ui,sans-serif;">
+
+<section style="display:flex;flex-direction:column;gap:18px;">
+  <h2 style="margin:0;font-size:11px;font-weight:900;letter-spacing:3.6px;color:#F28D35;">
+    FOUNDATIONS
+  </h2>
+  <div style="display:flex;flex-wrap:wrap;gap:28px;align-items:flex-start;">
+    
+<figure style="margin:0;display:flex;flex-direction:column;gap:10px;flex:none;">
+  <figcaption style="font-size:9.5px;font-weight:900;letter-spacing:3px;color:#6A6058;">
+    COLOURS
+  </figcaption>
+  <div style="border:2px solid #2A2119;border-radius:12px;background:#0A0806;padding:20px;width:max-content;min-width:0px;">
+    <div class="cap">CORE</div>
+      <div class="rowx" style="flex-wrap:wrap;">
+        
+  <div style="flex:none;width:126px;">
+    <div style="height:74px;border-radius:11px;border:3px solid #000;background:#F28D35;
+                box-shadow:0 5px 0 #000, inset 0 1px 0 rgba(255,255,255,.18);"></div>
+    <div style="margin-top:9px;font-size:11px;font-weight:900;letter-spacing:1.3px;">ORANGE</div>
+    <div style="margin-top:2px;font-size:10.5px;color:var(--muted);font-variant-numeric:tabular-nums;">#F28D35</div>
+    <div style="margin-top:3px;font-size:10px;color:#6A6058;line-height:1.35;">Primary. Buttons, focus, brand.</div>
+  </div>
+        
+  <div style="flex:none;width:126px;">
+    <div style="height:74px;border-radius:11px;border:3px solid #000;background:#f77503;
+                box-shadow:0 5px 0 #000, inset 0 1px 0 rgba(255,255,255,.18);"></div>
+    <div style="margin-top:9px;font-size:11px;font-weight:900;letter-spacing:1.3px;">HOT</div>
+    <div style="margin-top:2px;font-size:10.5px;color:var(--muted);font-variant-numeric:tabular-nums;">#f77503</div>
+    <div style="margin-top:3px;font-size:10px;color:#6A6058;line-height:1.35;">Gradient floor, pressed states.</div>
+  </div>
+        
+  <div style="flex:none;width:126px;">
+    <div style="height:74px;border-radius:11px;border:3px solid #000;background:#FFB765;
+                box-shadow:0 5px 0 #000, inset 0 1px 0 rgba(255,255,255,.18);"></div>
+    <div style="margin-top:9px;font-size:11px;font-weight:900;letter-spacing:1.3px;">LITE</div>
+    <div style="margin-top:2px;font-size:10.5px;color:var(--muted);font-variant-numeric:tabular-nums;">#FFB765</div>
+    <div style="margin-top:3px;font-size:10px;color:#6A6058;line-height:1.35;">Gradient ceiling, display type.</div>
+  </div>
+        
+  <div style="flex:none;width:126px;">
+    <div style="height:74px;border-radius:11px;border:3px solid #000;background:#F5EFE4;
+                box-shadow:0 5px 0 #000, inset 0 1px 0 rgba(255,255,255,.18);"></div>
+    <div style="margin-top:9px;font-size:11px;font-weight:900;letter-spacing:1.3px;">CREAM</div>
+    <div style="margin-top:2px;font-size:10.5px;color:var(--muted);font-variant-numeric:tabular-nums;">#F5EFE4</div>
+    <div style="margin-top:3px;font-size:10px;color:#6A6058;line-height:1.35;">Body copy on dark.</div>
+  </div>
+        
+  <div style="flex:none;width:126px;">
+    <div style="height:74px;border-radius:11px;border:3px solid #000;background:#0A0806;
+                box-shadow:0 5px 0 #000, inset 0 1px 0 rgba(255,255,255,.18);"></div>
+    <div style="margin-top:9px;font-size:11px;font-weight:900;letter-spacing:1.3px;">INK</div>
+    <div style="margin-top:2px;font-size:10.5px;color:var(--muted);font-variant-numeric:tabular-nums;">#0A0806</div>
+    <div style="margin-top:3px;font-size:10px;color:#6A6058;line-height:1.35;">Ground. Warm, never pure black.</div>
+  </div>
+      </div>
+      <div class="cap" style="margin-top:30px;">POWER-UPS &mdash; deliberately outside the orange family so they read as foreign objects</div>
+      <div class="rowx" style="flex-wrap:wrap;">
+        
+  <div style="flex:none;width:126px;">
+    <div style="height:74px;border-radius:11px;border:3px solid #000;background:#35D6F2;
+                box-shadow:0 5px 0 #000, inset 0 1px 0 rgba(255,255,255,.18);"></div>
+    <div style="margin-top:9px;font-size:11px;font-weight:900;letter-spacing:1.3px;">CYAN</div>
+    <div style="margin-top:2px;font-size:10.5px;color:var(--muted);font-variant-numeric:tabular-nums;">#35D6F2</div>
+    <div style="margin-top:3px;font-size:10px;color:#6A6058;line-height:1.35;">Shield.</div>
+  </div>
+        
+  <div style="flex:none;width:126px;">
+    <div style="height:74px;border-radius:11px;border:3px solid #000;background:#8BE9FA;
+                box-shadow:0 5px 0 #000, inset 0 1px 0 rgba(255,255,255,.18);"></div>
+    <div style="margin-top:9px;font-size:11px;font-weight:900;letter-spacing:1.3px;">ICE</div>
+    <div style="margin-top:2px;font-size:10.5px;color:var(--muted);font-variant-numeric:tabular-nums;">#8BE9FA</div>
+    <div style="margin-top:3px;font-size:10px;color:#6A6058;line-height:1.35;">Slow-mo.</div>
+  </div>
+        
+  <div style="flex:none;width:126px;">
+    <div style="height:74px;border-radius:11px;border:3px solid #000;background:#F2359B;
+                box-shadow:0 5px 0 #000, inset 0 1px 0 rgba(255,255,255,.18);"></div>
+    <div style="margin-top:9px;font-size:11px;font-weight:900;letter-spacing:1.3px;">MAGENTA</div>
+    <div style="margin-top:2px;font-size:10.5px;color:var(--muted);font-variant-numeric:tabular-nums;">#F2359B</div>
+    <div style="margin-top:3px;font-size:10px;color:#6A6058;line-height:1.35;">Magnet.</div>
+  </div>
+        
+  <div style="flex:none;width:126px;">
+    <div style="height:74px;border-radius:11px;border:3px solid #000;background:#FFC93C;
+                box-shadow:0 5px 0 #000, inset 0 1px 0 rgba(255,255,255,.18);"></div>
+    <div style="margin-top:9px;font-size:11px;font-weight:900;letter-spacing:1.3px;">GOLD</div>
+    <div style="margin-top:2px;font-size:10.5px;color:var(--muted);font-variant-numeric:tabular-nums;">#FFC93C</div>
+    <div style="margin-top:3px;font-size:10px;color:#6A6058;line-height:1.35;">Coins, new-best.</div>
+  </div>
+        
+  <div style="flex:none;width:126px;">
+    <div style="height:74px;border-radius:11px;border:3px solid #000;background:#E4322B;
+                box-shadow:0 5px 0 #000, inset 0 1px 0 rgba(255,255,255,.18);"></div>
+    <div style="margin-top:9px;font-size:11px;font-weight:900;letter-spacing:1.3px;">RED</div>
+    <div style="margin-top:2px;font-size:10.5px;color:var(--muted);font-variant-numeric:tabular-nums;">#E4322B</div>
+    <div style="margin-top:3px;font-size:10px;color:#6A6058;line-height:1.35;">Crash, destructive.</div>
+  </div>
+      </div>
+  </div>
+</figure>
+
+<figure style="margin:0;display:flex;flex-direction:column;gap:10px;flex:none;">
+  <figcaption style="font-size:9.5px;font-weight:900;letter-spacing:3px;color:#6A6058;">
+    TYPE
+  </figcaption>
+  <div style="border:2px solid #2A2119;border-radius:12px;background:#0A0806;padding:20px;width:max-content;min-width:560px;">
+    <div class="cap">DISPLAY &mdash; UNDERDOG</div>
+      <div style="font-family:var(--display);font-size:56px;line-height:1;color:var(--lite);text-shadow:4px 5px 0 #000;">BURNING RUBBER</div>
+      <div style="margin-top:6px;font-size:11px;color:var(--muted);">Titles, button labels, score celebrations. Always with a hard black offset shadow.</div>
+
+      <div class="cap" style="margin-top:32px;">UI &amp; NUMERALS &mdash; OUTFIT</div>
+      <div style="display:flex;gap:34px;align-items:baseline;">
+        <div><div class="lbl">SCORE</div>
+          <div class="num" style="font-size:38px;color:var(--lite);">08,420</div></div>
+        <div><div class="lbl">DIST</div>
+          <div class="num" style="font-size:38px;">2.4</div></div>
+        <div><div class="lbl">COINS</div>
+          <div class="num" style="font-size:38px;color:var(--gold);">128</div></div>
+      </div>
+      <div style="margin-top:10px;font-size:11px;color:var(--muted);max-width:520px;line-height:1.5;">
+        Every readout uses <b style="color:var(--cream);">tabular-nums</b> &mdash; without it the score jitters horizontally
+        as digits change, which is unreadable at speed. Display type never carries numerals in the HUD.
+      </div>
+
+      <div class="cap" style="margin-top:30px;">SCALE</div>
+      <div style="display:flex;flex-direction:column;gap:7px;font-size:13px;color:var(--muted);">
+        <div><b style="color:var(--cream);">Display</b> 88 / 66 / 44 / 30 &mdash; Underdog</div>
+        <div><b style="color:var(--cream);">Body</b> 15 / 13 / 11 &mdash; Outfit 400&ndash;600</div>
+        <div><b style="color:var(--cream);">Label</b> 9.5&ndash;10, weight 800&ndash;900, letter-spacing 2&ndash;3.5px, uppercase</div>
+      </div>
+  </div>
+</figure>
+  </div>
+</section>
+
+<section style="display:flex;flex-direction:column;gap:18px;">
+  <h2 style="margin:0;font-size:11px;font-weight:900;letter-spacing:3.6px;color:#F28D35;">
+    BUTTONS
+  </h2>
+  <div style="display:flex;flex-wrap:wrap;gap:28px;align-items:flex-start;">
+    
+<figure style="margin:0;display:flex;flex-direction:column;gap:10px;flex:none;">
+  <figcaption style="font-size:9.5px;font-weight:900;letter-spacing:3px;color:#6A6058;">
+    PRIMARY
+  </figcaption>
+  <div style="border:2px solid #2A2119;border-radius:12px;background:#0A0806;padding:20px;width:max-content;min-width:400px;">
+    <div class="grp" style="max-width:360px;">
+        <div><div class="cap">DEFAULT</div>
+          <div class="b b-primary" style="height:64px;font-size:28px;">PLAY</div></div>
+        <div><div class="cap">PRESSED &mdash; drops 5px into its own shadow</div>
+          <div style="height:71px;position:relative;">
+            <div class="b" style="position:absolute;top:5px;left:0;right:0;height:64px;font-size:28px;color:#1A0F04;
+                 background:linear-gradient(180deg,var(--hot),#C95E02);
+                 box-shadow:0 2px 0 #000, inset 0 3px 8px rgba(0,0,0,.45);">PLAY</div></div></div>
+        <div><div class="cap">DISABLED &mdash; e.g. can&rsquo;t afford</div>
+          <div class="b" style="height:64px;font-size:28px;color:#5A524A;
+               background:linear-gradient(180deg,#211D19,#171310);box-shadow:0 4px 0 #000;">BUY</div></div>
+      </div>
+      <div style="margin-top:26px;font-size:11px;color:var(--muted);max-width:360px;line-height:1.5;">
+        Minimum height 60px. One primary per screen &mdash; if two actions compete, one of them is secondary.
+      </div>
+  </div>
+</figure>
+
+<figure style="margin:0;display:flex;flex-direction:column;gap:10px;flex:none;">
+  <figcaption style="font-size:9.5px;font-weight:900;letter-spacing:3px;color:#6A6058;">
+    SECONDARY
+  </figcaption>
+  <div style="border:2px solid #2A2119;border-radius:12px;background:#0A0806;padding:20px;width:max-content;min-width:400px;">
+    <div class="cap">DEFAULT / PRESSED</div>
+      <div class="rowx" style="max-width:360px;">
+        <div class="b b-sec" style="flex:1 1 0;height:56px;font-size:21px;">GARAGE</div>
+        <div style="flex:1 1 0;height:62px;position:relative;">
+          <div class="b" style="position:absolute;top:5px;left:0;right:0;height:56px;font-size:21px;color:var(--lite);
+               background:linear-gradient(180deg,#171310,#241E17);
+               box-shadow:0 1px 0 #000, inset 0 3px 7px rgba(0,0,0,.6);">GARAGE</div></div>
+      </div>
+      <div class="cap" style="margin-top:30px;">WITH ICON, STACKED</div>
+      <div style="max-width:360px;display:flex;flex-direction:column;gap:12px;">
+        <div class="b b-sec" style="height:62px;font-size:27px;">
+          <svg viewBox="0 0 24 24" width="21" height="21" fill="none" stroke="#F28D35" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M20.4 11.6a8.4 8.4 0 1 1-2.6-6"/><path d="M20.6 3.6v5.4h-5.4"/></svg>RESTART</div>
+        <div class="b b-sec" style="height:62px;font-size:27px;color:#C9BEB2;">
+          <svg viewBox="0 0 24 24" width="21" height="21" fill="none" stroke="#8E8377" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M9.4 20.4H5.6a2 2 0 0 1-2-2V5.6a2 2 0 0 1 2-2h3.8"/><path d="M15.4 16.4 20.4 12l-5-4.4"/><path d="M20.4 12H9.6"/></svg>QUIT</div>
+      </div>
+  </div>
+</figure>
+
+<figure style="margin:0;display:flex;flex-direction:column;gap:10px;flex:none;">
+  <figcaption style="font-size:9.5px;font-weight:900;letter-spacing:3px;color:#6A6058;">
+    ICON
+  </figcaption>
+  <div style="border:2px solid #2A2119;border-radius:12px;background:#0A0806;padding:20px;width:max-content;min-width:380px;">
+    <div class="cap">48&times;48 &mdash; DEFAULT / PRESSED / LOCKED</div>
+      <div class="rowx">
+        <div style="width:48px;height:48px;border-radius:11px;border:2px solid #000;background:rgba(10,8,6,.9);
+             box-shadow:0 4px 0 #000, inset 0 1px 0 rgba(255,183,101,.16);display:flex;align-items:center;justify-content:center;"><svg viewBox="0 0 24 24" width="21" height="21"><rect x="6.5" y="4.5" width="4.2" height="15" rx="1.6" fill="#F5EFE4"/><rect x="13.3" y="4.5" width="4.2" height="15" rx="1.6" fill="#F5EFE4"/></svg></div>
+        <div style="width:48px;height:53px;position:relative;">
+          <div style="position:absolute;top:5px;width:48px;height:48px;border-radius:11px;border:2px solid #000;
+               background:#0A0806;box-shadow:0 1px 0 #000, inset 0 3px 7px rgba(0,0,0,.7);
+               display:flex;align-items:center;justify-content:center;"><svg viewBox="0 0 24 24" width="21" height="21"><rect x="6.5" y="4.5" width="4.2" height="15" rx="1.6" fill="#FFB765"/><rect x="13.3" y="4.5" width="4.2" height="15" rx="1.6" fill="#FFB765"/></svg></div></div>
+        <div style="width:48px;height:48px;border-radius:11px;border:2px solid #000;
+             background:linear-gradient(180deg,#1A1613,#100D0B);box-shadow:0 4px 0 #000;
+             display:flex;align-items:center;justify-content:center;"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="#5A524A" stroke-width="2.4" stroke-linecap="round"><rect x="4.6" y="10.4" width="14.8" height="10" rx="2"/><path d="M8.2 10.4V7.6a3.8 3.8 0 0 1 7.6 0v2.8"/></svg></div>
+      </div>
+      <div style="margin-top:24px;font-size:11px;color:var(--muted);max-width:340px;line-height:1.5;">
+        48&times;48 is the floor, above the 44pt minimum, because these sit near the screen edge where
+        touch accuracy is worst.
+      </div>
+  </div>
+</figure>
+  </div>
+</section>
+
+<section style="display:flex;flex-direction:column;gap:18px;">
+  <h2 style="margin:0;font-size:11px;font-weight:900;letter-spacing:3.6px;color:#F28D35;">
+    CONTROLS
+  </h2>
+  <div style="display:flex;flex-wrap:wrap;gap:28px;align-items:flex-start;">
+    
+<figure style="margin:0;display:flex;flex-direction:column;gap:10px;flex:none;">
+  <figcaption style="font-size:9.5px;font-weight:900;letter-spacing:3px;color:#6A6058;">
+    TOGGLE
+  </figcaption>
+  <div style="border:2px solid #2A2119;border-radius:12px;background:#0A0806;padding:20px;width:max-content;min-width:420px;">
+    <div class="cap">ON / OFF</div>
+      <div class="rowx"><div style="width:62px;height:34px;border-radius:17px;border:2px solid #000;position:relative;
+        background:linear-gradient(180deg,var(--lite),var(--hot));box-shadow:inset 0 2px 5px rgba(0,0,0,.6);">
+       <div style="position:absolute;top:3px;right:3px;width:24px;height:24px;border-radius:50%;border:2px solid #000;
+            background:linear-gradient(180deg,#FFFDF8,#CFC7BB);box-shadow:0 2px 0 rgba(0,0,0,.6);"></div></div><div style="width:62px;height:34px;border-radius:17px;border:2px solid #000;position:relative;
+        background:#241E18;box-shadow:inset 0 2px 5px rgba(0,0,0,.8);">
+       <div style="position:absolute;top:3px;left:3px;width:24px;height:24px;border-radius:50%;border:2px solid #000;
+            background:linear-gradient(180deg,#6E655C,#4A433C);box-shadow:0 2px 0 rgba(0,0,0,.6);"></div></div></div>
+      <div class="cap" style="margin-top:30px;">IN A SETTINGS ROW</div>
+      <div style="max-width:380px;display:flex;flex-direction:column;gap:11px;">
+        <div style="display:flex;align-items:center;gap:13px;height:62px;padding:0 16px;
+             background:linear-gradient(180deg,#1C1712,#131009);border:2px solid #000;border-radius:12px;
+             box-shadow:0 4px 0 #000, inset 0 1px 0 rgba(255,183,101,.12);">
+          <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="#F28D35" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M9.4 17.4V5.6l10-2v11.2"/><circle cx="6.6" cy="17.8" r="2.8"/><circle cx="16.6" cy="14.8" r="2.8"/></svg>
+          <span style="flex:1 1 auto;font-size:15px;font-weight:800;">MUSIC</span><div style="width:62px;height:34px;border-radius:17px;border:2px solid #000;position:relative;
+        background:linear-gradient(180deg,var(--lite),var(--hot));box-shadow:inset 0 2px 5px rgba(0,0,0,.6);">
+       <div style="position:absolute;top:3px;right:3px;width:24px;height:24px;border-radius:50%;border:2px solid #000;
+            background:linear-gradient(180deg,#FFFDF8,#CFC7BB);box-shadow:0 2px 0 rgba(0,0,0,.6);"></div></div></div>
+        <div style="display:flex;align-items:center;gap:13px;height:62px;padding:0 16px;
+             background:linear-gradient(180deg,#1C1712,#131009);border:2px solid #000;border-radius:12px;
+             box-shadow:0 4px 0 #000, inset 0 1px 0 rgba(255,183,101,.12);">
+          <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="#7E736A" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <rect x="8.4" y="3.4" width="7.2" height="17.2" rx="2.2"/><path d="M4.6 9.4v5.2M19.4 9.4v5.2"/></svg>
+          <span style="flex:1 1 auto;font-size:15px;font-weight:800;color:#8E8377;">HAPTICS</span><div style="width:62px;height:34px;border-radius:17px;border:2px solid #000;position:relative;
+        background:#241E18;box-shadow:inset 0 2px 5px rgba(0,0,0,.8);">
+       <div style="position:absolute;top:3px;left:3px;width:24px;height:24px;border-radius:50%;border:2px solid #000;
+            background:linear-gradient(180deg,#6E655C,#4A433C);box-shadow:0 2px 0 rgba(0,0,0,.6);"></div></div></div>
+      </div>
+      <div style="margin-top:20px;font-size:11px;color:var(--muted);max-width:380px;line-height:1.5;">
+        The off state greys the row&rsquo;s icon and label too, so the state is legible without reading the switch.
+      </div>
+  </div>
+</figure>
+
+<figure style="margin:0;display:flex;flex-direction:column;gap:10px;flex:none;">
+  <figcaption style="font-size:9.5px;font-weight:900;letter-spacing:3px;color:#6A6058;">
+    SEGMENTED
+  </figcaption>
+  <div style="border:2px solid #2A2119;border-radius:12px;background:#0A0806;padding:20px;width:max-content;min-width:420px;">
+    <div class="cap">SELECTED / UNSELECTED</div>
+      <div style="display:flex;gap:11px;max-width:380px;">
+        <div style="flex:1 1 0;height:78px;border-radius:11px;border:2px solid #000;display:flex;flex-direction:column;
+             align-items:center;justify-content:center;gap:7px;font-size:9.5px;font-weight:900;letter-spacing:1.6px;
+             background:linear-gradient(180deg,#FFC684,var(--orange) 46%,var(--hot));color:#1A0F04;
+             box-shadow:0 5px 0 #000, inset 0 2px 0 rgba(255,255,255,.4);">
+          <svg viewBox="0 0 24 24" width="26" height="26" fill="none" stroke="#1A0F04" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M12 21.4c3.6-1.6 5.4-4.4 5.4-7.6V9.4"/><circle cx="12" cy="6.6" r="3.2"/><path d="M6.6 13.8v-4.4"/>
+            <path d="M3.6 12.4 6.6 9.4l3 3"/><path d="M20.4 12.4l-3-3-3 3"/></svg><span>DRAG</span></div>
+        <div style="flex:1 1 0;height:78px;border-radius:11px;border:2px solid #000;display:flex;flex-direction:column;
+             align-items:center;justify-content:center;gap:7px;font-size:9.5px;font-weight:900;letter-spacing:1.6px;
+             background:linear-gradient(180deg,#1C1712,#131009);color:var(--muted);
+             box-shadow:0 5px 0 #000, inset 0 1px 0 rgba(255,183,101,.1);">
+          <svg viewBox="0 0 24 24" width="26" height="26" fill="none" stroke="#9C9184" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <rect x="3.4" y="3.4" width="7.2" height="17.2" rx="2"/><rect x="13.4" y="3.4" width="7.2" height="17.2" rx="2"/>
+            <path d="M7 14.4v-4.8M17 14.4v-4.8"/></svg><span>TAP LANES</span></div>
+        <div style="flex:1 1 0;height:78px;border-radius:11px;border:2px solid #000;display:flex;flex-direction:column;
+             align-items:center;justify-content:center;gap:7px;font-size:9.5px;font-weight:900;letter-spacing:1.6px;
+             background:linear-gradient(180deg,#1C1712,#131009);color:var(--muted);
+             box-shadow:0 5px 0 #000, inset 0 1px 0 rgba(255,183,101,.1);">
+          <svg viewBox="0 0 24 24" width="26" height="26" fill="none" stroke="#9C9184" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <rect x="6.6" y="2.6" width="10.8" height="18.8" rx="2.4" transform="rotate(-14 12 12)"/>
+            <path d="M2.6 18.4c1.4-.7 2.4-1.5 3-2.4"/><path d="M21.4 18.4c-1.4-.7-2.4-1.5-3-2.4"/></svg><span>TILT</span></div>
+      </div>
+      <div style="margin-top:18px;font-size:11px;color:var(--muted);max-width:380px;line-height:1.5;">
+        Selection is carried by fill, not by a check mark &mdash; readable at a glance mid-run.
+        Each segment is 78px tall so all three clear the 44pt minimum even at three-up.
+      </div>
+  </div>
+</figure>
+  </div>
+</section>
+
+<section style="display:flex;flex-direction:column;gap:18px;">
+  <h2 style="margin:0;font-size:11px;font-weight:900;letter-spacing:3.6px;color:#F28D35;">
+    HUD
+  </h2>
+  <div style="display:flex;flex-wrap:wrap;gap:28px;align-items:flex-start;">
+    
+<figure style="margin:0;display:flex;flex-direction:column;gap:10px;flex:none;">
+  <figcaption style="font-size:9.5px;font-weight:900;letter-spacing:3px;color:#6A6058;">
+    PLATES
+  </figcaption>
+  <div style="border:2px solid #2A2119;border-radius:12px;background:#0A0806;padding:20px;width:max-content;min-width:540px;">
+    <div class="cap">OVER DARK ASPHALT / OVER LIGHT CONCRETE</div>
+      <div class="rowx">
+        
+        <div style="flex:none;width:250px;height:210px;border-radius:13px;border:2px solid #000;overflow:hidden;
+             background:linear-gradient(180deg,#1C1A17,#26241F);padding:16px;">
+          <div class="plate" style="padding:9px 15px 10px;display:inline-block;">
+            <div class="lbl">SCORE</div>
+            <div class="num" style="font-size:32px;line-height:1.02;color:var(--lite);">08,420</div></div>
+          <div class="plate" style="margin-top:8px;padding:7px 15px 8px;display:inline-block;">
+            <span class="lbl">DIST</span><span class="num" style="font-size:17px;margin-left:8px;">2.4</span>
+            <span style="font-size:11px;font-weight:800;color:var(--muted);letter-spacing:1.4px;margin-left:2px;">KM</span></div>
+          <div class="plate" style="margin-top:8px;padding:7px 13px 7px 9px;display:flex;align-items:center;gap:8px;width:fit-content;">
+            <svg viewBox="0 0 24 24" width="19" height="19">
+  <circle cx="12" cy="12" r="9.4" fill="#C98A0E"/><circle cx="12" cy="12" r="9.4" fill="none" stroke="#6B4708" stroke-width="1.6"/>
+  <circle cx="12" cy="12" r="6.4" fill="#FFC93C"/><path d="M9.4 12h5.2M12 9.4v5.2" stroke="#8A5B08" stroke-width="1.9" stroke-linecap="round"/></svg><span class="num" style="font-size:19px;color:var(--gold);">128</span></div>
+        </div>
+        <div style="flex:none;width:250px;height:210px;border-radius:13px;border:2px solid #000;overflow:hidden;
+             background:linear-gradient(180deg,#8A8275,#B4AC9E);padding:16px;">
+          <div class="plate" style="padding:9px 15px 10px;display:inline-block;">
+            <div class="lbl">SCORE</div>
+            <div class="num" style="font-size:32px;line-height:1.02;color:var(--lite);">08,420</div></div>
+          <div class="plate" style="margin-top:8px;padding:7px 15px 8px;display:inline-block;">
+            <span class="lbl">DIST</span><span class="num" style="font-size:17px;margin-left:8px;">2.4</span>
+            <span style="font-size:11px;font-weight:800;color:var(--muted);letter-spacing:1.4px;margin-left:2px;">KM</span></div>
+          <div class="plate" style="margin-top:8px;padding:7px 13px 7px 9px;display:flex;align-items:center;gap:8px;width:fit-content;">
+            <svg viewBox="0 0 24 24" width="19" height="19">
+  <circle cx="12" cy="12" r="9.4" fill="#C98A0E"/><circle cx="12" cy="12" r="9.4" fill="none" stroke="#6B4708" stroke-width="1.6"/>
+  <circle cx="12" cy="12" r="6.4" fill="#FFC93C"/><path d="M9.4 12h5.2M12 9.4v5.2" stroke="#8A5B08" stroke-width="1.9" stroke-linecap="round"/></svg><span class="num" style="font-size:19px;color:var(--gold);">128</span></div>
+        </div>
+      </div>
+      <div style="margin-top:22px;font-size:11px;color:var(--muted);max-width:500px;line-height:1.5;">
+        The plate carries its own ground &mdash; 86% opaque ink, hard black border, inset warm highlight.
+        The road is free to run light underneath without the readout ever dropping out.
+      </div>
+  </div>
+</figure>
+
+<figure style="margin:0;display:flex;flex-direction:column;gap:10px;flex:none;">
+  <figcaption style="font-size:9.5px;font-weight:900;letter-spacing:3px;color:#6A6058;">
+    POWER-UP PILL
+  </figcaption>
+  <div style="border:2px solid #2A2119;border-radius:12px;background:#0A0806;padding:20px;width:max-content;min-width:420px;">
+    <div class="cap">ACTIVE EFFECTS &mdash; STACK VERTICALLY</div>
+      <div style="display:flex;flex-direction:column;gap:9px;width:fit-content;">
+        
+        <div style="display:flex;align-items:center;gap:9px;padding:7px 12px;border-radius:9px;
+             background:rgba(10,8,6,.88);border:2px solid #000;box-shadow:0 3px 0 #000, 0 0 20px #35D6F244;">
+          <svg viewBox="0 0 24 24" width="17" height="17"><path d="M12 3.2 19.4 6v6.1c0 4.5-3.1 7.3-7.4 8.7-4.3-1.4-7.4-4.2-7.4-8.7V6z" fill="none" stroke="#35D6F2" stroke-width="2.2" stroke-linejoin="round"/></svg>
+          <div><div style="font-size:9px;font-weight:900;letter-spacing:2px;color:var(--cyan);">SHIELD</div>
+            <div style="width:78px;height:5px;margin-top:4px;border-radius:3px;background:#0B0908;border:1px solid #000;overflow:hidden;">
+              <div style="width:72%;height:100%;background:linear-gradient(90deg,#8BE9FA,var(--cyan));"></div></div></div>
+          <span class="num" style="font-size:13px;color:var(--cyan);">5.8</span></div>
+        <div style="display:flex;align-items:center;gap:9px;padding:7px 12px;border-radius:9px;
+             background:rgba(10,8,6,.88);border:2px solid #000;box-shadow:0 3px 0 #000, 0 0 20px #8BE9FA44;">
+          <svg viewBox="0 0 24 24" width="17" height="17" fill="none" stroke="#8BE9FA" stroke-width="2.2" stroke-linecap="round"><circle cx="12" cy="12.6" r="8.4"/><path d="M12 8.2v4.6l3 1.9"/><path d="M9.2 2.6h5.6"/></svg>
+          <div><div style="font-size:9px;font-weight:900;letter-spacing:2px;color:#8BE9FA;">SLOW-MO</div>
+            <div style="width:78px;height:5px;margin-top:4px;border-radius:3px;background:#0B0908;border:1px solid #000;overflow:hidden;">
+              <div style="width:41%;height:100%;background:linear-gradient(90deg,#CFF6FE,#8BE9FA);"></div></div></div>
+          <span class="num" style="font-size:13px;color:#8BE9FA;">3.2</span></div>
+        <div style="display:flex;align-items:center;gap:9px;padding:7px 12px;border-radius:9px;
+             background:rgba(10,8,6,.88);border:2px solid #000;box-shadow:0 3px 0 #000, 0 0 20px #F2359B44;">
+          <svg viewBox="0 0 24 24" width="17" height="17" fill="none" stroke="#F2359B" stroke-width="2.2" stroke-linecap="round"><path d="M6 4.6v7.8a6 6 0 0 0 12 0V4.6"/><path d="M6 9.4h4.4"/><path d="M13.6 9.4H18"/></svg>
+          <div><div style="font-size:9px;font-weight:900;letter-spacing:2px;color:var(--magenta);">MAGNET</div>
+            <div style="width:78px;height:5px;margin-top:4px;border-radius:3px;background:#0B0908;border:1px solid #000;overflow:hidden;">
+              <div style="width:88%;height:100%;background:linear-gradient(90deg,#FF8FC8,var(--magenta));"></div></div></div>
+          <span class="num" style="font-size:13px;color:var(--magenta);">7.1</span></div>
+      </div>
+      <div style="margin-top:22px;font-size:11px;color:var(--muted);max-width:380px;line-height:1.5;">
+        The bar drains left to right and the numeral counts down &mdash; two channels for the same fact,
+        because the bar alone is unreadable in peripheral vision while steering.
+      </div>
+  </div>
+</figure>
+
+<figure style="margin:0;display:flex;flex-direction:column;gap:10px;flex:none;">
+  <figcaption style="font-size:9.5px;font-weight:900;letter-spacing:3px;color:#6A6058;">
+    COMBO
+  </figcaption>
+  <div style="border:2px solid #2A2119;border-radius:12px;background:#0A0806;padding:20px;width:max-content;min-width:440px;">
+    <div class="cap">FIRES ON A NEAR MISS, DECAYS AFTER ~2s</div>
+      <div style="position:relative;height:230px;border-radius:13px;border:2px solid #000;overflow:hidden;
+           background:linear-gradient(180deg,#1C1A17,#2B2823 30%,#26241F);display:flex;align-items:center;justify-content:center;">
+        <div style="position:absolute;left:50%;top:50%;width:250px;height:250px;margin:-125px 0 0 -125px;
+             background:radial-gradient(circle,rgba(247,117,3,.45),rgba(247,117,3,0) 62%);"></div>
+        <div style="position:relative;text-align:center;transform:rotate(-7deg);">
+          <div style="font-family:var(--display);font-size:82px;line-height:.9;color:var(--lite);
+               text-shadow:5px 6px 0 #000, 0 0 34px rgba(247,117,3,.85);">&times;5</div>
+          <div style="margin-top:2px;font-size:11px;font-weight:900;letter-spacing:3.4px;color:var(--orange);
+               text-shadow:2px 2px 0 #000;">ON FIRE</div></div>
+      </div>
+      <div style="margin-top:20px;font-size:11px;color:var(--muted);max-width:400px;line-height:1.5;">
+        Anchored at ~44% of screen height. It must never drift below the thumb zone line &mdash;
+        a burst under the player&rsquo;s own hand is a burst nobody sees.
+      </div>
+  </div>
+</figure>
+  </div>
+</section>
+
+<section style="display:flex;flex-direction:column;gap:18px;">
+  <h2 style="margin:0;font-size:11px;font-weight:900;letter-spacing:3.6px;color:#F28D35;">
+    CARDS
+  </h2>
+  <div style="display:flex;flex-wrap:wrap;gap:28px;align-items:flex-start;">
+    
+<figure style="margin:0;display:flex;flex-direction:column;gap:10px;flex:none;">
+  <figcaption style="font-size:9.5px;font-weight:900;letter-spacing:3px;color:#6A6058;">
+    CAR CARD
+  </figcaption>
+  <div style="border:2px solid #2A2119;border-radius:12px;background:#0A0806;padding:20px;width:max-content;min-width:0px;">
+    <div class="cap">LOCKED (PURCHASABLE) / OWNED / EQUIPPED</div>
+      <div class="rowx">
+        <div style="flex:none;width:230px;border:3px solid #000;border-radius:17px;padding:16px;
+             background:linear-gradient(180deg,#1F1A15,#120F0C);
+             box-shadow:0 7px 0 #000, inset 0 1px 0 rgba(255,183,101,.14);">
+          <div class="chip" style="background:#2E1512;color:#FF9A93;">LOCKED</div>
+          <div style="margin-top:14px;font-family:var(--display);font-size:25px;line-height:1;color:var(--lite);">BOARHOUND</div>
+          <div style="margin-top:3px;font-size:10px;font-weight:800;letter-spacing:2.2px;color:var(--muted);">WIDEBODY &middot; 72PT</div>
+          <div style="margin-top:15px;display:flex;flex-direction:column;gap:8px;">
+            <div style="display:flex;justify-content:space-between;align-items:center;"><span style="font-size:9.5px;font-weight:900;letter-spacing:2.1px;color:var(--muted);">SPEED</span><span class="meter"><i class="pip pip-on"></i><i class="pip pip-on"></i><i class="pip pip-on"></i><i class="pip pip-on"></i><i class="pip pip-on"></i><i class="pip pip-on"></i></span></div>
+            <div style="display:flex;justify-content:space-between;align-items:center;"><span style="font-size:9.5px;font-weight:900;letter-spacing:2.1px;color:var(--muted);">HANDLING</span><span class="meter"><i class="pip pip-on"></i><i class="pip pip-on"></i><i class="pip pip-on"></i><i class="pip"></i><i class="pip"></i><i class="pip"></i></span></div>
+            <div style="display:flex;justify-content:space-between;align-items:center;"><span style="font-size:9.5px;font-weight:900;letter-spacing:2.1px;color:var(--muted);">GRIP</span><span class="meter"><i class="pip pip-on"></i><i class="pip pip-on"></i><i class="pip pip-on"></i><i class="pip pip-on"></i><i class="pip"></i><i class="pip"></i></span></div>
+          </div>
+          <div style="margin-top:16px;display:flex;align-items:center;gap:8px;padding:8px 12px;border-radius:8px;
+               background:rgba(255,201,60,.1);border:2px solid #000;width:fit-content;">
+            <svg viewBox="0 0 24 24" width="19" height="19">
+  <circle cx="12" cy="12" r="9.4" fill="#C98A0E"/><circle cx="12" cy="12" r="9.4" fill="none" stroke="#6B4708" stroke-width="1.6"/>
+  <circle cx="12" cy="12" r="6.4" fill="#FFC93C"/><path d="M9.4 12h5.2M12 9.4v5.2" stroke="#8A5B08" stroke-width="1.9" stroke-linecap="round"/></svg><span class="num" style="font-size:18px;color:var(--gold);">1,200</span></div>
+        </div>
+        <div style="flex:none;width:170px;border:3px solid #000;border-radius:17px;padding:16px;opacity:.72;
+             background:linear-gradient(180deg,#1F1A15,#120F0C);box-shadow:0 7px 0 #000;">
+          <div class="chip" style="background:#2A2118;color:var(--lite);">OWNED</div>
+          <div style="margin-top:14px;font-family:var(--display);font-size:20px;line-height:1.05;color:var(--cream);">HATPIN</div>
+        </div>
+        <div style="flex:none;width:170px;border:3px solid #000;border-radius:17px;padding:16px;
+             background:linear-gradient(180deg,#1F1A15,#120F0C);
+             box-shadow:0 7px 0 #000, 0 0 24px rgba(127,229,155,.18);">
+          <div class="chip" style="background:#1D3A22;color:#7FE59B;">EQUIPPED</div>
+          <div style="margin-top:14px;font-family:var(--display);font-size:20px;line-height:1.05;color:var(--cream);">STRAY CAT</div>
+        </div>
+      </div>
+  </div>
+</figure>
+
+<figure style="margin:0;display:flex;flex-direction:column;gap:10px;flex:none;">
+  <figcaption style="font-size:9.5px;font-weight:900;letter-spacing:3px;color:#6A6058;">
+    STAT METER
+  </figcaption>
+  <div style="border:2px solid #2A2119;border-radius:12px;background:#0A0806;padding:20px;width:max-content;min-width:380px;">
+    <div class="cap">SIX-PIP METER</div>
+      <div style="display:flex;flex-direction:column;gap:10px;max-width:300px;">
+        
+        <div style="display:flex;justify-content:space-between;align-items:center;">
+          <span style="font-size:9.5px;font-weight:900;letter-spacing:2.1px;color:var(--muted);">SPEED</span><span class="meter"><i class="pip pip-on"></i><i class="pip pip-on"></i><i class="pip pip-on"></i><i class="pip pip-on"></i><i class="pip pip-on"></i><i class="pip"></i></span></div>
+        <div style="display:flex;justify-content:space-between;align-items:center;">
+          <span style="font-size:9.5px;font-weight:900;letter-spacing:2.1px;color:var(--muted);">HANDLING</span><span class="meter"><i class="pip pip-on"></i><i class="pip pip-on"></i><i class="pip pip-on"></i><i class="pip"></i><i class="pip"></i><i class="pip"></i></span></div>
+        <div style="display:flex;justify-content:space-between;align-items:center;">
+          <span style="font-size:9.5px;font-weight:900;letter-spacing:2.1px;color:var(--muted);">GRIP</span><span class="meter"><i class="pip pip-on"></i><i class="pip pip-on"></i><i class="pip pip-on"></i><i class="pip pip-on"></i><i class="pip"></i><i class="pip"></i></span></div>
+        <div style="display:flex;justify-content:space-between;align-items:center;">
+          <span style="font-size:9.5px;font-weight:900;letter-spacing:2.1px;color:var(--muted);">BRAKING</span><span class="meter"><i class="pip pip-on"></i><i class="pip pip-on"></i><i class="pip"></i><i class="pip"></i><i class="pip"></i><i class="pip"></i></span></div>
+      </div>
+      <div style="margin-top:14px;font-size:11px;color:var(--muted);max-width:340px;line-height:1.5;">
+        Six discrete pips, never a continuous bar &mdash; players compare cars by counting, and
+        a smooth fill hides small differences.
+      </div>
+      <div class="cap" style="margin-top:28px;">OWNERSHIP CHIPS</div>
+      <div class="rowx">
+        <span class="chip" style="background:#1D3A22;color:#7FE59B;">EQUIPPED</span>
+        <span class="chip" style="background:#2A2118;color:var(--lite);">OWNED</span>
+        <span class="chip" style="background:#2E1512;color:#FF9A93;">LOCKED</span>
+      </div>
+  </div>
+</figure>
+  </div>
+</section>
+
+<section style="display:flex;flex-direction:column;gap:18px;">
+  <h2 style="margin:0;font-size:11px;font-weight:900;letter-spacing:3.6px;color:#F28D35;">
+    GAME OBJECTS
+  </h2>
+  <div style="display:flex;flex-wrap:wrap;gap:28px;align-items:flex-start;">
+    
+<figure style="margin:0;display:flex;flex-direction:column;gap:10px;flex:none;">
+  <figcaption style="font-size:9.5px;font-weight:900;letter-spacing:3px;color:#6A6058;">
+    PICKUPS
+  </figcaption>
+  <div style="border:2px solid #2A2119;border-radius:12px;background:#0A0806;padding:20px;width:max-content;min-width:0px;">
+    <style>.tok{position:relative;width:74px;height:74px;flex:none;border-radius:50%;border:3px solid #000;
+        display:flex;align-items:center;justify-content:center;}
+        .hud{width:42px;height:42px;flex:none;border-radius:9px;background:rgba(10,8,6,.9);border:2px solid #000;
+        box-shadow:0 3px 0 #000, inset 0 1px 0 rgba(255,183,101,.16);display:flex;align-items:center;justify-content:center;}
+        .pu{display:flex;align-items:center;gap:16px;}
+        .arrow{color:#3E362F;font-size:15px;font-weight:900;}</style>
+      <div class="cap">WORLD FORM (74px ON ROAD) &rarr; HUD FORM (42px)</div>
+      <div style="display:flex;flex-direction:column;gap:26px;">
+        <div class="pu">
+  <div class="tok" style="background:radial-gradient(circle at 36% 30%,#B8F2FF,#35D6F2 46%,#0E7E96 100%);box-shadow:0 5px 0 #000, 0 0 26px 5px rgba(53,214,242,.55);">
+    <div style="position:absolute;left:50%;bottom:-13px;width:62px;height:14px;margin-left:-31px;border-radius:50%;
+                background:radial-gradient(ellipse,rgba(0,0,0,.65),rgba(0,0,0,0) 72%);"></div><svg viewBox="0 0 24 24" width="36" height="36"><path d="M12 3.2 19.4 6v6.1c0 4.5-3.1 7.3-7.4 8.7-4.3-1.4-7.4-4.2-7.4-8.7V6z" fill="none" stroke="#062B34" stroke-width="2.2" stroke-linejoin="round"/></svg></div>
+          <span class="arrow">&rarr;</span><div class="hud"><svg viewBox="0 0 24 24" width="21" height="21"><path d="M12 3.2 19.4 6v6.1c0 4.5-3.1 7.3-7.4 8.7-4.3-1.4-7.4-4.2-7.4-8.7V6z" fill="none" stroke="#35D6F2" stroke-width="2.2" stroke-linejoin="round"/></svg></div>
+          <div><div style="font-family:var(--display);font-size:19px;color:var(--cyan);">SHIELD</div>
+            <div style="font-size:11px;color:var(--muted);margin-top:2px;">Survive one crash. 8s.</div></div></div>
+        <div class="pu">
+  <div class="tok" style="background:radial-gradient(circle at 36% 30%,#E4FBFF,#8BE9FA 46%,#2F7D93 100%);box-shadow:0 5px 0 #000, 0 0 26px 5px rgba(139,233,250,.5);">
+    <div style="position:absolute;left:50%;bottom:-13px;width:62px;height:14px;margin-left:-31px;border-radius:50%;
+                background:radial-gradient(ellipse,rgba(0,0,0,.65),rgba(0,0,0,0) 72%);"></div><svg viewBox="0 0 24 24" width="36" height="36" fill="none" stroke="#0A2C36" stroke-width="2.2" stroke-linecap="round"><circle cx="12" cy="12.6" r="8.4"/><path d="M12 8.2v4.6l3 1.9"/><path d="M9.2 2.6h5.6"/></svg></div>
+          <span class="arrow">&rarr;</span><div class="hud"><svg viewBox="0 0 24 24" width="21" height="21" fill="none" stroke="#8BE9FA" stroke-width="2.2" stroke-linecap="round"><circle cx="12" cy="12.6" r="8.4"/><path d="M12 8.2v4.6l3 1.9"/><path d="M9.2 2.6h5.6"/></svg></div>
+          <div><div style="font-family:var(--display);font-size:19px;color:#8BE9FA;">SLOW-MO</div>
+            <div style="font-size:11px;color:var(--muted);margin-top:2px;">Traffic to 55%. 5s.</div></div></div>
+        <div class="pu">
+  <div class="tok" style="background:radial-gradient(circle at 36% 30%,#FFC2E1,#F2359B 46%,#8C0A4F 100%);box-shadow:0 5px 0 #000, 0 0 26px 5px rgba(242,53,155,.5);">
+    <div style="position:absolute;left:50%;bottom:-13px;width:62px;height:14px;margin-left:-31px;border-radius:50%;
+                background:radial-gradient(ellipse,rgba(0,0,0,.65),rgba(0,0,0,0) 72%);"></div><svg viewBox="0 0 24 24" width="36" height="36" fill="none" stroke="#3B0323" stroke-width="2.2" stroke-linecap="round"><path d="M6 4.6v7.8a6 6 0 0 0 12 0V4.6"/><path d="M6 9.4h4.4"/><path d="M13.6 9.4H18"/></svg></div>
+          <span class="arrow">&rarr;</span><div class="hud"><svg viewBox="0 0 24 24" width="21" height="21" fill="none" stroke="#F2359B" stroke-width="2.2" stroke-linecap="round"><path d="M6 4.6v7.8a6 6 0 0 0 12 0V4.6"/><path d="M6 9.4h4.4"/><path d="M13.6 9.4H18"/></svg></div>
+          <div><div style="font-family:var(--display);font-size:19px;color:var(--magenta);">MAGNET</div>
+            <div style="font-size:11px;color:var(--muted);margin-top:2px;">Pulls coins 3 lanes wide. 10s.</div></div></div>
+        <div class="pu">
+  <div class="tok" style="background:radial-gradient(circle at 36% 30%,#FFF0BE,#FFC93C 46%,#B8790A 100%);box-shadow:0 5px 0 #000, 0 0 26px 5px rgba(255,201,60,.55);">
+    <div style="position:absolute;left:50%;bottom:-13px;width:62px;height:14px;margin-left:-31px;border-radius:50%;
+                background:radial-gradient(ellipse,rgba(0,0,0,.65),rgba(0,0,0,0) 72%);"></div><svg viewBox="0 0 24 24" width="30" height="30"><circle cx="12" cy="12" r="7" fill="none" stroke="#7A4E05" stroke-width="2"/><path d="M9 12h6M12 9v6" stroke="#7A4E05" stroke-width="2.2" stroke-linecap="round"/></svg></div>
+          <span class="arrow">&rarr;</span><div class="hud"><svg viewBox="0 0 24 24" width="19" height="19">
+  <circle cx="12" cy="12" r="9.4" fill="#C98A0E"/><circle cx="12" cy="12" r="9.4" fill="none" stroke="#6B4708" stroke-width="1.6"/>
+  <circle cx="12" cy="12" r="6.4" fill="#FFC93C"/><path d="M9.4 12h5.2M12 9.4v5.2" stroke="#8A5B08" stroke-width="1.9" stroke-linecap="round"/></svg></div>
+          <div><div style="font-family:var(--display);font-size:19px;color:var(--gold);">COIN</div>
+            <div style="font-size:11px;color:var(--muted);margin-top:2px;">Garage currency. Never blocks a lane.</div></div></div>
+      </div>
+  </div>
+</figure>
+
+<figure style="margin:0;display:flex;flex-direction:column;gap:10px;flex:none;">
+  <figcaption style="font-size:9.5px;font-weight:900;letter-spacing:3px;color:#6A6058;">
+    ROAD
+  </figcaption>
+  <div style="border:2px solid #2A2119;border-radius:12px;background:#0A0806;padding:20px;width:max-content;min-width:433px;">
+    <div class="cap">393pt &divide; 4 = 98pt PER LANE &mdash; DIVIDERS AT 98.25 / 196.5 / 294.75</div>
+      <div style="position:relative;width:393px;height:300px;border:2px solid #000;border-radius:11px;overflow:hidden;
+           background:linear-gradient(180deg,#1C1A17,#2B2823 18%,#26241F 60%,#221F1B);">
+        <div style="position:absolute;left:98.25px;top:-30px;bottom:-30px;width:7px;
+          margin-left:-3.5px;opacity:.88;background:repeating-linear-gradient(180deg,var(--lane) 0 48px,rgba(0,0,0,0) 48px 112px);"></div><div style="position:absolute;left:196.5px;top:-30px;bottom:-30px;width:7px;
+          margin-left:-3.5px;opacity:.88;background:repeating-linear-gradient(180deg,var(--lane) 0 48px,rgba(0,0,0,0) 48px 112px);"></div><div style="position:absolute;left:294.75px;top:-30px;bottom:-30px;width:7px;
+          margin-left:-3.5px;opacity:.88;background:repeating-linear-gradient(180deg,var(--lane) 0 48px,rgba(0,0,0,0) 48px 112px);"></div>
+        <div style="position:absolute;left:0;top:-30px;bottom:-30px;width:11px;opacity:.8;
+             background:repeating-linear-gradient(180deg,var(--lane) 0 28px,#B8342C 28px 56px);"></div>
+        <div style="position:absolute;right:0;top:-30px;bottom:-30px;width:11px;opacity:.8;
+             background:repeating-linear-gradient(180deg,var(--lane) 0 28px,#B8342C 28px 56px);"></div>
+        <div style="position:absolute;left:49px;top:126px;width:46px;height:46px;
+          margin-left:-23px;border:2px dashed rgba(255,183,101,.55);border-radius:6px;
+          display:flex;align-items:center;justify-content:center;font-size:8px;font-weight:900;
+          letter-spacing:.8px;color:var(--lite);text-align:center;">HATPIN 46</div><div style="position:absolute;left:147px;top:126px;width:62px;height:46px;
+          margin-left:-31px;border:2px dashed rgba(255,183,101,.55);border-radius:6px;
+          display:flex;align-items:center;justify-content:center;font-size:8px;font-weight:900;
+          letter-spacing:.8px;color:var(--lite);text-align:center;">TRAFFIC 62</div><div style="position:absolute;left:245px;top:126px;width:72px;height:46px;
+          margin-left:-36px;border:2px dashed rgba(255,183,101,.55);border-radius:6px;
+          display:flex;align-items:center;justify-content:center;font-size:8px;font-weight:900;
+          letter-spacing:.8px;color:var(--lite);text-align:center;">BOARHOUND 72</div><div style="position:absolute;left:344px;top:126px;width:74px;height:46px;
+          margin-left:-37px;border:2px dashed rgba(255,183,101,.55);border-radius:6px;
+          display:flex;align-items:center;justify-content:center;font-size:8px;font-weight:900;
+          letter-spacing:.8px;color:var(--lite);text-align:center;">COLD STORE 74</div>
+      </div>
+      <div style="margin-top:20px;font-size:11px;color:var(--muted);max-width:393px;line-height:1.55;">
+        The dashed boxes are real vehicle footprints dropped into a 98pt lane. Width is not one
+        number &mdash; it runs 46pt (Hatpin) to 76pt (Leviathan), and the slack left over is the
+        player&rsquo;s margin for error. See <b style="color:var(--cream);">Vehicle fleet</b> for the full set.
+      </div>
+  </div>
+</figure>
+
+<figure style="margin:0;display:flex;flex-direction:column;gap:10px;flex:none;">
+  <figcaption style="font-size:9.5px;font-weight:900;letter-spacing:3px;color:#6A6058;">
+    FLEET
+  </figcaption>
+  <div style="border:2px solid #2A2119;border-radius:12px;background:#0A0806;padding:20px;width:max-content;min-width:640px;">
+    <div class="cap">PLAYER FLEET &mdash; SHOWN IN ONE TRUE-SCALE LANE (98.25pt)</div>
+<div style="display:flex;gap:20px;">
+  <div style="display:flex;flex-direction:column;align-items:center;width:118px;flex:none;">
+    <div style="position:relative;width:98.25px;height:200px;border-radius:5px;overflow:hidden;
+         background:linear-gradient(180deg,#221F1B,#2B2823 30%,#26241F);
+         border-left:3px dashed rgba(239,233,220,.42);border-right:3px dashed rgba(239,233,220,.42);
+         display:flex;align-items:center;justify-content:center;">
+      <div style="filter:drop-shadow(0 8px 10px rgba(0,0,0,.7));line-height:0;"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 60 122" width="60" height="122">
+  
+  <defs>
+    <linearGradient id="bmuscle" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0%"   stop-color="#e7827c"/>
+      <stop offset="20%"  stop-color="#D8362B"/>
+      <stop offset="68%"  stop-color="#D8362B"/>
+      <stop offset="100%" stop-color="#82201a"/>
+    </linearGradient>
+    <linearGradient id="gmuscle" x1="0" y1="0" x2="0.4" y2="1">
+      <stop offset="0%"   stop-color="#415866"/>
+      <stop offset="52%"  stop-color="#161F27"/>
+      <stop offset="100%" stop-color="#40474e"/>
+    </linearGradient>
+  </defs>
+  
+  <rect x="0" y="20" width="13" height="26" rx="3.9" fill="#121010"/>
+  <rect x="2.86" y="24.16" width="7.280000000000001" height="17.68" rx="2.08"
+        fill="none" stroke="#2E2926" stroke-width="1.5" stroke-dasharray="2.6 3"/>
+  <rect x="47" y="20" width="13" height="26" rx="3.9" fill="#121010"/>
+  <rect x="49.86" y="24.16" width="7.280000000000001" height="17.68" rx="2.08"
+        fill="none" stroke="#2E2926" stroke-width="1.5" stroke-dasharray="2.6 3"/>
+  
+  <rect x="0" y="78" width="13" height="29" rx="3.9" fill="#121010"/>
+  <rect x="2.86" y="82.64" width="7.280000000000001" height="19.720000000000002" rx="2.08"
+        fill="none" stroke="#2E2926" stroke-width="1.5" stroke-dasharray="2.6 3"/>
+  <rect x="47" y="78" width="13" height="29" rx="3.9" fill="#121010"/>
+  <rect x="49.86" y="82.64" width="7.280000000000001" height="19.720000000000002" rx="2.08"
+        fill="none" stroke="#2E2926" stroke-width="1.5" stroke-dasharray="2.6 3"/>
+  <rect x="7" y="4" width="46" height="114" rx="17" fill="url(#bmuscle)" stroke="#000" stroke-width="2.9"/>
+  <clipPath id="kmuscle"><rect x="7" y="4" width="46" height="114" rx="17"/></clipPath>
+  <g clip-path="url(#kmuscle)">
+    <rect x="21.5" y="0" width="6.5" height="122" fill="#F5EFE4"/>
+      <rect x="32" y="0" width="6.5" height="122" fill="#F5EFE4"/>
+    
+  <rect x="0" y="0" width="9" height="122" fill="#FFF" opacity=".13"/>
+  <rect x="51" y="0" width="9" height="122" fill="#000" opacity=".22"/>
+  </g>
+  <rect x="19" y="14" width="22" height="17" rx="4" fill="#701c16" stroke="#000" stroke-width="1.8"/>
+  <rect x="22" y="17.5" width="16" height="10" rx="2.6" fill="#070605"/>
+  <path d="M18 38L42 38L45.5 53L14.5 53Z" fill="url(#gmuscle)"
+         stroke="#000" stroke-width="1.9" stroke-linejoin="round"/>
+  <rect x="14" y="53" width="32" height="27" rx="6" fill="none" stroke="#8a231c" stroke-width="1.7"/>
+  <path d="M15 80L45 80L42 91L18 91Z" fill="url(#gmuscle)"
+         stroke="#000" stroke-width="1.9" stroke-linejoin="round"/>
+  
+  <rect x="10" y="92" width="8" height="14" rx="2.4" fill="#681a15" stroke="#000" stroke-width="1.8"/>
+  <rect x="42" y="92" width="8" height="14" rx="2.4" fill="#681a15" stroke="#000" stroke-width="1.8"/>
+  <rect x="4" y="99" width="52" height="12" rx="3.8" fill="#82201a" stroke="#000" stroke-width="2.9"/>
+  <rect x="8" y="102.4" width="44" height="4" rx="2" fill="#F5EFE4" opacity=".9"/>
+  <rect x="8" y="100.6" width="44" height="2" rx="1" fill="#FFF" opacity=".3"/>
+  
+  <rect x="9.6" y="5.6" width="16.8" height="9.2" rx="4.6" fill="#FFF6DC" opacity=".32"/>
+  <rect x="11" y="7" width="14" height="6.4" rx="3.0476190476190474" fill="#FFF6DC" stroke="#000" stroke-width="1.2"/>
+  <rect x="12.6" y="8.1" width="10.8" height="2.285714285714286" rx="1.0666666666666667" fill="#FFF" opacity=".6"/>
+  <rect x="33.6" y="5.6" width="16.8" height="9.2" rx="4.6" fill="#FFF6DC" opacity=".32"/>
+  <rect x="35" y="7" width="14" height="6.4" rx="3.0476190476190474" fill="#FFF6DC" stroke="#000" stroke-width="1.2"/>
+  <rect x="36.6" y="8.1" width="10.8" height="2.285714285714286" rx="1.0666666666666667" fill="#FFF" opacity=".6"/>
+  
+  <rect x="9.6" y="109.6" width="16.8" height="9.2" rx="4.6" fill="#F0402F" opacity=".32"/>
+  <rect x="11" y="111" width="14" height="6.4" rx="3.0476190476190474" fill="#F0402F" stroke="#000" stroke-width="1.2"/>
+  <rect x="12.6" y="112.1" width="10.8" height="2.285714285714286" rx="1.0666666666666667" fill="#FFF" opacity=".6"/>
+  <rect x="33.6" y="109.6" width="16.8" height="9.2" rx="4.6" fill="#F0402F" opacity=".32"/>
+  <rect x="35" y="111" width="14" height="6.4" rx="3.0476190476190474" fill="#F0402F" stroke="#000" stroke-width="1.2"/>
+  <rect x="36.6" y="112.1" width="10.8" height="2.285714285714286" rx="1.0666666666666667" fill="#FFF" opacity=".6"/>
+</svg></div>
+    </div>
+    <div style="margin-top:10px;font-family:var(--display);font-size:15px;line-height:1;text-align:center;">STRAY CAT</div>
+    <div style="margin-top:4px;font-size:10px;font-weight:900;letter-spacing:1.3px;color:var(--orange);font-variant-numeric:tabular-nums;">60 &times; 122</div>
+    <div style="margin-top:2px;font-size:9.5px;color:var(--muted);">38.3pt slack</div>
+  </div>
+  <div style="display:flex;flex-direction:column;align-items:center;width:118px;flex:none;">
+    <div style="position:relative;width:98.25px;height:200px;border-radius:5px;overflow:hidden;
+         background:linear-gradient(180deg,#221F1B,#2B2823 30%,#26241F);
+         border-left:3px dashed rgba(239,233,220,.42);border-right:3px dashed rgba(239,233,220,.42);
+         display:flex;align-items:center;justify-content:center;">
+      <div style="filter:drop-shadow(0 8px 10px rgba(0,0,0,.7));line-height:0;"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 46 112" width="46" height="112">
+  
+  <defs>
+    <linearGradient id="bneedle" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0%"   stop-color="#82e6f7"/>
+      <stop offset="20%"  stop-color="#35D6F2"/>
+      <stop offset="68%"  stop-color="#35D6F2"/>
+      <stop offset="100%" stop-color="#208091"/>
+    </linearGradient>
+    <linearGradient id="gneedle" x1="0" y1="0" x2="0.4" y2="1">
+      <stop offset="0%"   stop-color="#415866"/>
+      <stop offset="52%"  stop-color="#161F27"/>
+      <stop offset="100%" stop-color="#40474e"/>
+    </linearGradient>
+  </defs>
+  
+  <rect x="0" y="18" width="11" height="24" rx="3.3" fill="#121010"/>
+  <rect x="2.42" y="21.84" width="6.16" height="16.32" rx="1.76"
+        fill="none" stroke="#2E2926" stroke-width="1.5" stroke-dasharray="2.6 3"/>
+  <rect x="35" y="18" width="11" height="24" rx="3.3" fill="#121010"/>
+  <rect x="37.42" y="21.84" width="6.16" height="16.32" rx="1.76"
+        fill="none" stroke="#2E2926" stroke-width="1.5" stroke-dasharray="2.6 3"/>
+  
+  <rect x="0" y="72" width="11" height="26" rx="3.3" fill="#121010"/>
+  <rect x="2.42" y="76.16" width="6.16" height="17.68" rx="1.76"
+        fill="none" stroke="#2E2926" stroke-width="1.5" stroke-dasharray="2.6 3"/>
+  <rect x="35" y="72" width="11" height="26" rx="3.3" fill="#121010"/>
+  <rect x="37.42" y="76.16" width="6.16" height="17.68" rx="1.76"
+        fill="none" stroke="#2E2926" stroke-width="1.5" stroke-dasharray="2.6 3"/>
+  <path d="M23 3C29 3 33 7 34 14L34.5 96C34.5 104 30 109 23 109C16 109 11.5 104 11.5 96L12 14C13 7 17 3 23 3Z"
+        fill="url(#bneedle)" stroke="#000" stroke-width="2.9" stroke-linejoin="round"/>
+  <clipPath id="kneedle"><path d="M23 3C29 3 33 7 34 14L34.5 96C34.5 104 30 109 23 109C16 109 11.5 104 11.5 96L12 14C13 7 17 3 23 3Z"/></clipPath>
+  <g clip-path="url(#kneedle)">
+    <rect x="19.8" y="0" width="6.4" height="112" fill="#0B2E38"/>
+    
+  <rect x="0" y="0" width="7" height="112" fill="#FFF" opacity=".13"/>
+  <rect x="39" y="0" width="7" height="112" fill="#000" opacity=".22"/>
+  </g>
+  <ellipse cx="23" cy="52" rx="9.5" ry="13" fill="url(#gneedle)" stroke="#000" stroke-width="1.9"/>
+  <rect x="13" y="30" width="20" height="7" rx="3" fill="#1d7483" stroke="#000" stroke-width="1.6"/>
+  
+  <rect x="8" y="85" width="8" height="14" rx="2.4" fill="#196774" stroke="#000" stroke-width="1.8"/>
+  <rect x="30" y="85" width="8" height="14" rx="2.4" fill="#196774" stroke="#000" stroke-width="1.8"/>
+  <rect x="2" y="92" width="42" height="12" rx="3.8" fill="#208091" stroke="#000" stroke-width="2.9"/>
+  <rect x="6" y="95.4" width="34" height="4" rx="2" fill="#0B2E38" opacity=".9"/>
+  <rect x="6" y="93.6" width="34" height="2" rx="1" fill="#FFF" opacity=".3"/>
+  
+  <rect x="7.6" y="4.6" width="13.8" height="8.2" rx="4.1" fill="#FFF6DC" opacity=".32"/>
+  <rect x="9" y="6" width="11" height="5.4" rx="2.5714285714285716" fill="#FFF6DC" stroke="#000" stroke-width="1.2"/>
+  <rect x="10.6" y="7.1" width="7.8" height="1.9285714285714288" rx="0.9" fill="#FFF" opacity=".6"/>
+  <rect x="24.6" y="4.6" width="13.8" height="8.2" rx="4.1" fill="#FFF6DC" opacity=".32"/>
+  <rect x="26" y="6" width="11" height="5.4" rx="2.5714285714285716" fill="#FFF6DC" stroke="#000" stroke-width="1.2"/>
+  <rect x="27.6" y="7.1" width="7.8" height="1.9285714285714288" rx="0.9" fill="#FFF" opacity=".6"/>
+  
+  <rect x="7.6" y="99.6" width="13.8" height="8.2" rx="4.1" fill="#F0402F" opacity=".32"/>
+  <rect x="9" y="101" width="11" height="5.4" rx="2.5714285714285716" fill="#F0402F" stroke="#000" stroke-width="1.2"/>
+  <rect x="10.6" y="102.1" width="7.8" height="1.9285714285714288" rx="0.9" fill="#FFF" opacity=".6"/>
+  <rect x="24.6" y="99.6" width="13.8" height="8.2" rx="4.1" fill="#F0402F" opacity=".32"/>
+  <rect x="26" y="101" width="11" height="5.4" rx="2.5714285714285716" fill="#F0402F" stroke="#000" stroke-width="1.2"/>
+  <rect x="27.6" y="102.1" width="7.8" height="1.9285714285714288" rx="0.9" fill="#FFF" opacity=".6"/>
+</svg></div>
+    </div>
+    <div style="margin-top:10px;font-family:var(--display);font-size:15px;line-height:1;text-align:center;">HATPIN</div>
+    <div style="margin-top:4px;font-size:10px;font-weight:900;letter-spacing:1.3px;color:var(--orange);font-variant-numeric:tabular-nums;">46 &times; 112</div>
+    <div style="margin-top:2px;font-size:9.5px;color:var(--muted);">52.3pt slack</div>
+  </div>
+  <div style="display:flex;flex-direction:column;align-items:center;width:118px;flex:none;">
+    <div style="position:relative;width:98.25px;height:200px;border-radius:5px;overflow:hidden;
+         background:linear-gradient(180deg,#221F1B,#2B2823 30%,#26241F);
+         border-left:3px dashed rgba(239,233,220,.42);border-right:3px dashed rgba(239,233,220,.42);
+         display:flex;align-items:center;justify-content:center;">
+      <div style="filter:drop-shadow(0 8px 10px rgba(0,0,0,.7));line-height:0;"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 72 128" width="72" height="128">
+  
+  <defs>
+    <linearGradient id="bwide" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0%"   stop-color="#f7b882"/>
+      <stop offset="20%"  stop-color="#F28D35"/>
+      <stop offset="68%"  stop-color="#F28D35"/>
+      <stop offset="100%" stop-color="#915520"/>
+    </linearGradient>
+    <linearGradient id="gwide" x1="0" y1="0" x2="0.4" y2="1">
+      <stop offset="0%"   stop-color="#415866"/>
+      <stop offset="52%"  stop-color="#161F27"/>
+      <stop offset="100%" stop-color="#40474e"/>
+    </linearGradient>
+  </defs>
+  
+  <rect x="0" y="22" width="15" height="28" rx="4.5" fill="#121010"/>
+  <rect x="3.3" y="26.48" width="8.4" height="19.040000000000003" rx="2.4"
+        fill="none" stroke="#2E2926" stroke-width="1.5" stroke-dasharray="2.6 3"/>
+  <rect x="57" y="22" width="15" height="28" rx="4.5" fill="#121010"/>
+  <rect x="60.3" y="26.48" width="8.4" height="19.040000000000003" rx="2.4"
+        fill="none" stroke="#2E2926" stroke-width="1.5" stroke-dasharray="2.6 3"/>
+  
+  <rect x="0" y="82" width="15" height="31" rx="4.5" fill="#121010"/>
+  <rect x="3.3" y="86.96" width="8.4" height="21.080000000000002" rx="2.4"
+        fill="none" stroke="#2E2926" stroke-width="1.5" stroke-dasharray="2.6 3"/>
+  <rect x="57" y="82" width="15" height="31" rx="4.5" fill="#121010"/>
+  <rect x="60.3" y="86.96" width="8.4" height="21.080000000000002" rx="2.4"
+        fill="none" stroke="#2E2926" stroke-width="1.5" stroke-dasharray="2.6 3"/>
+  <rect x="8" y="5" width="56" height="118" rx="16" fill="url(#bwide)" stroke="#000" stroke-width="2.9"/>
+  <clipPath id="kwide"><rect x="8" y="5" width="56" height="118" rx="16"/></clipPath>
+  <g clip-path="url(#kwide)">
+    <rect x="0" y="46" width="72" height="9" fill="#241A0E"/>
+      <rect x="0" y="59" width="72" height="4.5" fill="#241A0E" opacity=".7"/>
+    
+  <rect x="0" y="0" width="11" height="128" fill="#FFF" opacity=".13"/>
+  <rect x="61" y="0" width="11" height="128" fill="#000" opacity=".22"/>
+  </g>
+  <rect x="21" y="15" width="30" height="15" rx="4" fill="#7e491c" stroke="#000" stroke-width="1.8"/>
+  <rect x="24.5" y="18.5" width="23" height="8" rx="2.4" fill="#070605"/>
+  <path d="M21 38L51 38L56 55L16 55Z" fill="url(#gwide)"
+         stroke="#000" stroke-width="1.9" stroke-linejoin="round"/>
+  <rect x="16" y="55" width="40" height="28" rx="6" fill="none" stroke="#9b5a22" stroke-width="1.7"/>
+  <path d="M17 83L55 83L51 95L21 95Z" fill="url(#gwide)"
+         stroke="#000" stroke-width="1.9" stroke-linejoin="round"/>
+  
+  <rect x="9" y="96" width="8" height="14" rx="2.4" fill="#744419" stroke="#000" stroke-width="1.8"/>
+  <rect x="55" y="96" width="8" height="14" rx="2.4" fill="#744419" stroke="#000" stroke-width="1.8"/>
+  <rect x="3" y="103" width="66" height="12" rx="3.8" fill="#915520" stroke="#000" stroke-width="2.9"/>
+  <rect x="7" y="106.4" width="58" height="4" rx="2" fill="#241A0E" opacity=".9"/>
+  <rect x="7" y="104.6" width="58" height="2" rx="1" fill="#FFF" opacity=".3"/>
+  
+  <rect x="10.6" y="6.6" width="19.8" height="9.399999999999999" rx="4.699999999999999" fill="#FFF6DC" opacity=".32"/>
+  <rect x="12" y="8" width="17" height="6.6" rx="3.1428571428571423" fill="#FFF6DC" stroke="#000" stroke-width="1.2"/>
+  <rect x="13.6" y="9.1" width="13.8" height="2.357142857142857" rx="1.0999999999999999" fill="#FFF" opacity=".6"/>
+  <rect x="41.6" y="6.6" width="19.8" height="9.399999999999999" rx="4.699999999999999" fill="#FFF6DC" opacity=".32"/>
+  <rect x="43" y="8" width="17" height="6.6" rx="3.1428571428571423" fill="#FFF6DC" stroke="#000" stroke-width="1.2"/>
+  <rect x="44.6" y="9.1" width="13.8" height="2.357142857142857" rx="1.0999999999999999" fill="#FFF" opacity=".6"/>
+  
+  <rect x="10.6" y="114.6" width="19.8" height="9.399999999999999" rx="4.699999999999999" fill="#F0402F" opacity=".32"/>
+  <rect x="12" y="116" width="17" height="6.6" rx="3.1428571428571423" fill="#F0402F" stroke="#000" stroke-width="1.2"/>
+  <rect x="13.6" y="117.1" width="13.8" height="2.357142857142857" rx="1.0999999999999999" fill="#FFF" opacity=".6"/>
+  <rect x="41.6" y="114.6" width="19.8" height="9.399999999999999" rx="4.699999999999999" fill="#F0402F" opacity=".32"/>
+  <rect x="43" y="116" width="17" height="6.6" rx="3.1428571428571423" fill="#F0402F" stroke="#000" stroke-width="1.2"/>
+  <rect x="44.6" y="117.1" width="13.8" height="2.357142857142857" rx="1.0999999999999999" fill="#FFF" opacity=".6"/>
+</svg></div>
+    </div>
+    <div style="margin-top:10px;font-family:var(--display);font-size:15px;line-height:1;text-align:center;">BOARHOUND</div>
+    <div style="margin-top:4px;font-size:10px;font-weight:900;letter-spacing:1.3px;color:var(--orange);font-variant-numeric:tabular-nums;">72 &times; 128</div>
+    <div style="margin-top:2px;font-size:9.5px;color:var(--muted);">26.3pt slack</div>
+  </div>
+  <div style="display:flex;flex-direction:column;align-items:center;width:118px;flex:none;">
+    <div style="position:relative;width:98.25px;height:200px;border-radius:5px;overflow:hidden;
+         background:linear-gradient(180deg,#221F1B,#2B2823 30%,#26241F);
+         border-left:3px dashed rgba(239,233,220,.42);border-right:3px dashed rgba(239,233,220,.42);
+         display:flex;align-items:center;justify-content:center;">
+      <div style="filter:drop-shadow(0 8px 10px rgba(0,0,0,.7));line-height:0;"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 68 142" width="68" height="142">
+  
+  <defs>
+    <linearGradient id="bhauler" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0%"   stop-color="#85c397"/>
+      <stop offset="20%"  stop-color="#3B9E58"/>
+      <stop offset="68%"  stop-color="#3B9E58"/>
+      <stop offset="100%" stop-color="#235f35"/>
+    </linearGradient>
+    <linearGradient id="ghauler" x1="0" y1="0" x2="0.4" y2="1">
+      <stop offset="0%"   stop-color="#415866"/>
+      <stop offset="52%"  stop-color="#161F27"/>
+      <stop offset="100%" stop-color="#40474e"/>
+    </linearGradient>
+  </defs>
+  
+  <rect x="0" y="24" width="14" height="28" rx="4.2" fill="#121010"/>
+  <rect x="3.08" y="28.48" width="7.840000000000001" height="19.040000000000003" rx="2.24"
+        fill="none" stroke="#2E2926" stroke-width="1.5" stroke-dasharray="2.6 3"/>
+  <rect x="54" y="24" width="14" height="28" rx="4.2" fill="#121010"/>
+  <rect x="57.08" y="28.48" width="7.840000000000001" height="19.040000000000003" rx="2.24"
+        fill="none" stroke="#2E2926" stroke-width="1.5" stroke-dasharray="2.6 3"/>
+  
+  <rect x="0" y="96" width="14" height="30" rx="4.2" fill="#121010"/>
+  <rect x="3.08" y="100.8" width="7.840000000000001" height="20.400000000000002" rx="2.24"
+        fill="none" stroke="#2E2926" stroke-width="1.5" stroke-dasharray="2.6 3"/>
+  <rect x="54" y="96" width="14" height="30" rx="4.2" fill="#121010"/>
+  <rect x="57.08" y="100.8" width="7.840000000000001" height="20.400000000000002" rx="2.24"
+        fill="none" stroke="#2E2926" stroke-width="1.5" stroke-dasharray="2.6 3"/>
+  <rect x="8" y="4" width="52" height="134" rx="13" fill="url(#bhauler)" stroke="#000" stroke-width="2.9"/>
+  <clipPath id="khauler"><rect x="8" y="4" width="52" height="134" rx="13"/></clipPath>
+  <g clip-path="url(#khauler)">
+  <rect x="0" y="0" width="10" height="142" fill="#FFF" opacity=".13"/>
+  <rect x="58" y="0" width="10" height="142" fill="#000" opacity=".22"/></g>
+  <rect x="20" y="14" width="28" height="12" rx="3.4" fill="#215831" stroke="#000" stroke-width="1.7"/>
+  <path d="M21 34L47 34L52 50L16 50Z" fill="url(#ghauler)"
+         stroke="#000" stroke-width="1.9" stroke-linejoin="round"/>
+  <rect x="16" y="50" width="36" height="24" rx="5" fill="none" stroke="#266538" stroke-width="1.7"/>
+  <path d="M17 74L51 74L47 84L21 84Z" fill="url(#ghauler)"
+         stroke="#000" stroke-width="1.9" stroke-linejoin="round"/>
+  <rect x="13" y="90" width="42" height="42" rx="5" fill="#1e4f2c" stroke="#000" stroke-width="2.2"/>
+  <rect x="16.5" y="97" width="35" height="2.6" rx="1.3" fill="#153920"/><rect x="16.5" y="105" width="35" height="2.6" rx="1.3" fill="#153920"/><rect x="16.5" y="113" width="35" height="2.6" rx="1.3" fill="#153920"/><rect x="16.5" y="121" width="35" height="2.6" rx="1.3" fill="#153920"/>
+  <rect x="17" y="94" width="34" height="19" rx="3" fill="#7A5A2E" stroke="#000" stroke-width="1.8"/>
+    <rect x="17" y="101" width="34" height="2.6" fill="#513b1e"/>
+  
+  <rect x="10.6" y="5.6" width="18.8" height="9.2" rx="4.6" fill="#FFF6DC" opacity=".32"/>
+  <rect x="12" y="7" width="16" height="6.4" rx="3.0476190476190474" fill="#FFF6DC" stroke="#000" stroke-width="1.2"/>
+  <rect x="13.6" y="8.1" width="12.8" height="2.285714285714286" rx="1.0666666666666667" fill="#FFF" opacity=".6"/>
+  <rect x="38.6" y="5.6" width="18.8" height="9.2" rx="4.6" fill="#FFF6DC" opacity=".32"/>
+  <rect x="40" y="7" width="16" height="6.4" rx="3.0476190476190474" fill="#FFF6DC" stroke="#000" stroke-width="1.2"/>
+  <rect x="41.6" y="8.1" width="12.8" height="2.285714285714286" rx="1.0666666666666667" fill="#FFF" opacity=".6"/>
+  
+  <rect x="10.6" y="128.6" width="18.8" height="9.2" rx="4.6" fill="#F0402F" opacity=".32"/>
+  <rect x="12" y="130" width="16" height="6.4" rx="3.0476190476190474" fill="#F0402F" stroke="#000" stroke-width="1.2"/>
+  <rect x="13.6" y="131.1" width="12.8" height="2.285714285714286" rx="1.0666666666666667" fill="#FFF" opacity=".6"/>
+  <rect x="38.6" y="128.6" width="18.8" height="9.2" rx="4.6" fill="#F0402F" opacity=".32"/>
+  <rect x="40" y="130" width="16" height="6.4" rx="3.0476190476190474" fill="#F0402F" stroke="#000" stroke-width="1.2"/>
+  <rect x="41.6" y="131.1" width="12.8" height="2.285714285714286" rx="1.0666666666666667" fill="#FFF" opacity=".6"/>
+</svg></div>
+    </div>
+    <div style="margin-top:10px;font-family:var(--display);font-size:15px;line-height:1;text-align:center;">DONKEY WORK</div>
+    <div style="margin-top:4px;font-size:10px;font-weight:900;letter-spacing:1.3px;color:var(--orange);font-variant-numeric:tabular-nums;">68 &times; 142</div>
+    <div style="margin-top:2px;font-size:9.5px;color:var(--muted);">30.3pt slack</div>
+  </div></div>
+<div style="margin:14px 0 0;font-size:11px;color:var(--muted);max-width:560px;line-height:1.55;">
+  The gap either side of the car is how much room you have to miss by. Hatpin forgives 52pt of
+  error; Boarhound forgives 26pt. Width is a stat, not a skin.
+</div>
+<div class="cap" style="margin-top:30px;">TRAFFIC &mdash; ORDERED BY FOOTPRINT</div>
+<div style="display:flex;gap:20px;">
+  <div style="display:flex;flex-direction:column;align-items:center;width:118px;flex:none;">
+    <div style="position:relative;width:98.25px;height:260px;border-radius:5px;overflow:hidden;
+         background:linear-gradient(180deg,#221F1B,#2B2823 30%,#26241F);
+         border-left:3px dashed rgba(239,233,220,.42);border-right:3px dashed rgba(239,233,220,.42);
+         display:flex;align-items:center;justify-content:center;">
+      <div style="transform:rotate(180deg);filter:drop-shadow(0 8px 10px rgba(0,0,0,.7));line-height:0;"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 46 96" width="46" height="96">
+  
+  <defs>
+    <linearGradient id="bcompact" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0%"   stop-color="#eedc86"/>
+      <stop offset="20%"  stop-color="#E4C63C"/>
+      <stop offset="68%"  stop-color="#E4C63C"/>
+      <stop offset="100%" stop-color="#897724"/>
+    </linearGradient>
+    <linearGradient id="gcompact" x1="0" y1="0" x2="0.4" y2="1">
+      <stop offset="0%"   stop-color="#415866"/>
+      <stop offset="52%"  stop-color="#161F27"/>
+      <stop offset="100%" stop-color="#40474e"/>
+    </linearGradient>
+  </defs>
+  
+  <rect x="0" y="16" width="11" height="22" rx="3.3" fill="#121010"/>
+  <rect x="2.42" y="19.52" width="6.16" height="14.96" rx="1.76"
+        fill="none" stroke="#2E2926" stroke-width="1.5" stroke-dasharray="2.6 3"/>
+  <rect x="35" y="16" width="11" height="22" rx="3.3" fill="#121010"/>
+  <rect x="37.42" y="19.52" width="6.16" height="14.96" rx="1.76"
+        fill="none" stroke="#2E2926" stroke-width="1.5" stroke-dasharray="2.6 3"/>
+  
+  <rect x="0" y="60" width="11" height="23" rx="3.3" fill="#121010"/>
+  <rect x="2.42" y="63.68" width="6.16" height="15.64" rx="1.76"
+        fill="none" stroke="#2E2926" stroke-width="1.5" stroke-dasharray="2.6 3"/>
+  <rect x="35" y="60" width="11" height="23" rx="3.3" fill="#121010"/>
+  <rect x="37.42" y="63.68" width="6.16" height="15.64" rx="1.76"
+        fill="none" stroke="#2E2926" stroke-width="1.5" stroke-dasharray="2.6 3"/>
+  <rect x="5.5" y="4" width="35" height="88" rx="16" fill="url(#bcompact)" stroke="#000" stroke-width="2.9"/>
+  <clipPath id="kcompact"><rect x="5.5" y="4" width="35" height="88" rx="16"/></clipPath>
+  <g clip-path="url(#kcompact)">
+  <rect x="0" y="0" width="7" height="96" fill="#FFF" opacity=".13"/>
+  <rect x="39" y="0" width="7" height="96" fill="#000" opacity=".22"/></g>
+  <path d="M15 30L31 30L35 43L11 43Z" fill="url(#gcompact)"
+         stroke="#000" stroke-width="1.9" stroke-linejoin="round"/>
+  <rect x="11" y="43" width="24" height="18" rx="5" fill="none" stroke="#927f26" stroke-width="1.6"/>
+  <path d="M11.5 61L34.5 61L31 70L15 70Z" fill="url(#gcompact)"
+         stroke="#000" stroke-width="1.9" stroke-linejoin="round"/>
+  
+  <rect x="7.6" y="5.6" width="13.8" height="8" rx="4" fill="#FFF6DC" opacity=".32"/>
+  <rect x="9" y="7" width="11" height="5.2" rx="2.4761904761904763" fill="#FFF6DC" stroke="#000" stroke-width="1.2"/>
+  <rect x="10.6" y="8.1" width="7.8" height="1.8571428571428574" rx="0.8666666666666667" fill="#FFF" opacity=".6"/>
+  <rect x="24.6" y="5.6" width="13.8" height="8" rx="4" fill="#FFF6DC" opacity=".32"/>
+  <rect x="26" y="7" width="11" height="5.2" rx="2.4761904761904763" fill="#FFF6DC" stroke="#000" stroke-width="1.2"/>
+  <rect x="27.6" y="8.1" width="7.8" height="1.8571428571428574" rx="0.8666666666666667" fill="#FFF" opacity=".6"/>
+  
+  <rect x="7.6" y="83.6" width="13.8" height="8" rx="4" fill="#F0402F" opacity=".32"/>
+  <rect x="9" y="85" width="11" height="5.2" rx="2.4761904761904763" fill="#F0402F" stroke="#000" stroke-width="1.2"/>
+  <rect x="10.6" y="86.1" width="7.8" height="1.8571428571428574" rx="0.8666666666666667" fill="#FFF" opacity=".6"/>
+  <rect x="24.6" y="83.6" width="13.8" height="8" rx="4" fill="#F0402F" opacity=".32"/>
+  <rect x="26" y="85" width="11" height="5.2" rx="2.4761904761904763" fill="#F0402F" stroke="#000" stroke-width="1.2"/>
+  <rect x="27.6" y="86.1" width="7.8" height="1.8571428571428574" rx="0.8666666666666667" fill="#FFF" opacity=".6"/>
+</svg></div>
+    </div>
+    <div style="margin-top:10px;font-family:var(--display);font-size:15px;line-height:1;text-align:center;">FLEA</div>
+    <div style="margin-top:4px;font-size:10px;font-weight:900;letter-spacing:1.3px;color:var(--orange);font-variant-numeric:tabular-nums;">46 &times; 96</div>
+    <div style="margin-top:2px;font-size:9.5px;color:var(--muted);">threat 1</div>
+  </div>
+  <div style="display:flex;flex-direction:column;align-items:center;width:118px;flex:none;">
+    <div style="position:relative;width:98.25px;height:260px;border-radius:5px;overflow:hidden;
+         background:linear-gradient(180deg,#221F1B,#2B2823 30%,#26241F);
+         border-left:3px dashed rgba(239,233,220,.42);border-right:3px dashed rgba(239,233,220,.42);
+         display:flex;align-items:center;justify-content:center;">
+      <div style="transform:rotate(180deg);filter:drop-shadow(0 8px 10px rgba(0,0,0,.7));line-height:0;"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 62 128" width="62" height="128">
+  
+  <defs>
+    <linearGradient id="bsedan" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0%"   stop-color="#7e99c9"/>
+      <stop offset="20%"  stop-color="#2F5AA8"/>
+      <stop offset="68%"  stop-color="#2F5AA8"/>
+      <stop offset="100%" stop-color="#1c3665"/>
+    </linearGradient>
+    <linearGradient id="gsedan" x1="0" y1="0" x2="0.4" y2="1">
+      <stop offset="0%"   stop-color="#415866"/>
+      <stop offset="52%"  stop-color="#161F27"/>
+      <stop offset="100%" stop-color="#40474e"/>
+    </linearGradient>
+  </defs>
+  
+  <rect x="0" y="22" width="12" height="25" rx="3.5999999999999996" fill="#121010"/>
+  <rect x="2.64" y="26" width="6.720000000000001" height="17" rx="1.92"
+        fill="none" stroke="#2E2926" stroke-width="1.5" stroke-dasharray="2.6 3"/>
+  <rect x="50" y="22" width="12" height="25" rx="3.5999999999999996" fill="#121010"/>
+  <rect x="52.64" y="26" width="6.720000000000001" height="17" rx="1.92"
+        fill="none" stroke="#2E2926" stroke-width="1.5" stroke-dasharray="2.6 3"/>
+  
+  <rect x="0" y="82" width="12" height="26" rx="3.5999999999999996" fill="#121010"/>
+  <rect x="2.64" y="86.16" width="6.720000000000001" height="17.68" rx="1.92"
+        fill="none" stroke="#2E2926" stroke-width="1.5" stroke-dasharray="2.6 3"/>
+  <rect x="50" y="82" width="12" height="26" rx="3.5999999999999996" fill="#121010"/>
+  <rect x="52.64" y="86.16" width="6.720000000000001" height="17.68" rx="1.92"
+        fill="none" stroke="#2E2926" stroke-width="1.5" stroke-dasharray="2.6 3"/>
+  <rect x="7" y="4" width="48" height="120" rx="18" fill="url(#bsedan)" stroke="#000" stroke-width="2.9"/>
+  <clipPath id="ksedan"><rect x="7" y="4" width="48" height="120" rx="18"/></clipPath>
+  <g clip-path="url(#ksedan)">
+    
+    
+  <rect x="0" y="0" width="9" height="128" fill="#FFF" opacity=".13"/>
+  <rect x="53" y="0" width="9" height="128" fill="#000" opacity=".22"/>
+  </g>
+  <path d="M20 40L42 40L47 56L15 56Z" fill="url(#gsedan)"
+         stroke="#000" stroke-width="1.9" stroke-linejoin="round"/>
+  <rect x="15" y="56" width="32" height="26" rx="6" fill="none" stroke="#1e3a6c" stroke-width="1.7"/>
+  <path d="M16 82L46 82L42 93L20 93Z" fill="url(#gsedan)"
+         stroke="#000" stroke-width="1.9" stroke-linejoin="round"/>
+  
+  
+  <rect x="9.6" y="5.6" width="17.8" height="8.8" rx="4.4" fill="#FFF6DC" opacity=".32"/>
+  <rect x="11" y="7" width="15" height="6" rx="2.857142857142857" fill="#FFF6DC" stroke="#000" stroke-width="1.2"/>
+  <rect x="12.6" y="8.1" width="11.8" height="2.142857142857143" rx="1" fill="#FFF" opacity=".6"/>
+  <rect x="34.6" y="5.6" width="17.8" height="8.8" rx="4.4" fill="#FFF6DC" opacity=".32"/>
+  <rect x="36" y="7" width="15" height="6" rx="2.857142857142857" fill="#FFF6DC" stroke="#000" stroke-width="1.2"/>
+  <rect x="37.6" y="8.1" width="11.8" height="2.142857142857143" rx="1" fill="#FFF" opacity=".6"/>
+  
+  <rect x="9.6" y="114.6" width="17.8" height="8.8" rx="4.4" fill="#F0402F" opacity=".32"/>
+  <rect x="11" y="116" width="15" height="6" rx="2.857142857142857" fill="#F0402F" stroke="#000" stroke-width="1.2"/>
+  <rect x="12.6" y="117.1" width="11.8" height="2.142857142857143" rx="1" fill="#FFF" opacity=".6"/>
+  <rect x="34.6" y="114.6" width="17.8" height="8.8" rx="4.4" fill="#F0402F" opacity=".32"/>
+  <rect x="36" y="116" width="15" height="6" rx="2.857142857142857" fill="#F0402F" stroke="#000" stroke-width="1.2"/>
+  <rect x="37.6" y="117.1" width="11.8" height="2.142857142857143" rx="1" fill="#FFF" opacity=".6"/>
+</svg></div>
+    </div>
+    <div style="margin-top:10px;font-family:var(--display);font-size:15px;line-height:1;text-align:center;">COMMUTER</div>
+    <div style="margin-top:4px;font-size:10px;font-weight:900;letter-spacing:1.3px;color:var(--orange);font-variant-numeric:tabular-nums;">62 &times; 128</div>
+    <div style="margin-top:2px;font-size:9.5px;color:var(--muted);">threat 2</div>
+  </div>
+  <div style="display:flex;flex-direction:column;align-items:center;width:118px;flex:none;">
+    <div style="position:relative;width:98.25px;height:260px;border-radius:5px;overflow:hidden;
+         background:linear-gradient(180deg,#221F1B,#2B2823 30%,#26241F);
+         border-left:3px dashed rgba(239,233,220,.42);border-right:3px dashed rgba(239,233,220,.42);
+         display:flex;align-items:center;justify-content:center;">
+      <div style="transform:rotate(180deg);filter:drop-shadow(0 8px 10px rgba(0,0,0,.7));line-height:0;"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 62 128" width="62" height="128">
+  
+  <defs>
+    <linearGradient id="bsedan" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0%"   stop-color="#6e7072"/>
+      <stop offset="20%"  stop-color="#15181C"/>
+      <stop offset="68%"  stop-color="#15181C"/>
+      <stop offset="100%" stop-color="#0d0e11"/>
+    </linearGradient>
+    <linearGradient id="gsedan" x1="0" y1="0" x2="0.4" y2="1">
+      <stop offset="0%"   stop-color="#415866"/>
+      <stop offset="52%"  stop-color="#161F27"/>
+      <stop offset="100%" stop-color="#40474e"/>
+    </linearGradient>
+  </defs>
+  
+  <rect x="0" y="22" width="12" height="25" rx="3.5999999999999996" fill="#121010"/>
+  <rect x="2.64" y="26" width="6.720000000000001" height="17" rx="1.92"
+        fill="none" stroke="#2E2926" stroke-width="1.5" stroke-dasharray="2.6 3"/>
+  <rect x="50" y="22" width="12" height="25" rx="3.5999999999999996" fill="#121010"/>
+  <rect x="52.64" y="26" width="6.720000000000001" height="17" rx="1.92"
+        fill="none" stroke="#2E2926" stroke-width="1.5" stroke-dasharray="2.6 3"/>
+  
+  <rect x="0" y="82" width="12" height="26" rx="3.5999999999999996" fill="#121010"/>
+  <rect x="2.64" y="86.16" width="6.720000000000001" height="17.68" rx="1.92"
+        fill="none" stroke="#2E2926" stroke-width="1.5" stroke-dasharray="2.6 3"/>
+  <rect x="50" y="82" width="12" height="26" rx="3.5999999999999996" fill="#121010"/>
+  <rect x="52.64" y="86.16" width="6.720000000000001" height="17.68" rx="1.92"
+        fill="none" stroke="#2E2926" stroke-width="1.5" stroke-dasharray="2.6 3"/>
+  <rect x="7" y="4" width="48" height="120" rx="18" fill="url(#bsedan)" stroke="#000" stroke-width="2.9"/>
+  <clipPath id="ksedan"><rect x="7" y="4" width="48" height="120" rx="18"/></clipPath>
+  <g clip-path="url(#ksedan)">
+    <rect x="0" y="42" width="62" height="44" fill="#E8E3D8"/>
+      <rect x="0" y="38" width="62" height="4.5" fill="#99968f"/>
+      <rect x="0" y="85" width="62" height="4.5" fill="#99968f"/>
+    
+  <rect x="0" y="0" width="9" height="128" fill="#FFF" opacity=".13"/>
+  <rect x="53" y="0" width="9" height="128" fill="#000" opacity=".22"/>
+  </g>
+  <path d="M20 40L42 40L47 56L15 56Z" fill="url(#gsedan)"
+         stroke="#000" stroke-width="1.9" stroke-linejoin="round"/>
+  <rect x="15" y="56" width="32" height="26" rx="6" fill="none" stroke="#0d0f12" stroke-width="1.7"/>
+  <path d="M16 82L46 82L42 93L20 93Z" fill="url(#gsedan)"
+         stroke="#000" stroke-width="1.9" stroke-linejoin="round"/>
+  <rect x="14" y="60" width="34" height="11" rx="3" fill="#3D7BFF" opacity=".22"/>
+    <rect x="15" y="62" width="32" height="9" rx="2.8" fill="#0D0B0A" stroke="#000" stroke-width="1.5"/>
+    <rect x="17" y="64" width="13" height="5.2" rx="1.8" fill="#3D7BFF"/>
+    <rect x="32" y="64" width="13" height="5.2" rx="1.8" fill="#F0402F"/>
+  
+  <rect x="9.6" y="5.6" width="17.8" height="8.8" rx="4.4" fill="#FFF6DC" opacity=".32"/>
+  <rect x="11" y="7" width="15" height="6" rx="2.857142857142857" fill="#FFF6DC" stroke="#000" stroke-width="1.2"/>
+  <rect x="12.6" y="8.1" width="11.8" height="2.142857142857143" rx="1" fill="#FFF" opacity=".6"/>
+  <rect x="34.6" y="5.6" width="17.8" height="8.8" rx="4.4" fill="#FFF6DC" opacity=".32"/>
+  <rect x="36" y="7" width="15" height="6" rx="2.857142857142857" fill="#FFF6DC" stroke="#000" stroke-width="1.2"/>
+  <rect x="37.6" y="8.1" width="11.8" height="2.142857142857143" rx="1" fill="#FFF" opacity=".6"/>
+  
+  <rect x="9.6" y="114.6" width="17.8" height="8.8" rx="4.4" fill="#F0402F" opacity=".32"/>
+  <rect x="11" y="116" width="15" height="6" rx="2.857142857142857" fill="#F0402F" stroke="#000" stroke-width="1.2"/>
+  <rect x="12.6" y="117.1" width="11.8" height="2.142857142857143" rx="1" fill="#FFF" opacity=".6"/>
+  <rect x="34.6" y="114.6" width="17.8" height="8.8" rx="4.4" fill="#F0402F" opacity=".32"/>
+  <rect x="36" y="116" width="15" height="6" rx="2.857142857142857" fill="#F0402F" stroke="#000" stroke-width="1.2"/>
+  <rect x="37.6" y="117.1" width="11.8" height="2.142857142857143" rx="1" fill="#FFF" opacity=".6"/>
+</svg></div>
+    </div>
+    <div style="margin-top:10px;font-family:var(--display);font-size:15px;line-height:1;text-align:center;">PATROL</div>
+    <div style="margin-top:4px;font-size:10px;font-weight:900;letter-spacing:1.3px;color:var(--orange);font-variant-numeric:tabular-nums;">62 &times; 128</div>
+    <div style="margin-top:2px;font-size:9.5px;color:var(--muted);">threat 2</div>
+  </div>
+  <div style="display:flex;flex-direction:column;align-items:center;width:118px;flex:none;">
+    <div style="position:relative;width:98.25px;height:260px;border-radius:5px;overflow:hidden;
+         background:linear-gradient(180deg,#221F1B,#2B2823 30%,#26241F);
+         border-left:3px dashed rgba(239,233,220,.42);border-right:3px dashed rgba(239,233,220,.42);
+         display:flex;align-items:center;justify-content:center;">
+      <div style="transform:rotate(180deg);filter:drop-shadow(0 8px 10px rgba(0,0,0,.7));line-height:0;"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 70 158" width="70" height="158">
+  
+  <defs>
+    <linearGradient id="bvan" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0%"   stop-color="#e6e2da"/>
+      <stop offset="20%"  stop-color="#D6D0C4"/>
+      <stop offset="68%"  stop-color="#D6D0C4"/>
+      <stop offset="100%" stop-color="#807d76"/>
+    </linearGradient>
+    <linearGradient id="gvan" x1="0" y1="0" x2="0.4" y2="1">
+      <stop offset="0%"   stop-color="#415866"/>
+      <stop offset="52%"  stop-color="#161F27"/>
+      <stop offset="100%" stop-color="#40474e"/>
+    </linearGradient>
+  </defs>
+  
+  <rect x="0" y="24" width="13" height="26" rx="3.9" fill="#121010"/>
+  <rect x="2.86" y="28.16" width="7.280000000000001" height="17.68" rx="2.08"
+        fill="none" stroke="#2E2926" stroke-width="1.5" stroke-dasharray="2.6 3"/>
+  <rect x="57" y="24" width="13" height="26" rx="3.9" fill="#121010"/>
+  <rect x="59.86" y="28.16" width="7.280000000000001" height="17.68" rx="2.08"
+        fill="none" stroke="#2E2926" stroke-width="1.5" stroke-dasharray="2.6 3"/>
+  
+  <rect x="0" y="112" width="13" height="27" rx="3.9" fill="#121010"/>
+  <rect x="2.86" y="116.32" width="7.280000000000001" height="18.360000000000003" rx="2.08"
+        fill="none" stroke="#2E2926" stroke-width="1.5" stroke-dasharray="2.6 3"/>
+  <rect x="57" y="112" width="13" height="27" rx="3.9" fill="#121010"/>
+  <rect x="59.86" y="116.32" width="7.280000000000001" height="18.360000000000003" rx="2.08"
+        fill="none" stroke="#2E2926" stroke-width="1.5" stroke-dasharray="2.6 3"/>
+  <rect x="7" y="4" width="56" height="150" rx="14" fill="url(#bvan)" stroke="#000" stroke-width="2.9"/>
+  <clipPath id="kvan"><rect x="7" y="4" width="56" height="150" rx="14"/></clipPath>
+  <g clip-path="url(#kvan)">
+  <rect x="0" y="0" width="10" height="158" fill="#FFF" opacity=".13"/>
+  <rect x="60" y="0" width="10" height="158" fill="#000" opacity=".22"/></g>
+  <path d="M22 12L48 12L54 28L16 28Z" fill="url(#gvan)"
+         stroke="#000" stroke-width="1.9" stroke-linejoin="round"/>
+  <rect x="11" y="34" width="48" height="112" rx="7" fill="#d8d2c7" stroke="#000" stroke-width="2.2"/>
+  <rect x="17" y="62" width="36" height="46" rx="4" fill="#F28D35"/>
+  <rect x="15" y="46" width="40" height="2.2" rx="1.1" fill="#9a968d" opacity=".65"/><rect x="15" y="76" width="40" height="2.2" rx="1.1" fill="#9a968d" opacity=".65"/><rect x="15" y="106" width="40" height="2.2" rx="1.1" fill="#9a968d" opacity=".65"/><rect x="15" y="134" width="40" height="2.2" rx="1.1" fill="#9a968d" opacity=".65"/>
+  
+  <rect x="10.6" y="5.6" width="17.8" height="8.6" rx="4.3" fill="#FFF6DC" opacity=".32"/>
+  <rect x="12" y="7" width="15" height="5.8" rx="2.761904761904762" fill="#FFF6DC" stroke="#000" stroke-width="1.2"/>
+  <rect x="13.6" y="8.1" width="11.8" height="2.0714285714285716" rx="0.9666666666666667" fill="#FFF" opacity=".6"/>
+  <rect x="41.6" y="5.6" width="17.8" height="8.6" rx="4.3" fill="#FFF6DC" opacity=".32"/>
+  <rect x="43" y="7" width="15" height="5.8" rx="2.761904761904762" fill="#FFF6DC" stroke="#000" stroke-width="1.2"/>
+  <rect x="44.6" y="8.1" width="11.8" height="2.0714285714285716" rx="0.9666666666666667" fill="#FFF" opacity=".6"/>
+  
+  <rect x="10.6" y="144.6" width="17.8" height="8.6" rx="4.3" fill="#F0402F" opacity=".32"/>
+  <rect x="12" y="146" width="15" height="5.8" rx="2.761904761904762" fill="#F0402F" stroke="#000" stroke-width="1.2"/>
+  <rect x="13.6" y="147.1" width="11.8" height="2.0714285714285716" rx="0.9666666666666667" fill="#FFF" opacity=".6"/>
+  <rect x="41.6" y="144.6" width="17.8" height="8.6" rx="4.3" fill="#F0402F" opacity=".32"/>
+  <rect x="43" y="146" width="15" height="5.8" rx="2.761904761904762" fill="#F0402F" stroke="#000" stroke-width="1.2"/>
+  <rect x="44.6" y="147.1" width="11.8" height="2.0714285714285716" rx="0.9666666666666667" fill="#FFF" opacity=".6"/>
+</svg></div>
+    </div>
+    <div style="margin-top:10px;font-family:var(--display);font-size:15px;line-height:1;text-align:center;">PARCEL</div>
+    <div style="margin-top:4px;font-size:10px;font-weight:900;letter-spacing:1.3px;color:var(--orange);font-variant-numeric:tabular-nums;">70 &times; 158</div>
+    <div style="margin-top:2px;font-size:9.5px;color:var(--muted);">threat 3</div>
+  </div>
+  <div style="display:flex;flex-direction:column;align-items:center;width:118px;flex:none;">
+    <div style="position:relative;width:98.25px;height:260px;border-radius:5px;overflow:hidden;
+         background:linear-gradient(180deg,#221F1B,#2B2823 30%,#26241F);
+         border-left:3px dashed rgba(239,233,220,.42);border-right:3px dashed rgba(239,233,220,.42);
+         display:flex;align-items:center;justify-content:center;">
+      <div style="transform:rotate(180deg);filter:drop-shadow(0 8px 10px rgba(0,0,0,.7));line-height:0;"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 74 182" width="74" height="182">
+  
+  <defs>
+    <linearGradient id="bbox" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0%"   stop-color="#bad1da"/>
+      <stop offset="20%"  stop-color="#8FB4C4"/>
+      <stop offset="68%"  stop-color="#8FB4C4"/>
+      <stop offset="100%" stop-color="#566c76"/>
+    </linearGradient>
+    <linearGradient id="gbox" x1="0" y1="0" x2="0.4" y2="1">
+      <stop offset="0%"   stop-color="#415866"/>
+      <stop offset="52%"  stop-color="#161F27"/>
+      <stop offset="100%" stop-color="#40474e"/>
+    </linearGradient>
+  </defs>
+  
+  <rect x="0" y="20" width="13" height="26" rx="3.9" fill="#121010"/>
+  <rect x="2.86" y="24.16" width="7.280000000000001" height="17.68" rx="2.08"
+        fill="none" stroke="#2E2926" stroke-width="1.5" stroke-dasharray="2.6 3"/>
+  <rect x="61" y="20" width="13" height="26" rx="3.9" fill="#121010"/>
+  <rect x="63.86" y="24.16" width="7.280000000000001" height="17.68" rx="2.08"
+        fill="none" stroke="#2E2926" stroke-width="1.5" stroke-dasharray="2.6 3"/>
+  
+  <rect x="0" y="126" width="13" height="25" rx="3.9" fill="#121010"/>
+  <rect x="2.86" y="130" width="7.280000000000001" height="17" rx="2.08"
+        fill="none" stroke="#2E2926" stroke-width="1.5" stroke-dasharray="2.6 3"/>
+  <rect x="61" y="126" width="13" height="25" rx="3.9" fill="#121010"/>
+  <rect x="63.86" y="130" width="7.280000000000001" height="17" rx="2.08"
+        fill="none" stroke="#2E2926" stroke-width="1.5" stroke-dasharray="2.6 3"/>
+  
+  <rect x="0" y="150" width="13" height="25" rx="3.9" fill="#121010"/>
+  <rect x="2.86" y="154" width="7.280000000000001" height="17" rx="2.08"
+        fill="none" stroke="#2E2926" stroke-width="1.5" stroke-dasharray="2.6 3"/>
+  <rect x="61" y="150" width="13" height="25" rx="3.9" fill="#121010"/>
+  <rect x="63.86" y="154" width="7.280000000000001" height="17" rx="2.08"
+        fill="none" stroke="#2E2926" stroke-width="1.5" stroke-dasharray="2.6 3"/>
+  <rect x="9" y="4" width="56" height="42" rx="12" fill="url(#bbox)" stroke="#000" stroke-width="2.9"/>
+  <path d="M23 12L51 12L57 28L17 28Z" fill="url(#gbox)"
+         stroke="#000" stroke-width="1.9" stroke-linejoin="round"/>
+  <rect x="6" y="40" width="62" height="138" rx="8" fill="#9abcca" stroke="#000" stroke-width="2.9"/>
+  <rect x="12" y="47" width="50" height="124" rx="4" fill="none" stroke="#67828d" stroke-width="1.7"/>
+  <rect x="12" y="60" width="50" height="2.4" rx="1.2" fill="#6d8995" opacity=".6"/><rect x="12" y="86" width="50" height="2.4" rx="1.2" fill="#6d8995" opacity=".6"/><rect x="12" y="112" width="50" height="2.4" rx="1.2" fill="#6d8995" opacity=".6"/><rect x="12" y="138" width="50" height="2.4" rx="1.2" fill="#6d8995" opacity=".6"/><rect x="12" y="160" width="50" height="2.4" rx="1.2" fill="#6d8995" opacity=".6"/>
+  <rect x="17" y="76" width="40" height="52" rx="4" fill="#E8E3D8"/>
+  <rect x="6" y="40" width="10" height="138" fill="#FFF" opacity=".10"/>
+  <rect x="58" y="40" width="10" height="138" fill="#000" opacity=".18"/>
+  
+  <rect x="11.6" y="4.6" width="18.8" height="8.8" rx="4.4" fill="#FFF6DC" opacity=".32"/>
+  <rect x="13" y="6" width="16" height="6" rx="2.857142857142857" fill="#FFF6DC" stroke="#000" stroke-width="1.2"/>
+  <rect x="14.6" y="7.1" width="12.8" height="2.142857142857143" rx="1" fill="#FFF" opacity=".6"/>
+  <rect x="43.6" y="4.6" width="18.8" height="8.8" rx="4.4" fill="#FFF6DC" opacity=".32"/>
+  <rect x="45" y="6" width="16" height="6" rx="2.857142857142857" fill="#FFF6DC" stroke="#000" stroke-width="1.2"/>
+  <rect x="46.6" y="7.1" width="12.8" height="2.142857142857143" rx="1" fill="#FFF" opacity=".6"/>
+  
+  <rect x="11.6" y="167.6" width="18.8" height="9" rx="4.5" fill="#F0402F" opacity=".32"/>
+  <rect x="13" y="169" width="16" height="6.2" rx="2.9523809523809526" fill="#F0402F" stroke="#000" stroke-width="1.2"/>
+  <rect x="14.6" y="170.1" width="12.8" height="2.2142857142857144" rx="1.0333333333333334" fill="#FFF" opacity=".6"/>
+  <rect x="43.6" y="167.6" width="18.8" height="9" rx="4.5" fill="#F0402F" opacity=".32"/>
+  <rect x="45" y="169" width="16" height="6.2" rx="2.9523809523809526" fill="#F0402F" stroke="#000" stroke-width="1.2"/>
+  <rect x="46.6" y="170.1" width="12.8" height="2.2142857142857144" rx="1.0333333333333334" fill="#FFF" opacity=".6"/>
+</svg></div>
+    </div>
+    <div style="margin-top:10px;font-family:var(--display);font-size:15px;line-height:1;text-align:center;">COLD STORE</div>
+    <div style="margin-top:4px;font-size:10px;font-weight:900;letter-spacing:1.3px;color:var(--orange);font-variant-numeric:tabular-nums;">74 &times; 182</div>
+    <div style="margin-top:2px;font-size:9.5px;color:var(--muted);">threat 4</div>
+  </div>
+  <div style="display:flex;flex-direction:column;align-items:center;width:118px;flex:none;">
+    <div style="position:relative;width:98.25px;height:260px;border-radius:5px;overflow:hidden;
+         background:linear-gradient(180deg,#221F1B,#2B2823 30%,#26241F);
+         border-left:3px dashed rgba(239,233,220,.42);border-right:3px dashed rgba(239,233,220,.42);
+         display:flex;align-items:center;justify-content:center;">
+      <div style="transform:rotate(180deg);filter:drop-shadow(0 8px 10px rgba(0,0,0,.7));line-height:0;"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 76 234" width="76" height="234">
+  
+  <defs>
+    <linearGradient id="bsemi" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0%"   stop-color="#ce817c"/>
+      <stop offset="20%"  stop-color="#B0332B"/>
+      <stop offset="68%"  stop-color="#B0332B"/>
+      <stop offset="100%" stop-color="#6a1f1a"/>
+    </linearGradient>
+    <linearGradient id="gsemi" x1="0" y1="0" x2="0.4" y2="1">
+      <stop offset="0%"   stop-color="#415866"/>
+      <stop offset="52%"  stop-color="#161F27"/>
+      <stop offset="100%" stop-color="#40474e"/>
+    </linearGradient>
+  </defs>
+  
+  <rect x="0" y="176" width="13" height="26" rx="3.9" fill="#121010"/>
+  <rect x="2.86" y="180.16" width="7.280000000000001" height="17.68" rx="2.08"
+        fill="none" stroke="#2E2926" stroke-width="1.5" stroke-dasharray="2.6 3"/>
+  <rect x="63" y="176" width="13" height="26" rx="3.9" fill="#121010"/>
+  <rect x="65.86" y="180.16" width="7.280000000000001" height="17.68" rx="2.08"
+        fill="none" stroke="#2E2926" stroke-width="1.5" stroke-dasharray="2.6 3"/>
+  
+  <rect x="0" y="202" width="13" height="26" rx="3.9" fill="#121010"/>
+  <rect x="2.86" y="206.16" width="7.280000000000001" height="17.68" rx="2.08"
+        fill="none" stroke="#2E2926" stroke-width="1.5" stroke-dasharray="2.6 3"/>
+  <rect x="63" y="202" width="13" height="26" rx="3.9" fill="#121010"/>
+  <rect x="65.86" y="206.16" width="7.280000000000001" height="17.68" rx="2.08"
+        fill="none" stroke="#2E2926" stroke-width="1.5" stroke-dasharray="2.6 3"/>
+  <rect x="5" y="70" width="66" height="160" rx="8" fill="#c3645e" stroke="#000" stroke-width="2.9"/>
+  <rect x="11" y="77" width="54" height="146" rx="4" fill="none" stroke="#822620" stroke-width="1.7"/>
+  <rect x="11" y="92" width="54" height="2.4" rx="1.2" fill="#892822" opacity=".6"/><rect x="11" y="118" width="54" height="2.4" rx="1.2" fill="#892822" opacity=".6"/><rect x="11" y="144" width="54" height="2.4" rx="1.2" fill="#892822" opacity=".6"/><rect x="11" y="170" width="54" height="2.4" rx="1.2" fill="#892822" opacity=".6"/><rect x="11" y="196" width="54" height="2.4" rx="1.2" fill="#892822" opacity=".6"/>
+  <rect x="16" y="108" width="44" height="60" rx="4" fill="#E8E3D8"/>
+  <rect x="5" y="70" width="11" height="160" fill="#FFF" opacity=".10"/>
+  <rect x="60" y="70" width="11" height="160" fill="#000" opacity=".18"/>
+  <rect x="27" y="60" width="22" height="14" rx="3" fill="#171412" stroke="#000" stroke-width="1.8"/>
+  
+  <rect x="0" y="20" width="14" height="28" rx="4.2" fill="#121010"/>
+  <rect x="3.08" y="24.48" width="7.840000000000001" height="19.040000000000003" rx="2.24"
+        fill="none" stroke="#2E2926" stroke-width="1.5" stroke-dasharray="2.6 3"/>
+  <rect x="62" y="20" width="14" height="28" rx="4.2" fill="#121010"/>
+  <rect x="65.08" y="24.48" width="7.840000000000001" height="19.040000000000003" rx="2.24"
+        fill="none" stroke="#2E2926" stroke-width="1.5" stroke-dasharray="2.6 3"/>
+  <rect x="8" y="4" width="60" height="60" rx="13" fill="url(#bsemi)" stroke="#000" stroke-width="2.9"/>
+  <clipPath id="ksemi"><rect x="8" y="4" width="60" height="60" rx="13"/></clipPath>
+  <g clip-path="url(#ksemi)">
+  <rect x="0" y="0" width="11" height="234" fill="#FFF" opacity=".13"/>
+  <rect x="65" y="0" width="11" height="234" fill="#000" opacity=".22"/></g>
+  <path d="M23 12L53 12L60 30L16 30Z" fill="url(#gsemi)"
+         stroke="#000" stroke-width="1.9" stroke-linejoin="round"/>
+  <rect x="17" y="34" width="42" height="24" rx="6" fill="none" stroke="#71211c" stroke-width="1.7"/>
+  <rect x="2" y="30" width="7" height="28" rx="3.4" fill="#96938C" stroke="#000" stroke-width="1.7"/>
+  <rect x="67" y="30" width="7" height="28" rx="3.4" fill="#78756F" stroke="#000" stroke-width="1.7"/>
+  
+  <rect x="11.6" y="4.6" width="19.8" height="9" rx="4.5" fill="#FFF6DC" opacity=".32"/>
+  <rect x="13" y="6" width="17" height="6.2" rx="2.9523809523809526" fill="#FFF6DC" stroke="#000" stroke-width="1.2"/>
+  <rect x="14.6" y="7.1" width="13.8" height="2.2142857142857144" rx="1.0333333333333334" fill="#FFF" opacity=".6"/>
+  <rect x="44.6" y="4.6" width="19.8" height="9" rx="4.5" fill="#FFF6DC" opacity=".32"/>
+  <rect x="46" y="6" width="17" height="6.2" rx="2.9523809523809526" fill="#FFF6DC" stroke="#000" stroke-width="1.2"/>
+  <rect x="47.6" y="7.1" width="13.8" height="2.2142857142857144" rx="1.0333333333333334" fill="#FFF" opacity=".6"/>
+  
+  <rect x="11.6" y="218.6" width="19.8" height="9.2" rx="4.6" fill="#F0402F" opacity=".32"/>
+  <rect x="13" y="220" width="17" height="6.4" rx="3.0476190476190474" fill="#F0402F" stroke="#000" stroke-width="1.2"/>
+  <rect x="14.6" y="221.1" width="13.8" height="2.285714285714286" rx="1.0666666666666667" fill="#FFF" opacity=".6"/>
+  <rect x="44.6" y="218.6" width="19.8" height="9.2" rx="4.6" fill="#F0402F" opacity=".32"/>
+  <rect x="46" y="220" width="17" height="6.4" rx="3.0476190476190474" fill="#F0402F" stroke="#000" stroke-width="1.2"/>
+  <rect x="47.6" y="221.1" width="13.8" height="2.285714285714286" rx="1.0666666666666667" fill="#FFF" opacity=".6"/>
+</svg></div>
+    </div>
+    <div style="margin-top:10px;font-family:var(--display);font-size:15px;line-height:1;text-align:center;">LEVIATHAN</div>
+    <div style="margin-top:4px;font-size:10px;font-weight:900;letter-spacing:1.3px;color:var(--orange);font-variant-numeric:tabular-nums;">76 &times; 234</div>
+    <div style="margin-top:2px;font-size:9.5px;color:var(--muted);">threat 5</div>
+  </div></div>
+<div style="margin:14px 0 0;font-size:11px;color:var(--muted);max-width:600px;line-height:1.55;">
+  <b style="color:var(--cream);">Parcel leaves 28pt of lane.</b> A Hatpin fits beside it, a Boarhound
+  does not &mdash; the single relationship that turns the garage into a decision. All nine chassis
+  are original SVG, 68KB total, recolourable at runtime.
+</div>
+  </div>
+</figure>
+  </div>
+</section>
+</div>
+</x-dc>
+<script data-dc-script data-props='{"$preview":{"width":1000,"height":5050}}'>
+class Component extends DCLogic {}
+</script>
+</body>
+</html>

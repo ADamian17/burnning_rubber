@@ -1,0 +1,67 @@
+/*
+ * The run fills the screen frame and bleeds out through its padding, so the
+ * road runs edge to edge.
+ *
+ * The negative margins cancel `.screen`'s padding exactly, safe areas included.
+ * That is deliberate: the game letterboxes itself against its 393×852 design
+ * box and positions its own HUD clear of the notch and the thumb zone, so it
+ * wants the whole box. Padding here would letterbox it twice — once by the
+ * frame, once by the engine — and inset the road for no reason.
+ *
+ * `align-self: stretch` rather than `width: 100%`, because `.screen` centres
+ * its children on the cross axis; stretching is what lets the negative margins
+ * widen the box instead of just shifting it left.
+ */
+.layer {
+  position: relative;
+  display: flex;
+  flex: 1 1 auto;
+  align-self: stretch;
+  min-height: 0;
+  margin: calc(-1 * (var(--safe-top) + 8px)) -16px
+    calc(-1 * (var(--safe-bottom) + 18px));
+}
+
+/*
+ * Sized by the layer, not by itself, and absolutely so.
+ *
+ * A canvas carries an intrinsic aspect ratio from its width/height attributes,
+ * and `createStage` writes those attributes from the measured box. Let flex
+ * size it and the two feed each other: the element stretches to the frame's
+ * height, the default 300×150 ratio makes it twice as wide as it is tall, the
+ * stage measures that and writes it back. The road ends up 1666px wide, off the
+ * side of the screen.
+ *
+ * Taking it out of flow breaks the loop — `inset: 0` sizes it from the layer's
+ * box, which the attributes cannot influence.
+ *
+ * `display: block` because a canvas is inline by default, and the line box
+ * under an inline element would leave a few pixels of ink below the road.
+ */
+.stage {
+  position: absolute;
+  inset: 0;
+  display: block;
+  width: 100%;
+  height: 100%;
+  /* every touch belongs to the game, never to the scroller */
+  touch-action: none;
+}
+
+/*
+ * Back inside the safe area the canvas just escaped, so the control clears the
+ * notch even though the road runs under it.
+ */
+.pause {
+  position: absolute;
+  right: 16px;
+  top: calc(var(--safe-top) + 12px);
+}
+
+/* The panel's button stack. */
+.actions {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}

@@ -1,0 +1,18 @@
+[
+  {
+    "slug": "icon",
+    "note": "Default. Full-bleed, no transparency — iOS applies its own mask."
+  },
+  {
+    "slug": "icon-dark",
+    "note": "iOS 18 dark. Keeps its ground — black marks on a transparent field would vanish."
+  },
+  {
+    "slug": "icon-tinted",
+    "note": "iOS 18 tinted. Greyscale by luminance; iOS supplies the colour."
+  },
+  {
+    "slug": "splash",
+    "note": "Native splash. Ink and glow only — the wordmark belongs to the web layer."
+  }
+]

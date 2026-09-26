@@ -1,0 +1,29 @@
+/*
+ * The splash's tap target: the whole screen is one button, because tapping
+ * anywhere is the only action here.
+ *
+ * It used to be the `.screen` element itself, carrying both the frame and the
+ * centring. RootLayout owns the frame now, so this only has to claim the space
+ * it is given — `flex: 1` — and centre within it.
+ *
+ * The resets are not tidiness. A button brings control styling with it:
+ * `buttonface` paints over the ink ground and the default border draws a line
+ * round the whole screen. Nothing up the tree sets a background — it inherits
+ * #root's — so the button's has to be cleared rather than overridden.
+ */
+.tap {
+  appearance: none;
+  background: transparent;
+  border: 0;
+  color: inherit;
+  font: inherit;
+  text-align: inherit;
+
+  flex: 1 1 auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 26px;
+  cursor: pointer;
+}

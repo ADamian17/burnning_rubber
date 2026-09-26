@@ -1,0 +1,26 @@
+[
+  {
+    "slug": "coin",
+    "name": "COIN",
+    "size": 34,
+    "note": "Banked the instant it is taken, so a short run still pays."
+  },
+  {
+    "slug": "shield",
+    "name": "SHIELD",
+    "size": 36,
+    "note": "Eats one crash. Cyan to match the bubble it puts around the car."
+  },
+  {
+    "slug": "slowmo",
+    "name": "SLOW-MO",
+    "size": 36,
+    "note": "The paler cyan of its pill; the real cue is the full-screen wash."
+  },
+  {
+    "slug": "magnet",
+    "name": "MAGNET",
+    "size": 36,
+    "note": "The only pickup that acts on other pickups."
+  }
+]

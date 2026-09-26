@@ -1,0 +1,45 @@
+:root {
+  --ink: #0a0806;
+  --orange: #f28d35;
+  --hot: #f77503;
+  --lite: #ffb765;
+  --cream: #f5efe4;
+  --muted: #9c9184;
+  --gold: #ffc93c;
+  --red: #e4322b;
+  --green: #7fe59b;
+  --display: 'Underdog', 'Chalkboard SE', cursive;
+  --ui: 'Outfit', 'Avenir Next', system-ui, sans-serif;
+  --gap-head: 24px;
+  --safe-top: env(safe-area-inset-top, 0px);
+  --safe-bottom: env(safe-area-inset-bottom, 0px);
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html,
+body {
+  margin: 0;
+  height: 100%;
+  background: var(--ink);
+  overflow: hidden;
+  /* kill the rubber-band scroll that otherwise drags the whole game */
+  overscroll-behavior: none;
+  -webkit-user-select: none;
+  user-select: none;
+  -webkit-tap-highlight-color: transparent;
+  font-family: var(--ui);
+  color: var(--cream);
+  inset: 0;
+}
+
+/* #stage {
+  display: block;
+  width: 100vw;
+  height: 100vh;
+  touch-action: none;
+} */

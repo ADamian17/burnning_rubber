@@ -1,0 +1,661 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<meta name="design_doc_mode" content="canvas">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Underdog&family=Outfit:wght@400;500;600;700;800;900&display=swap">
+<style>
+:root{
+      --ink:#0A0806; --panel:#14100C; --panel2:#1E1813; --edge:#3A2E22;
+      --orange:#F28D35; --hot:#f77503; --lite:#FFB765;
+      --cream:#F5EFE4; --muted:#9C9184;
+      --red:#E4322B; --gold:#FFC93C; --cyan:#35D6F2; --magenta:#F2359B;
+      --asphalt:#26241F; --lane:#EFE9DC;
+      --display:'Underdog','Chalkboard SE','Comic Sans MS',cursive;
+      --ui:'Outfit','Avenir Next','Segoe UI',system-ui,sans-serif;
+    }
+*{box-sizing:border-box;}
+a{color:var(--orange);}
+a:hover{color:var(--hot);}
+:root{
+      --ink:#0A0806; --orange:#F28D35; --hot:#f77503; --lite:#FFB765;
+      --cream:#F5EFE4; --muted:#9C9184; --gold:#FFC93C; --cyan:#35D6F2; --magenta:#F2359B;
+      --lane:#EFE9DC;
+      --display:'Underdog','Chalkboard SE','Comic Sans MS',cursive;
+      --ui:'Outfit','Avenir Next','Segoe UI',system-ui,sans-serif;
+    }
+:root{
+      --ink:#0A0806; --orange:#F28D35; --hot:#f77503; --lite:#FFB765;
+      --cream:#F5EFE4; --muted:#9C9184; --gold:#FFC93C; --cyan:#35D6F2; --red:#E4322B;
+      --lane:#EFE9DC;
+      --display:'Underdog','Chalkboard SE','Comic Sans MS',cursive;
+      --ui:'Outfit','Avenir Next','Segoe UI',system-ui,sans-serif;
+    }
+:root{
+      --ink:#0A0806; --orange:#F28D35; --hot:#f77503; --lite:#FFB765;
+      --cream:#F5EFE4; --muted:#9C9184; --gold:#FFC93C; --red:#E4322B;
+      --lane:#EFE9DC;
+      --display:'Underdog','Chalkboard SE','Comic Sans MS',cursive;
+      --ui:'Outfit','Avenir Next','Segoe UI',system-ui,sans-serif;
+    }
+:root{
+      --ink:#0A0806; --orange:#F28D35; --hot:#f77503; --lite:#FFB765;
+      --cream:#F5EFE4; --muted:#9C9184; --gold:#FFC93C; --cyan:#35D6F2;
+      --magenta:#F2359B; --red:#E4322B; --lane:#EFE9DC;
+      --display:'Underdog','Chalkboard SE','Comic Sans MS',cursive;
+      --ui:'Outfit','Avenir Next','Segoe UI',system-ui,sans-serif;
+    }
+
+body{margin:0;background:#070605;}
+.car-traffic-patrol{background-image:url("data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA2MiAxMjgiIHdpZHRoPSI2MiIgaGVpZ2h0PSIxMjgiPgogIAogIDxkZWZzPgogICAgPGxpbmVhckdyYWRpZW50IGlkPSJic2VkYW4iIHgxPSIwIiB5MT0iMCIgeDI9IjEiIHkyPSIwIj4KICAgICAgPHN0b3Agb2Zmc2V0PSIwJSIgICBzdG9wLWNvbG9yPSIjNmU3MDcyIi8+CiAgICAgIDxzdG9wIG9mZnNldD0iMjAlIiAgc3RvcC1jb2xvcj0iIzE1MTgxQyIvPgogICAgICA8c3RvcCBvZmZzZXQ9IjY4JSIgIHN0b3AtY29sb3I9IiMxNTE4MUMiLz4KICAgICAgPHN0b3Agb2Zmc2V0PSIxMDAlIiBzdG9wLWNvbG9yPSIjMGQwZTExIi8+CiAgICA8L2xpbmVhckdyYWRpZW50PgogICAgPGxpbmVhckdyYWRpZW50IGlkPSJnc2VkYW4iIHgxPSIwIiB5MT0iMCIgeDI9IjAuNCIgeTI9IjEiPgogICAgICA8c3RvcCBvZmZzZXQ9IjAlIiAgIHN0b3AtY29sb3I9IiM0MTU4NjYiLz4KICAgICAgPHN0b3Agb2Zmc2V0PSI1MiUiICBzdG9wLWNvbG9yPSIjMTYxRjI3Ii8+CiAgICAgIDxzdG9wIG9mZnNldD0iMTAwJSIgc3RvcC1jb2xvcj0iIzQwNDc0ZSIvPgogICAgPC9saW5lYXJHcmFkaWVudD4KICA8L2RlZnM+CiAgCiAgPHJlY3QgeD0iMCIgeT0iMjIiIHdpZHRoPSIxMiIgaGVpZ2h0PSIyNSIgcng9IjMuNTk5OTk5OTk5OTk5OTk5NiIgZmlsbD0iIzEyMTAxMCIvPgogIDxyZWN0IHg9IjIuNjQiIHk9IjI2IiB3aWR0aD0iNi43MjAwMDAwMDAwMDAwMDEiIGhlaWdodD0iMTciIHJ4PSIxLjkyIgogICAgICAgIGZpbGw9Im5vbmUiIHN0cm9rZT0iIzJFMjkyNiIgc3Ryb2tlLXdpZHRoPSIxLjUiIHN0cm9rZS1kYXNoYXJyYXk9IjIuNiAzIi8+CiAgPHJlY3QgeD0iNTAiIHk9IjIyIiB3aWR0aD0iMTIiIGhlaWdodD0iMjUiIHJ4PSIzLjU5OTk5OTk5OTk5OTk5OTYiIGZpbGw9IiMxMjEwMTAiLz4KICA8cmVjdCB4PSI1Mi42NCIgeT0iMjYiIHdpZHRoPSI2LjcyMDAwMDAwMDAwMDAwMSIgaGVpZ2h0PSIxNyIgcng9IjEuOTIiCiAgICAgICAgZmlsbD0ibm9uZSIgc3Ryb2tlPSIjMkUyOTI2IiBzdHJva2Utd2lkdGg9IjEuNSIgc3Ryb2tlLWRhc2hhcnJheT0iMi42IDMiLz4KICAKICA8cmVjdCB4PSIwIiB5PSI4MiIgd2lkdGg9IjEyIiBoZWlnaHQ9IjI2IiByeD0iMy41OTk5OTk5OTk5OTk5OTk2IiBmaWxsPSIjMTIxMDEwIi8+CiAgPHJlY3QgeD0iMi42NCIgeT0iODYuMTYiIHdpZHRoPSI2LjcyMDAwMDAwMDAwMDAwMSIgaGVpZ2h0PSIxNy42OCIgcng9IjEuOTIiCiAgICAgICAgZmlsbD0ibm9uZSIgc3Ryb2tlPSIjMkUyOTI2IiBzdHJva2Utd2lkdGg9IjEuNSIgc3Ryb2tlLWRhc2hhcnJheT0iMi42IDMiLz4KICA8cmVjdCB4PSI1MCIgeT0iODIiIHdpZHRoPSIxMiIgaGVpZ2h0PSIyNiIgcng9IjMuNTk5OTk5OTk5OTk5OTk5NiIgZmlsbD0iIzEyMTAxMCIvPgogIDxyZWN0IHg9IjUyLjY0IiB5PSI4Ni4xNiIgd2lkdGg9IjYuNzIwMDAwMDAwMDAwMDAxIiBoZWlnaHQ9IjE3LjY4IiByeD0iMS45MiIKICAgICAgICBmaWxsPSJub25lIiBzdHJva2U9IiMyRTI5MjYiIHN0cm9rZS13aWR0aD0iMS41IiBzdHJva2UtZGFzaGFycmF5PSIyLjYgMyIvPgogIDxyZWN0IHg9IjciIHk9IjQiIHdpZHRoPSI0OCIgaGVpZ2h0PSIxMjAiIHJ4PSIxOCIgZmlsbD0idXJsKCNic2VkYW4pIiBzdHJva2U9IiMwMDAiIHN0cm9rZS13aWR0aD0iMi45Ii8+CiAgPGNsaXBQYXRoIGlkPSJrc2VkYW4iPjxyZWN0IHg9IjciIHk9IjQiIHdpZHRoPSI0OCIgaGVpZ2h0PSIxMjAiIHJ4PSIxOCIvPjwvY2xpcFBhdGg+CiAgPGcgY2xpcC1wYXRoPSJ1cmwoI2tzZWRhbikiPgogICAgPHJlY3QgeD0iMCIgeT0iNDIiIHdpZHRoPSI2MiIgaGVpZ2h0PSI0NCIgZmlsbD0iI0U4RTNEOCIvPgogICAgICA8cmVjdCB4PSIwIiB5PSIzOCIgd2lkdGg9IjYyIiBoZWlnaHQ9IjQuNSIgZmlsbD0iIzk5OTY4ZiIvPgogICAgICA8cmVjdCB4PSIwIiB5PSI4NSIgd2lkdGg9IjYyIiBoZWlnaHQ9IjQuNSIgZmlsbD0iIzk5OTY4ZiIvPgogICAgCiAgPHJlY3QgeD0iMCIgeT0iMCIgd2lkdGg9IjkiIGhlaWdodD0iMTI4IiBmaWxsPSIjRkZGIiBvcGFjaXR5PSIuMTMiLz4KICA8cmVjdCB4PSI1MyIgeT0iMCIgd2lkdGg9IjkiIGhlaWdodD0iMTI4IiBmaWxsPSIjMDAwIiBvcGFjaXR5PSIuMjIiLz4KICA8L2c+CiAgPHBhdGggZD0iTTIwIDQwTDQyIDQwTDQ3IDU2TDE1IDU2WiIgZmlsbD0idXJsKCNnc2VkYW4pIgogICAgICAgICBzdHJva2U9IiMwMDAiIHN0cm9rZS13aWR0aD0iMS45IiBzdHJva2UtbGluZWpvaW49InJvdW5kIi8+CiAgPHJlY3QgeD0iMTUiIHk9IjU2IiB3aWR0aD0iMzIiIGhlaWdodD0iMjYiIHJ4PSI2IiBmaWxsPSJub25lIiBzdHJva2U9IiMwZDBmMTIiIHN0cm9rZS13aWR0aD0iMS43Ii8+CiAgPHBhdGggZD0iTTE2IDgyTDQ2IDgyTDQyIDkzTDIwIDkzWiIgZmlsbD0idXJsKCNnc2VkYW4pIgogICAgICAgICBzdHJva2U9IiMwMDAiIHN0cm9rZS13aWR0aD0iMS45IiBzdHJva2UtbGluZWpvaW49InJvdW5kIi8+CiAgPHJlY3QgeD0iMTQiIHk9IjYwIiB3aWR0aD0iMzQiIGhlaWdodD0iMTEiIHJ4PSIzIiBmaWxsPSIjM0Q3QkZGIiBvcGFjaXR5PSIuMjIiLz4KICAgIDxyZWN0IHg9IjE1IiB5PSI2MiIgd2lkdGg9IjMyIiBoZWlnaHQ9IjkiIHJ4PSIyLjgiIGZpbGw9IiMwRDBCMEEiIHN0cm9rZT0iIzAwMCIgc3Ryb2tlLXdpZHRoPSIxLjUiLz4KICAgIDxyZWN0IHg9IjE3IiB5PSI2NCIgd2lkdGg9IjEzIiBoZWlnaHQ9IjUuMiIgcng9IjEuOCIgZmlsbD0iIzNEN0JGRiIvPgogICAgPHJlY3QgeD0iMzIiIHk9IjY0IiB3aWR0aD0iMTMiIGhlaWdodD0iNS4yIiByeD0iMS44IiBmaWxsPSIjRjA0MDJGIi8+CiAgCiAgPHJlY3QgeD0iOS42IiB5PSI1LjYiIHdpZHRoPSIxNy44IiBoZWlnaHQ9IjguOCIgcng9IjQuNCIgZmlsbD0iI0ZGRjZEQyIgb3BhY2l0eT0iLjMyIi8+CiAgPHJlY3QgeD0iMTEiIHk9IjciIHdpZHRoPSIxNSIgaGVpZ2h0PSI2IiByeD0iMi44NTcxNDI4NTcxNDI4NTciIGZpbGw9IiNGRkY2REMiIHN0cm9rZT0iIzAwMCIgc3Ryb2tlLXdpZHRoPSIxLjIiLz4KICA8cmVjdCB4PSIxMi42IiB5PSI4LjEiIHdpZHRoPSIxMS44IiBoZWlnaHQ9IjIuMTQyODU3MTQyODU3MTQzIiByeD0iMSIgZmlsbD0iI0ZGRiIgb3BhY2l0eT0iLjYiLz4KICA8cmVjdCB4PSIzNC42IiB5PSI1LjYiIHdpZHRoPSIxNy44IiBoZWlnaHQ9IjguOCIgcng9IjQuNCIgZmlsbD0iI0ZGRjZEQyIgb3BhY2l0eT0iLjMyIi8+CiAgPHJlY3QgeD0iMzYiIHk9IjciIHdpZHRoPSIxNSIgaGVpZ2h0PSI2IiByeD0iMi44NTcxNDI4NTcxNDI4NTciIGZpbGw9IiNGRkY2REMiIHN0cm9rZT0iIzAwMCIgc3Ryb2tlLXdpZHRoPSIxLjIiLz4KICA8cmVjdCB4PSIzNy42IiB5PSI4LjEiIHdpZHRoPSIxMS44IiBoZWlnaHQ9IjIuMTQyODU3MTQyODU3MTQzIiByeD0iMSIgZmlsbD0iI0ZGRiIgb3BhY2l0eT0iLjYiLz4KICAKICA8cmVjdCB4PSI5LjYiIHk9IjExNC42IiB3aWR0aD0iMTcuOCIgaGVpZ2h0PSI4LjgiIHJ4PSI0LjQiIGZpbGw9IiNGMDQwMkYiIG9wYWNpdHk9Ii4zMiIvPgogIDxyZWN0IHg9IjExIiB5PSIxMTYiIHdpZHRoPSIxNSIgaGVpZ2h0PSI2IiByeD0iMi44NTcxNDI4NTcxNDI4NTciIGZpbGw9IiNGMDQwMkYiIHN0cm9rZT0iIzAwMCIgc3Ryb2tlLXdpZHRoPSIxLjIiLz4KICA8cmVjdCB4PSIxMi42IiB5PSIxMTcuMSIgd2lkdGg9IjExLjgiIGhlaWdodD0iMi4xNDI4NTcxNDI4NTcxNDMiIHJ4PSIxIiBmaWxsPSIjRkZGIiBvcGFjaXR5PSIuNiIvPgogIDxyZWN0IHg9IjM0LjYiIHk9IjExNC42IiB3aWR0aD0iMTcuOCIgaGVpZ2h0PSI4LjgiIHJ4PSI0LjQiIGZpbGw9IiNGMDQwMkYiIG9wYWNpdHk9Ii4zMiIvPgogIDxyZWN0IHg9IjM2IiB5PSIxMTYiIHdpZHRoPSIxNSIgaGVpZ2h0PSI2IiByeD0iMi44NTcxNDI4NTcxNDI4NTciIGZpbGw9IiNGMDQwMkYiIHN0cm9rZT0iIzAwMCIgc3Ryb2tlLXdpZHRoPSIxLjIiLz4KICA8cmVjdCB4PSIzNy42IiB5PSIxMTcuMSIgd2lkdGg9IjExLjgiIGhlaWdodD0iMi4xNDI4NTcxNDI4NTcxNDMiIHJ4PSIxIiBmaWxsPSIjRkZGIiBvcGFjaXR5PSIuNiIvPgo8L3N2Zz4=");background-size:100% 100%;background-repeat:no-repeat;}
+.car-traffic-sedan{background-image:url("data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA2MiAxMjgiIHdpZHRoPSI2MiIgaGVpZ2h0PSIxMjgiPgogIAogIDxkZWZzPgogICAgPGxpbmVhckdyYWRpZW50IGlkPSJic2VkYW4iIHgxPSIwIiB5MT0iMCIgeDI9IjEiIHkyPSIwIj4KICAgICAgPHN0b3Agb2Zmc2V0PSIwJSIgICBzdG9wLWNvbG9yPSIjN2U5OWM5Ii8+CiAgICAgIDxzdG9wIG9mZnNldD0iMjAlIiAgc3RvcC1jb2xvcj0iIzJGNUFBOCIvPgogICAgICA8c3RvcCBvZmZzZXQ9IjY4JSIgIHN0b3AtY29sb3I9IiMyRjVBQTgiLz4KICAgICAgPHN0b3Agb2Zmc2V0PSIxMDAlIiBzdG9wLWNvbG9yPSIjMWMzNjY1Ii8+CiAgICA8L2xpbmVhckdyYWRpZW50PgogICAgPGxpbmVhckdyYWRpZW50IGlkPSJnc2VkYW4iIHgxPSIwIiB5MT0iMCIgeDI9IjAuNCIgeTI9IjEiPgogICAgICA8c3RvcCBvZmZzZXQ9IjAlIiAgIHN0b3AtY29sb3I9IiM0MTU4NjYiLz4KICAgICAgPHN0b3Agb2Zmc2V0PSI1MiUiICBzdG9wLWNvbG9yPSIjMTYxRjI3Ii8+CiAgICAgIDxzdG9wIG9mZnNldD0iMTAwJSIgc3RvcC1jb2xvcj0iIzQwNDc0ZSIvPgogICAgPC9saW5lYXJHcmFkaWVudD4KICA8L2RlZnM+CiAgCiAgPHJlY3QgeD0iMCIgeT0iMjIiIHdpZHRoPSIxMiIgaGVpZ2h0PSIyNSIgcng9IjMuNTk5OTk5OTk5OTk5OTk5NiIgZmlsbD0iIzEyMTAxMCIvPgogIDxyZWN0IHg9IjIuNjQiIHk9IjI2IiB3aWR0aD0iNi43MjAwMDAwMDAwMDAwMDEiIGhlaWdodD0iMTciIHJ4PSIxLjkyIgogICAgICAgIGZpbGw9Im5vbmUiIHN0cm9rZT0iIzJFMjkyNiIgc3Ryb2tlLXdpZHRoPSIxLjUiIHN0cm9rZS1kYXNoYXJyYXk9IjIuNiAzIi8+CiAgPHJlY3QgeD0iNTAiIHk9IjIyIiB3aWR0aD0iMTIiIGhlaWdodD0iMjUiIHJ4PSIzLjU5OTk5OTk5OTk5OTk5OTYiIGZpbGw9IiMxMjEwMTAiLz4KICA8cmVjdCB4PSI1Mi42NCIgeT0iMjYiIHdpZHRoPSI2LjcyMDAwMDAwMDAwMDAwMSIgaGVpZ2h0PSIxNyIgcng9IjEuOTIiCiAgICAgICAgZmlsbD0ibm9uZSIgc3Ryb2tlPSIjMkUyOTI2IiBzdHJva2Utd2lkdGg9IjEuNSIgc3Ryb2tlLWRhc2hhcnJheT0iMi42IDMiLz4KICAKICA8cmVjdCB4PSIwIiB5PSI4MiIgd2lkdGg9IjEyIiBoZWlnaHQ9IjI2IiByeD0iMy41OTk5OTk5OTk5OTk5OTk2IiBmaWxsPSIjMTIxMDEwIi8+CiAgPHJlY3QgeD0iMi42NCIgeT0iODYuMTYiIHdpZHRoPSI2LjcyMDAwMDAwMDAwMDAwMSIgaGVpZ2h0PSIxNy42OCIgcng9IjEuOTIiCiAgICAgICAgZmlsbD0ibm9uZSIgc3Ryb2tlPSIjMkUyOTI2IiBzdHJva2Utd2lkdGg9IjEuNSIgc3Ryb2tlLWRhc2hhcnJheT0iMi42IDMiLz4KICA8cmVjdCB4PSI1MCIgeT0iODIiIHdpZHRoPSIxMiIgaGVpZ2h0PSIyNiIgcng9IjMuNTk5OTk5OTk5OTk5OTk5NiIgZmlsbD0iIzEyMTAxMCIvPgogIDxyZWN0IHg9IjUyLjY0IiB5PSI4Ni4xNiIgd2lkdGg9IjYuNzIwMDAwMDAwMDAwMDAxIiBoZWlnaHQ9IjE3LjY4IiByeD0iMS45MiIKICAgICAgICBmaWxsPSJub25lIiBzdHJva2U9IiMyRTI5MjYiIHN0cm9rZS13aWR0aD0iMS41IiBzdHJva2UtZGFzaGFycmF5PSIyLjYgMyIvPgogIDxyZWN0IHg9IjciIHk9IjQiIHdpZHRoPSI0OCIgaGVpZ2h0PSIxMjAiIHJ4PSIxOCIgZmlsbD0idXJsKCNic2VkYW4pIiBzdHJva2U9IiMwMDAiIHN0cm9rZS13aWR0aD0iMi45Ii8+CiAgPGNsaXBQYXRoIGlkPSJrc2VkYW4iPjxyZWN0IHg9IjciIHk9IjQiIHdpZHRoPSI0OCIgaGVpZ2h0PSIxMjAiIHJ4PSIxOCIvPjwvY2xpcFBhdGg+CiAgPGcgY2xpcC1wYXRoPSJ1cmwoI2tzZWRhbikiPgogICAgCiAgICAKICA8cmVjdCB4PSIwIiB5PSIwIiB3aWR0aD0iOSIgaGVpZ2h0PSIxMjgiIGZpbGw9IiNGRkYiIG9wYWNpdHk9Ii4xMyIvPgogIDxyZWN0IHg9IjUzIiB5PSIwIiB3aWR0aD0iOSIgaGVpZ2h0PSIxMjgiIGZpbGw9IiMwMDAiIG9wYWNpdHk9Ii4yMiIvPgogIDwvZz4KICA8cGF0aCBkPSJNMjAgNDBMNDIgNDBMNDcgNTZMMTUgNTZaIiBmaWxsPSJ1cmwoI2dzZWRhbikiCiAgICAgICAgIHN0cm9rZT0iIzAwMCIgc3Ryb2tlLXdpZHRoPSIxLjkiIHN0cm9rZS1saW5lam9pbj0icm91bmQiLz4KICA8cmVjdCB4PSIxNSIgeT0iNTYiIHdpZHRoPSIzMiIgaGVpZ2h0PSIyNiIgcng9IjYiIGZpbGw9Im5vbmUiIHN0cm9rZT0iIzFlM2E2YyIgc3Ryb2tlLXdpZHRoPSIxLjciLz4KICA8cGF0aCBkPSJNMTYgODJMNDYgODJMNDIgOTNMMjAgOTNaIiBmaWxsPSJ1cmwoI2dzZWRhbikiCiAgICAgICAgIHN0cm9rZT0iIzAwMCIgc3Ryb2tlLXdpZHRoPSIxLjkiIHN0cm9rZS1saW5lam9pbj0icm91bmQiLz4KICAKICAKICA8cmVjdCB4PSI5LjYiIHk9IjUuNiIgd2lkdGg9IjE3LjgiIGhlaWdodD0iOC44IiByeD0iNC40IiBmaWxsPSIjRkZGNkRDIiBvcGFjaXR5PSIuMzIiLz4KICA8cmVjdCB4PSIxMSIgeT0iNyIgd2lkdGg9IjE1IiBoZWlnaHQ9IjYiIHJ4PSIyLjg1NzE0Mjg1NzE0Mjg1NyIgZmlsbD0iI0ZGRjZEQyIgc3Ryb2tlPSIjMDAwIiBzdHJva2Utd2lkdGg9IjEuMiIvPgogIDxyZWN0IHg9IjEyLjYiIHk9IjguMSIgd2lkdGg9IjExLjgiIGhlaWdodD0iMi4xNDI4NTcxNDI4NTcxNDMiIHJ4PSIxIiBmaWxsPSIjRkZGIiBvcGFjaXR5PSIuNiIvPgogIDxyZWN0IHg9IjM0LjYiIHk9IjUuNiIgd2lkdGg9IjE3LjgiIGhlaWdodD0iOC44IiByeD0iNC40IiBmaWxsPSIjRkZGNkRDIiBvcGFjaXR5PSIuMzIiLz4KICA8cmVjdCB4PSIzNiIgeT0iNyIgd2lkdGg9IjE1IiBoZWlnaHQ9IjYiIHJ4PSIyLjg1NzE0Mjg1NzE0Mjg1NyIgZmlsbD0iI0ZGRjZEQyIgc3Ryb2tlPSIjMDAwIiBzdHJva2Utd2lkdGg9IjEuMiIvPgogIDxyZWN0IHg9IjM3LjYiIHk9IjguMSIgd2lkdGg9IjExLjgiIGhlaWdodD0iMi4xNDI4NTcxNDI4NTcxNDMiIHJ4PSIxIiBmaWxsPSIjRkZGIiBvcGFjaXR5PSIuNiIvPgogIAogIDxyZWN0IHg9IjkuNiIgeT0iMTE0LjYiIHdpZHRoPSIxNy44IiBoZWlnaHQ9IjguOCIgcng9IjQuNCIgZmlsbD0iI0YwNDAyRiIgb3BhY2l0eT0iLjMyIi8+CiAgPHJlY3QgeD0iMTEiIHk9IjExNiIgd2lkdGg9IjE1IiBoZWlnaHQ9IjYiIHJ4PSIyLjg1NzE0Mjg1NzE0Mjg1NyIgZmlsbD0iI0YwNDAyRiIgc3Ryb2tlPSIjMDAwIiBzdHJva2Utd2lkdGg9IjEuMiIvPgogIDxyZWN0IHg9IjEyLjYiIHk9IjExNy4xIiB3aWR0aD0iMTEuOCIgaGVpZ2h0PSIyLjE0Mjg1NzE0Mjg1NzE0MyIgcng9IjEiIGZpbGw9IiNGRkYiIG9wYWNpdHk9Ii42Ii8+CiAgPHJlY3QgeD0iMzQuNiIgeT0iMTE0LjYiIHdpZHRoPSIxNy44IiBoZWlnaHQ9IjguOCIgcng9IjQuNCIgZmlsbD0iI0YwNDAyRiIgb3BhY2l0eT0iLjMyIi8+CiAgPHJlY3QgeD0iMzYiIHk9IjExNiIgd2lkdGg9IjE1IiBoZWlnaHQ9IjYiIHJ4PSIyLjg1NzE0Mjg1NzE0Mjg1NyIgZmlsbD0iI0YwNDAyRiIgc3Ryb2tlPSIjMDAwIiBzdHJva2Utd2lkdGg9IjEuMiIvPgogIDxyZWN0IHg9IjM3LjYiIHk9IjExNy4xIiB3aWR0aD0iMTEuOCIgaGVpZ2h0PSIyLjE0Mjg1NzE0Mjg1NzE0MyIgcng9IjEiIGZpbGw9IiNGRkYiIG9wYWNpdHk9Ii42Ii8+Cjwvc3ZnPg==");background-size:100% 100%;background-repeat:no-repeat;}
+.car-traffic-van{background-image:url("data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA3MCAxNTgiIHdpZHRoPSI3MCIgaGVpZ2h0PSIxNTgiPgogIAogIDxkZWZzPgogICAgPGxpbmVhckdyYWRpZW50IGlkPSJidmFuIiB4MT0iMCIgeTE9IjAiIHgyPSIxIiB5Mj0iMCI+CiAgICAgIDxzdG9wIG9mZnNldD0iMCUiICAgc3RvcC1jb2xvcj0iI2U2ZTJkYSIvPgogICAgICA8c3RvcCBvZmZzZXQ9IjIwJSIgIHN0b3AtY29sb3I9IiNENkQwQzQiLz4KICAgICAgPHN0b3Agb2Zmc2V0PSI2OCUiICBzdG9wLWNvbG9yPSIjRDZEMEM0Ii8+CiAgICAgIDxzdG9wIG9mZnNldD0iMTAwJSIgc3RvcC1jb2xvcj0iIzgwN2Q3NiIvPgogICAgPC9saW5lYXJHcmFkaWVudD4KICAgIDxsaW5lYXJHcmFkaWVudCBpZD0iZ3ZhbiIgeDE9IjAiIHkxPSIwIiB4Mj0iMC40IiB5Mj0iMSI+CiAgICAgIDxzdG9wIG9mZnNldD0iMCUiICAgc3RvcC1jb2xvcj0iIzQxNTg2NiIvPgogICAgICA8c3RvcCBvZmZzZXQ9IjUyJSIgIHN0b3AtY29sb3I9IiMxNjFGMjciLz4KICAgICAgPHN0b3Agb2Zmc2V0PSIxMDAlIiBzdG9wLWNvbG9yPSIjNDA0NzRlIi8+CiAgICA8L2xpbmVhckdyYWRpZW50PgogIDwvZGVmcz4KICAKICA8cmVjdCB4PSIwIiB5PSIyNCIgd2lkdGg9IjEzIiBoZWlnaHQ9IjI2IiByeD0iMy45IiBmaWxsPSIjMTIxMDEwIi8+CiAgPHJlY3QgeD0iMi44NiIgeT0iMjguMTYiIHdpZHRoPSI3LjI4MDAwMDAwMDAwMDAwMSIgaGVpZ2h0PSIxNy42OCIgcng9IjIuMDgiCiAgICAgICAgZmlsbD0ibm9uZSIgc3Ryb2tlPSIjMkUyOTI2IiBzdHJva2Utd2lkdGg9IjEuNSIgc3Ryb2tlLWRhc2hhcnJheT0iMi42IDMiLz4KICA8cmVjdCB4PSI1NyIgeT0iMjQiIHdpZHRoPSIxMyIgaGVpZ2h0PSIyNiIgcng9IjMuOSIgZmlsbD0iIzEyMTAxMCIvPgogIDxyZWN0IHg9IjU5Ljg2IiB5PSIyOC4xNiIgd2lkdGg9IjcuMjgwMDAwMDAwMDAwMDAxIiBoZWlnaHQ9IjE3LjY4IiByeD0iMi4wOCIKICAgICAgICBmaWxsPSJub25lIiBzdHJva2U9IiMyRTI5MjYiIHN0cm9rZS13aWR0aD0iMS41IiBzdHJva2UtZGFzaGFycmF5PSIyLjYgMyIvPgogIAogIDxyZWN0IHg9IjAiIHk9IjExMiIgd2lkdGg9IjEzIiBoZWlnaHQ9IjI3IiByeD0iMy45IiBmaWxsPSIjMTIxMDEwIi8+CiAgPHJlY3QgeD0iMi44NiIgeT0iMTE2LjMyIiB3aWR0aD0iNy4yODAwMDAwMDAwMDAwMDEiIGhlaWdodD0iMTguMzYwMDAwMDAwMDAwMDAzIiByeD0iMi4wOCIKICAgICAgICBmaWxsPSJub25lIiBzdHJva2U9IiMyRTI5MjYiIHN0cm9rZS13aWR0aD0iMS41IiBzdHJva2UtZGFzaGFycmF5PSIyLjYgMyIvPgogIDxyZWN0IHg9IjU3IiB5PSIxMTIiIHdpZHRoPSIxMyIgaGVpZ2h0PSIyNyIgcng9IjMuOSIgZmlsbD0iIzEyMTAxMCIvPgogIDxyZWN0IHg9IjU5Ljg2IiB5PSIxMTYuMzIiIHdpZHRoPSI3LjI4MDAwMDAwMDAwMDAwMSIgaGVpZ2h0PSIxOC4zNjAwMDAwMDAwMDAwMDMiIHJ4PSIyLjA4IgogICAgICAgIGZpbGw9Im5vbmUiIHN0cm9rZT0iIzJFMjkyNiIgc3Ryb2tlLXdpZHRoPSIxLjUiIHN0cm9rZS1kYXNoYXJyYXk9IjIuNiAzIi8+CiAgPHJlY3QgeD0iNyIgeT0iNCIgd2lkdGg9IjU2IiBoZWlnaHQ9IjE1MCIgcng9IjE0IiBmaWxsPSJ1cmwoI2J2YW4pIiBzdHJva2U9IiMwMDAiIHN0cm9rZS13aWR0aD0iMi45Ii8+CiAgPGNsaXBQYXRoIGlkPSJrdmFuIj48cmVjdCB4PSI3IiB5PSI0IiB3aWR0aD0iNTYiIGhlaWdodD0iMTUwIiByeD0iMTQiLz48L2NsaXBQYXRoPgogIDxnIGNsaXAtcGF0aD0idXJsKCNrdmFuKSI+CiAgPHJlY3QgeD0iMCIgeT0iMCIgd2lkdGg9IjEwIiBoZWlnaHQ9IjE1OCIgZmlsbD0iI0ZGRiIgb3BhY2l0eT0iLjEzIi8+CiAgPHJlY3QgeD0iNjAiIHk9IjAiIHdpZHRoPSIxMCIgaGVpZ2h0PSIxNTgiIGZpbGw9IiMwMDAiIG9wYWNpdHk9Ii4yMiIvPjwvZz4KICA8cGF0aCBkPSJNMjIgMTJMNDggMTJMNTQgMjhMMTYgMjhaIiBmaWxsPSJ1cmwoI2d2YW4pIgogICAgICAgICBzdHJva2U9IiMwMDAiIHN0cm9rZS13aWR0aD0iMS45IiBzdHJva2UtbGluZWpvaW49InJvdW5kIi8+CiAgPHJlY3QgeD0iMTEiIHk9IjM0IiB3aWR0aD0iNDgiIGhlaWdodD0iMTEyIiByeD0iNyIgZmlsbD0iI2Q4ZDJjNyIgc3Ryb2tlPSIjMDAwIiBzdHJva2Utd2lkdGg9IjIuMiIvPgogIDxyZWN0IHg9IjE3IiB5PSI2MiIgd2lkdGg9IjM2IiBoZWlnaHQ9IjQ2IiByeD0iNCIgZmlsbD0iI0YyOEQzNSIvPgogIDxyZWN0IHg9IjE1IiB5PSI0NiIgd2lkdGg9IjQwIiBoZWlnaHQ9IjIuMiIgcng9IjEuMSIgZmlsbD0iIzlhOTY4ZCIgb3BhY2l0eT0iLjY1Ii8+PHJlY3QgeD0iMTUiIHk9Ijc2IiB3aWR0aD0iNDAiIGhlaWdodD0iMi4yIiByeD0iMS4xIiBmaWxsPSIjOWE5NjhkIiBvcGFjaXR5PSIuNjUiLz48cmVjdCB4PSIxNSIgeT0iMTA2IiB3aWR0aD0iNDAiIGhlaWdodD0iMi4yIiByeD0iMS4xIiBmaWxsPSIjOWE5NjhkIiBvcGFjaXR5PSIuNjUiLz48cmVjdCB4PSIxNSIgeT0iMTM0IiB3aWR0aD0iNDAiIGhlaWdodD0iMi4yIiByeD0iMS4xIiBmaWxsPSIjOWE5NjhkIiBvcGFjaXR5PSIuNjUiLz4KICAKICA8cmVjdCB4PSIxMC42IiB5PSI1LjYiIHdpZHRoPSIxNy44IiBoZWlnaHQ9IjguNiIgcng9IjQuMyIgZmlsbD0iI0ZGRjZEQyIgb3BhY2l0eT0iLjMyIi8+CiAgPHJlY3QgeD0iMTIiIHk9IjciIHdpZHRoPSIxNSIgaGVpZ2h0PSI1LjgiIHJ4PSIyLjc2MTkwNDc2MTkwNDc2MiIgZmlsbD0iI0ZGRjZEQyIgc3Ryb2tlPSIjMDAwIiBzdHJva2Utd2lkdGg9IjEuMiIvPgogIDxyZWN0IHg9IjEzLjYiIHk9IjguMSIgd2lkdGg9IjExLjgiIGhlaWdodD0iMi4wNzE0Mjg1NzE0Mjg1NzE2IiByeD0iMC45NjY2NjY2NjY2NjY2NjY3IiBmaWxsPSIjRkZGIiBvcGFjaXR5PSIuNiIvPgogIDxyZWN0IHg9IjQxLjYiIHk9IjUuNiIgd2lkdGg9IjE3LjgiIGhlaWdodD0iOC42IiByeD0iNC4zIiBmaWxsPSIjRkZGNkRDIiBvcGFjaXR5PSIuMzIiLz4KICA8cmVjdCB4PSI0MyIgeT0iNyIgd2lkdGg9IjE1IiBoZWlnaHQ9IjUuOCIgcng9IjIuNzYxOTA0NzYxOTA0NzYyIiBmaWxsPSIjRkZGNkRDIiBzdHJva2U9IiMwMDAiIHN0cm9rZS13aWR0aD0iMS4yIi8+CiAgPHJlY3QgeD0iNDQuNiIgeT0iOC4xIiB3aWR0aD0iMTEuOCIgaGVpZ2h0PSIyLjA3MTQyODU3MTQyODU3MTYiIHJ4PSIwLjk2NjY2NjY2NjY2NjY2NjciIGZpbGw9IiNGRkYiIG9wYWNpdHk9Ii42Ii8+CiAgCiAgPHJlY3QgeD0iMTAuNiIgeT0iMTQ0LjYiIHdpZHRoPSIxNy44IiBoZWlnaHQ9IjguNiIgcng9IjQuMyIgZmlsbD0iI0YwNDAyRiIgb3BhY2l0eT0iLjMyIi8+CiAgPHJlY3QgeD0iMTIiIHk9IjE0NiIgd2lkdGg9IjE1IiBoZWlnaHQ9IjUuOCIgcng9IjIuNzYxOTA0NzYxOTA0NzYyIiBmaWxsPSIjRjA0MDJGIiBzdHJva2U9IiMwMDAiIHN0cm9rZS13aWR0aD0iMS4yIi8+CiAgPHJlY3QgeD0iMTMuNiIgeT0iMTQ3LjEiIHdpZHRoPSIxMS44IiBoZWlnaHQ9IjIuMDcxNDI4NTcxNDI4NTcxNiIgcng9IjAuOTY2NjY2NjY2NjY2NjY2NyIgZmlsbD0iI0ZGRiIgb3BhY2l0eT0iLjYiLz4KICA8cmVjdCB4PSI0MS42IiB5PSIxNDQuNiIgd2lkdGg9IjE3LjgiIGhlaWdodD0iOC42IiByeD0iNC4zIiBmaWxsPSIjRjA0MDJGIiBvcGFjaXR5PSIuMzIiLz4KICA8cmVjdCB4PSI0MyIgeT0iMTQ2IiB3aWR0aD0iMTUiIGhlaWdodD0iNS44IiByeD0iMi43NjE5MDQ3NjE5MDQ3NjIiIGZpbGw9IiNGMDQwMkYiIHN0cm9rZT0iIzAwMCIgc3Ryb2tlLXdpZHRoPSIxLjIiLz4KICA8cmVjdCB4PSI0NC42IiB5PSIxNDcuMSIgd2lkdGg9IjExLjgiIGhlaWdodD0iMi4wNzE0Mjg1NzE0Mjg1NzE2IiByeD0iMC45NjY2NjY2NjY2NjY2NjY3IiBmaWxsPSIjRkZGIiBvcGFjaXR5PSIuNiIvPgo8L3N2Zz4=");background-size:100% 100%;background-repeat:no-repeat;}
+.car-traffic-box{background-image:url("data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA3NCAxODIiIHdpZHRoPSI3NCIgaGVpZ2h0PSIxODIiPgogIAogIDxkZWZzPgogICAgPGxpbmVhckdyYWRpZW50IGlkPSJiYm94IiB4MT0iMCIgeTE9IjAiIHgyPSIxIiB5Mj0iMCI+CiAgICAgIDxzdG9wIG9mZnNldD0iMCUiICAgc3RvcC1jb2xvcj0iI2JhZDFkYSIvPgogICAgICA8c3RvcCBvZmZzZXQ9IjIwJSIgIHN0b3AtY29sb3I9IiM4RkI0QzQiLz4KICAgICAgPHN0b3Agb2Zmc2V0PSI2OCUiICBzdG9wLWNvbG9yPSIjOEZCNEM0Ii8+CiAgICAgIDxzdG9wIG9mZnNldD0iMTAwJSIgc3RvcC1jb2xvcj0iIzU2NmM3NiIvPgogICAgPC9saW5lYXJHcmFkaWVudD4KICAgIDxsaW5lYXJHcmFkaWVudCBpZD0iZ2JveCIgeDE9IjAiIHkxPSIwIiB4Mj0iMC40IiB5Mj0iMSI+CiAgICAgIDxzdG9wIG9mZnNldD0iMCUiICAgc3RvcC1jb2xvcj0iIzQxNTg2NiIvPgogICAgICA8c3RvcCBvZmZzZXQ9IjUyJSIgIHN0b3AtY29sb3I9IiMxNjFGMjciLz4KICAgICAgPHN0b3Agb2Zmc2V0PSIxMDAlIiBzdG9wLWNvbG9yPSIjNDA0NzRlIi8+CiAgICA8L2xpbmVhckdyYWRpZW50PgogIDwvZGVmcz4KICAKICA8cmVjdCB4PSIwIiB5PSIyMCIgd2lkdGg9IjEzIiBoZWlnaHQ9IjI2IiByeD0iMy45IiBmaWxsPSIjMTIxMDEwIi8+CiAgPHJlY3QgeD0iMi44NiIgeT0iMjQuMTYiIHdpZHRoPSI3LjI4MDAwMDAwMDAwMDAwMSIgaGVpZ2h0PSIxNy42OCIgcng9IjIuMDgiCiAgICAgICAgZmlsbD0ibm9uZSIgc3Ryb2tlPSIjMkUyOTI2IiBzdHJva2Utd2lkdGg9IjEuNSIgc3Ryb2tlLWRhc2hhcnJheT0iMi42IDMiLz4KICA8cmVjdCB4PSI2MSIgeT0iMjAiIHdpZHRoPSIxMyIgaGVpZ2h0PSIyNiIgcng9IjMuOSIgZmlsbD0iIzEyMTAxMCIvPgogIDxyZWN0IHg9IjYzLjg2IiB5PSIyNC4xNiIgd2lkdGg9IjcuMjgwMDAwMDAwMDAwMDAxIiBoZWlnaHQ9IjE3LjY4IiByeD0iMi4wOCIKICAgICAgICBmaWxsPSJub25lIiBzdHJva2U9IiMyRTI5MjYiIHN0cm9rZS13aWR0aD0iMS41IiBzdHJva2UtZGFzaGFycmF5PSIyLjYgMyIvPgogIAogIDxyZWN0IHg9IjAiIHk9IjEyNiIgd2lkdGg9IjEzIiBoZWlnaHQ9IjI1IiByeD0iMy45IiBmaWxsPSIjMTIxMDEwIi8+CiAgPHJlY3QgeD0iMi44NiIgeT0iMTMwIiB3aWR0aD0iNy4yODAwMDAwMDAwMDAwMDEiIGhlaWdodD0iMTciIHJ4PSIyLjA4IgogICAgICAgIGZpbGw9Im5vbmUiIHN0cm9rZT0iIzJFMjkyNiIgc3Ryb2tlLXdpZHRoPSIxLjUiIHN0cm9rZS1kYXNoYXJyYXk9IjIuNiAzIi8+CiAgPHJlY3QgeD0iNjEiIHk9IjEyNiIgd2lkdGg9IjEzIiBoZWlnaHQ9IjI1IiByeD0iMy45IiBmaWxsPSIjMTIxMDEwIi8+CiAgPHJlY3QgeD0iNjMuODYiIHk9IjEzMCIgd2lkdGg9IjcuMjgwMDAwMDAwMDAwMDAxIiBoZWlnaHQ9IjE3IiByeD0iMi4wOCIKICAgICAgICBmaWxsPSJub25lIiBzdHJva2U9IiMyRTI5MjYiIHN0cm9rZS13aWR0aD0iMS41IiBzdHJva2UtZGFzaGFycmF5PSIyLjYgMyIvPgogIAogIDxyZWN0IHg9IjAiIHk9IjE1MCIgd2lkdGg9IjEzIiBoZWlnaHQ9IjI1IiByeD0iMy45IiBmaWxsPSIjMTIxMDEwIi8+CiAgPHJlY3QgeD0iMi44NiIgeT0iMTU0IiB3aWR0aD0iNy4yODAwMDAwMDAwMDAwMDEiIGhlaWdodD0iMTciIHJ4PSIyLjA4IgogICAgICAgIGZpbGw9Im5vbmUiIHN0cm9rZT0iIzJFMjkyNiIgc3Ryb2tlLXdpZHRoPSIxLjUiIHN0cm9rZS1kYXNoYXJyYXk9IjIuNiAzIi8+CiAgPHJlY3QgeD0iNjEiIHk9IjE1MCIgd2lkdGg9IjEzIiBoZWlnaHQ9IjI1IiByeD0iMy45IiBmaWxsPSIjMTIxMDEwIi8+CiAgPHJlY3QgeD0iNjMuODYiIHk9IjE1NCIgd2lkdGg9IjcuMjgwMDAwMDAwMDAwMDAxIiBoZWlnaHQ9IjE3IiByeD0iMi4wOCIKICAgICAgICBmaWxsPSJub25lIiBzdHJva2U9IiMyRTI5MjYiIHN0cm9rZS13aWR0aD0iMS41IiBzdHJva2UtZGFzaGFycmF5PSIyLjYgMyIvPgogIDxyZWN0IHg9IjkiIHk9IjQiIHdpZHRoPSI1NiIgaGVpZ2h0PSI0MiIgcng9IjEyIiBmaWxsPSJ1cmwoI2Jib3gpIiBzdHJva2U9IiMwMDAiIHN0cm9rZS13aWR0aD0iMi45Ii8+CiAgPHBhdGggZD0iTTIzIDEyTDUxIDEyTDU3IDI4TDE3IDI4WiIgZmlsbD0idXJsKCNnYm94KSIKICAgICAgICAgc3Ryb2tlPSIjMDAwIiBzdHJva2Utd2lkdGg9IjEuOSIgc3Ryb2tlLWxpbmVqb2luPSJyb3VuZCIvPgogIDxyZWN0IHg9IjYiIHk9IjQwIiB3aWR0aD0iNjIiIGhlaWdodD0iMTM4IiByeD0iOCIgZmlsbD0iIzlhYmNjYSIgc3Ryb2tlPSIjMDAwIiBzdHJva2Utd2lkdGg9IjIuOSIvPgogIDxyZWN0IHg9IjEyIiB5PSI0NyIgd2lkdGg9IjUwIiBoZWlnaHQ9IjEyNCIgcng9IjQiIGZpbGw9Im5vbmUiIHN0cm9rZT0iIzY3ODI4ZCIgc3Ryb2tlLXdpZHRoPSIxLjciLz4KICA8cmVjdCB4PSIxMiIgeT0iNjAiIHdpZHRoPSI1MCIgaGVpZ2h0PSIyLjQiIHJ4PSIxLjIiIGZpbGw9IiM2ZDg5OTUiIG9wYWNpdHk9Ii42Ii8+PHJlY3QgeD0iMTIiIHk9Ijg2IiB3aWR0aD0iNTAiIGhlaWdodD0iMi40IiByeD0iMS4yIiBmaWxsPSIjNmQ4OTk1IiBvcGFjaXR5PSIuNiIvPjxyZWN0IHg9IjEyIiB5PSIxMTIiIHdpZHRoPSI1MCIgaGVpZ2h0PSIyLjQiIHJ4PSIxLjIiIGZpbGw9IiM2ZDg5OTUiIG9wYWNpdHk9Ii42Ii8+PHJlY3QgeD0iMTIiIHk9IjEzOCIgd2lkdGg9IjUwIiBoZWlnaHQ9IjIuNCIgcng9IjEuMiIgZmlsbD0iIzZkODk5NSIgb3BhY2l0eT0iLjYiLz48cmVjdCB4PSIxMiIgeT0iMTYwIiB3aWR0aD0iNTAiIGhlaWdodD0iMi40IiByeD0iMS4yIiBmaWxsPSIjNmQ4OTk1IiBvcGFjaXR5PSIuNiIvPgogIDxyZWN0IHg9IjE3IiB5PSI3NiIgd2lkdGg9IjQwIiBoZWlnaHQ9IjUyIiByeD0iNCIgZmlsbD0iI0U4RTNEOCIvPgogIDxyZWN0IHg9IjYiIHk9IjQwIiB3aWR0aD0iMTAiIGhlaWdodD0iMTM4IiBmaWxsPSIjRkZGIiBvcGFjaXR5PSIuMTAiLz4KICA8cmVjdCB4PSI1OCIgeT0iNDAiIHdpZHRoPSIxMCIgaGVpZ2h0PSIxMzgiIGZpbGw9IiMwMDAiIG9wYWNpdHk9Ii4xOCIvPgogIAogIDxyZWN0IHg9IjExLjYiIHk9IjQuNiIgd2lkdGg9IjE4LjgiIGhlaWdodD0iOC44IiByeD0iNC40IiBmaWxsPSIjRkZGNkRDIiBvcGFjaXR5PSIuMzIiLz4KICA8cmVjdCB4PSIxMyIgeT0iNiIgd2lkdGg9IjE2IiBoZWlnaHQ9IjYiIHJ4PSIyLjg1NzE0Mjg1NzE0Mjg1NyIgZmlsbD0iI0ZGRjZEQyIgc3Ryb2tlPSIjMDAwIiBzdHJva2Utd2lkdGg9IjEuMiIvPgogIDxyZWN0IHg9IjE0LjYiIHk9IjcuMSIgd2lkdGg9IjEyLjgiIGhlaWdodD0iMi4xNDI4NTcxNDI4NTcxNDMiIHJ4PSIxIiBmaWxsPSIjRkZGIiBvcGFjaXR5PSIuNiIvPgogIDxyZWN0IHg9IjQzLjYiIHk9IjQuNiIgd2lkdGg9IjE4LjgiIGhlaWdodD0iOC44IiByeD0iNC40IiBmaWxsPSIjRkZGNkRDIiBvcGFjaXR5PSIuMzIiLz4KICA8cmVjdCB4PSI0NSIgeT0iNiIgd2lkdGg9IjE2IiBoZWlnaHQ9IjYiIHJ4PSIyLjg1NzE0Mjg1NzE0Mjg1NyIgZmlsbD0iI0ZGRjZEQyIgc3Ryb2tlPSIjMDAwIiBzdHJva2Utd2lkdGg9IjEuMiIvPgogIDxyZWN0IHg9IjQ2LjYiIHk9IjcuMSIgd2lkdGg9IjEyLjgiIGhlaWdodD0iMi4xNDI4NTcxNDI4NTcxNDMiIHJ4PSIxIiBmaWxsPSIjRkZGIiBvcGFjaXR5PSIuNiIvPgogIAogIDxyZWN0IHg9IjExLjYiIHk9IjE2Ny42IiB3aWR0aD0iMTguOCIgaGVpZ2h0PSI5IiByeD0iNC41IiBmaWxsPSIjRjA0MDJGIiBvcGFjaXR5PSIuMzIiLz4KICA8cmVjdCB4PSIxMyIgeT0iMTY5IiB3aWR0aD0iMTYiIGhlaWdodD0iNi4yIiByeD0iMi45NTIzODA5NTIzODA5NTI2IiBmaWxsPSIjRjA0MDJGIiBzdHJva2U9IiMwMDAiIHN0cm9rZS13aWR0aD0iMS4yIi8+CiAgPHJlY3QgeD0iMTQuNiIgeT0iMTcwLjEiIHdpZHRoPSIxMi44IiBoZWlnaHQ9IjIuMjE0Mjg1NzE0Mjg1NzE0NCIgcng9IjEuMDMzMzMzMzMzMzMzMzMzNCIgZmlsbD0iI0ZGRiIgb3BhY2l0eT0iLjYiLz4KICA8cmVjdCB4PSI0My42IiB5PSIxNjcuNiIgd2lkdGg9IjE4LjgiIGhlaWdodD0iOSIgcng9IjQuNSIgZmlsbD0iI0YwNDAyRiIgb3BhY2l0eT0iLjMyIi8+CiAgPHJlY3QgeD0iNDUiIHk9IjE2OSIgd2lkdGg9IjE2IiBoZWlnaHQ9IjYuMiIgcng9IjIuOTUyMzgwOTUyMzgwOTUyNiIgZmlsbD0iI0YwNDAyRiIgc3Ryb2tlPSIjMDAwIiBzdHJva2Utd2lkdGg9IjEuMiIvPgogIDxyZWN0IHg9IjQ2LjYiIHk9IjE3MC4xIiB3aWR0aD0iMTIuOCIgaGVpZ2h0PSIyLjIxNDI4NTcxNDI4NTcxNDQiIHJ4PSIxLjAzMzMzMzMzMzMzMzMzMzQiIGZpbGw9IiNGRkYiIG9wYWNpdHk9Ii42Ii8+Cjwvc3ZnPg==");background-size:100% 100%;background-repeat:no-repeat;}
+.car-straycat{background-image:url("data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA2MCAxMjIiIHdpZHRoPSI2MCIgaGVpZ2h0PSIxMjIiPgogIAogIDxkZWZzPgogICAgPGxpbmVhckdyYWRpZW50IGlkPSJibXVzY2xlIiB4MT0iMCIgeTE9IjAiIHgyPSIxIiB5Mj0iMCI+CiAgICAgIDxzdG9wIG9mZnNldD0iMCUiICAgc3RvcC1jb2xvcj0iI2U3ODI3YyIvPgogICAgICA8c3RvcCBvZmZzZXQ9IjIwJSIgIHN0b3AtY29sb3I9IiNEODM2MkIiLz4KICAgICAgPHN0b3Agb2Zmc2V0PSI2OCUiICBzdG9wLWNvbG9yPSIjRDgzNjJCIi8+CiAgICAgIDxzdG9wIG9mZnNldD0iMTAwJSIgc3RvcC1jb2xvcj0iIzgyMjAxYSIvPgogICAgPC9saW5lYXJHcmFkaWVudD4KICAgIDxsaW5lYXJHcmFkaWVudCBpZD0iZ211c2NsZSIgeDE9IjAiIHkxPSIwIiB4Mj0iMC40IiB5Mj0iMSI+CiAgICAgIDxzdG9wIG9mZnNldD0iMCUiICAgc3RvcC1jb2xvcj0iIzQxNTg2NiIvPgogICAgICA8c3RvcCBvZmZzZXQ9IjUyJSIgIHN0b3AtY29sb3I9IiMxNjFGMjciLz4KICAgICAgPHN0b3Agb2Zmc2V0PSIxMDAlIiBzdG9wLWNvbG9yPSIjNDA0NzRlIi8+CiAgICA8L2xpbmVhckdyYWRpZW50PgogIDwvZGVmcz4KICAKICA8cmVjdCB4PSIwIiB5PSIyMCIgd2lkdGg9IjEzIiBoZWlnaHQ9IjI2IiByeD0iMy45IiBmaWxsPSIjMTIxMDEwIi8+CiAgPHJlY3QgeD0iMi44NiIgeT0iMjQuMTYiIHdpZHRoPSI3LjI4MDAwMDAwMDAwMDAwMSIgaGVpZ2h0PSIxNy42OCIgcng9IjIuMDgiCiAgICAgICAgZmlsbD0ibm9uZSIgc3Ryb2tlPSIjMkUyOTI2IiBzdHJva2Utd2lkdGg9IjEuNSIgc3Ryb2tlLWRhc2hhcnJheT0iMi42IDMiLz4KICA8cmVjdCB4PSI0NyIgeT0iMjAiIHdpZHRoPSIxMyIgaGVpZ2h0PSIyNiIgcng9IjMuOSIgZmlsbD0iIzEyMTAxMCIvPgogIDxyZWN0IHg9IjQ5Ljg2IiB5PSIyNC4xNiIgd2lkdGg9IjcuMjgwMDAwMDAwMDAwMDAxIiBoZWlnaHQ9IjE3LjY4IiByeD0iMi4wOCIKICAgICAgICBmaWxsPSJub25lIiBzdHJva2U9IiMyRTI5MjYiIHN0cm9rZS13aWR0aD0iMS41IiBzdHJva2UtZGFzaGFycmF5PSIyLjYgMyIvPgogIAogIDxyZWN0IHg9IjAiIHk9Ijc4IiB3aWR0aD0iMTMiIGhlaWdodD0iMjkiIHJ4PSIzLjkiIGZpbGw9IiMxMjEwMTAiLz4KICA8cmVjdCB4PSIyLjg2IiB5PSI4Mi42NCIgd2lkdGg9IjcuMjgwMDAwMDAwMDAwMDAxIiBoZWlnaHQ9IjE5LjcyMDAwMDAwMDAwMDAwMiIgcng9IjIuMDgiCiAgICAgICAgZmlsbD0ibm9uZSIgc3Ryb2tlPSIjMkUyOTI2IiBzdHJva2Utd2lkdGg9IjEuNSIgc3Ryb2tlLWRhc2hhcnJheT0iMi42IDMiLz4KICA8cmVjdCB4PSI0NyIgeT0iNzgiIHdpZHRoPSIxMyIgaGVpZ2h0PSIyOSIgcng9IjMuOSIgZmlsbD0iIzEyMTAxMCIvPgogIDxyZWN0IHg9IjQ5Ljg2IiB5PSI4Mi42NCIgd2lkdGg9IjcuMjgwMDAwMDAwMDAwMDAxIiBoZWlnaHQ9IjE5LjcyMDAwMDAwMDAwMDAwMiIgcng9IjIuMDgiCiAgICAgICAgZmlsbD0ibm9uZSIgc3Ryb2tlPSIjMkUyOTI2IiBzdHJva2Utd2lkdGg9IjEuNSIgc3Ryb2tlLWRhc2hhcnJheT0iMi42IDMiLz4KICA8cmVjdCB4PSI3IiB5PSI0IiB3aWR0aD0iNDYiIGhlaWdodD0iMTE0IiByeD0iMTciIGZpbGw9InVybCgjYm11c2NsZSkiIHN0cm9rZT0iIzAwMCIgc3Ryb2tlLXdpZHRoPSIyLjkiLz4KICA8Y2xpcFBhdGggaWQ9ImttdXNjbGUiPjxyZWN0IHg9IjciIHk9IjQiIHdpZHRoPSI0NiIgaGVpZ2h0PSIxMTQiIHJ4PSIxNyIvPjwvY2xpcFBhdGg+CiAgPGcgY2xpcC1wYXRoPSJ1cmwoI2ttdXNjbGUpIj4KICAgIDxyZWN0IHg9IjIxLjUiIHk9IjAiIHdpZHRoPSI2LjUiIGhlaWdodD0iMTIyIiBmaWxsPSIjRjVFRkU0Ii8+CiAgICAgIDxyZWN0IHg9IjMyIiB5PSIwIiB3aWR0aD0iNi41IiBoZWlnaHQ9IjEyMiIgZmlsbD0iI0Y1RUZFNCIvPgogICAgCiAgPHJlY3QgeD0iMCIgeT0iMCIgd2lkdGg9IjkiIGhlaWdodD0iMTIyIiBmaWxsPSIjRkZGIiBvcGFjaXR5PSIuMTMiLz4KICA8cmVjdCB4PSI1MSIgeT0iMCIgd2lkdGg9IjkiIGhlaWdodD0iMTIyIiBmaWxsPSIjMDAwIiBvcGFjaXR5PSIuMjIiLz4KICA8L2c+CiAgPHJlY3QgeD0iMTkiIHk9IjE0IiB3aWR0aD0iMjIiIGhlaWdodD0iMTciIHJ4PSI0IiBmaWxsPSIjNzAxYzE2IiBzdHJva2U9IiMwMDAiIHN0cm9rZS13aWR0aD0iMS44Ii8+CiAgPHJlY3QgeD0iMjIiIHk9IjE3LjUiIHdpZHRoPSIxNiIgaGVpZ2h0PSIxMCIgcng9IjIuNiIgZmlsbD0iIzA3MDYwNSIvPgogIDxwYXRoIGQ9Ik0xOCAzOEw0MiAzOEw0NS41IDUzTDE0LjUgNTNaIiBmaWxsPSJ1cmwoI2dtdXNjbGUpIgogICAgICAgICBzdHJva2U9IiMwMDAiIHN0cm9rZS13aWR0aD0iMS45IiBzdHJva2UtbGluZWpvaW49InJvdW5kIi8+CiAgPHJlY3QgeD0iMTQiIHk9IjUzIiB3aWR0aD0iMzIiIGhlaWdodD0iMjciIHJ4PSI2IiBmaWxsPSJub25lIiBzdHJva2U9IiM4YTIzMWMiIHN0cm9rZS13aWR0aD0iMS43Ii8+CiAgPHBhdGggZD0iTTE1IDgwTDQ1IDgwTDQyIDkxTDE4IDkxWiIgZmlsbD0idXJsKCNnbXVzY2xlKSIKICAgICAgICAgc3Ryb2tlPSIjMDAwIiBzdHJva2Utd2lkdGg9IjEuOSIgc3Ryb2tlLWxpbmVqb2luPSJyb3VuZCIvPgogIAogIDxyZWN0IHg9IjEwIiB5PSI5MiIgd2lkdGg9IjgiIGhlaWdodD0iMTQiIHJ4PSIyLjQiIGZpbGw9IiM2ODFhMTUiIHN0cm9rZT0iIzAwMCIgc3Ryb2tlLXdpZHRoPSIxLjgiLz4KICA8cmVjdCB4PSI0MiIgeT0iOTIiIHdpZHRoPSI4IiBoZWlnaHQ9IjE0IiByeD0iMi40IiBmaWxsPSIjNjgxYTE1IiBzdHJva2U9IiMwMDAiIHN0cm9rZS13aWR0aD0iMS44Ii8+CiAgPHJlY3QgeD0iNCIgeT0iOTkiIHdpZHRoPSI1MiIgaGVpZ2h0PSIxMiIgcng9IjMuOCIgZmlsbD0iIzgyMjAxYSIgc3Ryb2tlPSIjMDAwIiBzdHJva2Utd2lkdGg9IjIuOSIvPgogIDxyZWN0IHg9IjgiIHk9IjEwMi40IiB3aWR0aD0iNDQiIGhlaWdodD0iNCIgcng9IjIiIGZpbGw9IiNGNUVGRTQiIG9wYWNpdHk9Ii45Ii8+CiAgPHJlY3QgeD0iOCIgeT0iMTAwLjYiIHdpZHRoPSI0NCIgaGVpZ2h0PSIyIiByeD0iMSIgZmlsbD0iI0ZGRiIgb3BhY2l0eT0iLjMiLz4KICAKICA8cmVjdCB4PSI5LjYiIHk9IjUuNiIgd2lkdGg9IjE2LjgiIGhlaWdodD0iOS4yIiByeD0iNC42IiBmaWxsPSIjRkZGNkRDIiBvcGFjaXR5PSIuMzIiLz4KICA8cmVjdCB4PSIxMSIgeT0iNyIgd2lkdGg9IjE0IiBoZWlnaHQ9IjYuNCIgcng9IjMuMDQ3NjE5MDQ3NjE5MDQ3NCIgZmlsbD0iI0ZGRjZEQyIgc3Ryb2tlPSIjMDAwIiBzdHJva2Utd2lkdGg9IjEuMiIvPgogIDxyZWN0IHg9IjEyLjYiIHk9IjguMSIgd2lkdGg9IjEwLjgiIGhlaWdodD0iMi4yODU3MTQyODU3MTQyODYiIHJ4PSIxLjA2NjY2NjY2NjY2NjY2NjciIGZpbGw9IiNGRkYiIG9wYWNpdHk9Ii42Ii8+CiAgPHJlY3QgeD0iMzMuNiIgeT0iNS42IiB3aWR0aD0iMTYuOCIgaGVpZ2h0PSI5LjIiIHJ4PSI0LjYiIGZpbGw9IiNGRkY2REMiIG9wYWNpdHk9Ii4zMiIvPgogIDxyZWN0IHg9IjM1IiB5PSI3IiB3aWR0aD0iMTQiIGhlaWdodD0iNi40IiByeD0iMy4wNDc2MTkwNDc2MTkwNDc0IiBmaWxsPSIjRkZGNkRDIiBzdHJva2U9IiMwMDAiIHN0cm9rZS13aWR0aD0iMS4yIi8+CiAgPHJlY3QgeD0iMzYuNiIgeT0iOC4xIiB3aWR0aD0iMTAuOCIgaGVpZ2h0PSIyLjI4NTcxNDI4NTcxNDI4NiIgcng9IjEuMDY2NjY2NjY2NjY2NjY2NyIgZmlsbD0iI0ZGRiIgb3BhY2l0eT0iLjYiLz4KICAKICA8cmVjdCB4PSI5LjYiIHk9IjEwOS42IiB3aWR0aD0iMTYuOCIgaGVpZ2h0PSI5LjIiIHJ4PSI0LjYiIGZpbGw9IiNGMDQwMkYiIG9wYWNpdHk9Ii4zMiIvPgogIDxyZWN0IHg9IjExIiB5PSIxMTEiIHdpZHRoPSIxNCIgaGVpZ2h0PSI2LjQiIHJ4PSIzLjA0NzYxOTA0NzYxOTA0NzQiIGZpbGw9IiNGMDQwMkYiIHN0cm9rZT0iIzAwMCIgc3Ryb2tlLXdpZHRoPSIxLjIiLz4KICA8cmVjdCB4PSIxMi42IiB5PSIxMTIuMSIgd2lkdGg9IjEwLjgiIGhlaWdodD0iMi4yODU3MTQyODU3MTQyODYiIHJ4PSIxLjA2NjY2NjY2NjY2NjY2NjciIGZpbGw9IiNGRkYiIG9wYWNpdHk9Ii42Ii8+CiAgPHJlY3QgeD0iMzMuNiIgeT0iMTA5LjYiIHdpZHRoPSIxNi44IiBoZWlnaHQ9IjkuMiIgcng9IjQuNiIgZmlsbD0iI0YwNDAyRiIgb3BhY2l0eT0iLjMyIi8+CiAgPHJlY3QgeD0iMzUiIHk9IjExMSIgd2lkdGg9IjE0IiBoZWlnaHQ9IjYuNCIgcng9IjMuMDQ3NjE5MDQ3NjE5MDQ3NCIgZmlsbD0iI0YwNDAyRiIgc3Ryb2tlPSIjMDAwIiBzdHJva2Utd2lkdGg9IjEuMiIvPgogIDxyZWN0IHg9IjM2LjYiIHk9IjExMi4xIiB3aWR0aD0iMTAuOCIgaGVpZ2h0PSIyLjI4NTcxNDI4NTcxNDI4NiIgcng9IjEuMDY2NjY2NjY2NjY2NjY2NyIgZmlsbD0iI0ZGRiIgb3BhY2l0eT0iLjYiLz4KPC9zdmc+");background-size:100% 100%;background-repeat:no-repeat;}
+.s-hud .screen{position:relative;width:393px;height:852px;overflow:hidden;background:var(--ink);}
+.s-hud .scan{position:absolute;inset:0;z-index:90;pointer-events:none;
+      background:repeating-linear-gradient(180deg,rgba(0,0,0,.20) 0 1px,rgba(0,0,0,0) 1px 3px);}
+.s-hud .vig{position:absolute;inset:0;z-index:91;pointer-events:none;
+      background:radial-gradient(125% 80% at 50% 50%,rgba(0,0,0,0) 44%,rgba(0,0,0,.55) 100%);}
+.s-hud /* --- road --- */
+    .road{position:absolute;inset:0;background:linear-gradient(180deg,#1C1A17 0%,#2B2823 18%,#26241F 60%,#221F1B 100%);}
+.s-hud .dash{position:absolute;top:-60px;bottom:-60px;width:7px;margin-left:-3.5px;opacity:.88;
+      background:repeating-linear-gradient(180deg,var(--lane) 0 48px,rgba(0,0,0,0) 48px 112px);}
+.s-hud .rumble{position:absolute;top:-60px;bottom:-60px;width:11px;opacity:.8;
+      background:repeating-linear-gradient(180deg,var(--lane) 0 28px,#B8342C 28px 56px);}
+.s-hud .streak{position:absolute;width:3px;border-radius:2px;
+      background:linear-gradient(180deg,rgba(255,255,255,0),rgba(255,255,255,.16),rgba(255,255,255,0));}
+.s-hud /* --- HUD plates --- */
+    .plate{background:rgba(10,8,6,.82);border:2px solid #000;border-radius:9px;
+      box-shadow:0 3px 0 #000, 0 6px 16px rgba(0,0,0,.55), inset 0 1px 0 rgba(255,183,101,.18);
+      backdrop-filter:blur(3px);}
+.s-hud .lbl{font-size:9.5px;font-weight:800;letter-spacing:2.3px;color:var(--muted);}
+.s-hud .num{font-weight:900;font-variant-numeric:tabular-nums;letter-spacing:.5px;color:var(--cream);
+      text-shadow:0 2px 0 rgba(0,0,0,.9);}
+
+.s-power .screen{position:relative;width:393px;height:852px;overflow:hidden;background:var(--ink);}
+.s-power .scan{position:absolute;inset:0;z-index:90;pointer-events:none;
+      background:repeating-linear-gradient(180deg,rgba(0,0,0,.20) 0 1px,rgba(0,0,0,0) 1px 3px);}
+.s-power .vig{position:absolute;inset:0;z-index:91;pointer-events:none;
+      background:radial-gradient(125% 80% at 50% 50%,rgba(0,0,0,0) 44%,rgba(0,0,0,.55) 100%);}
+.s-power .dash{position:absolute;top:-60px;bottom:-60px;width:7px;margin-left:-3.5px;opacity:.88;
+      background:repeating-linear-gradient(180deg,var(--lane) 0 48px,rgba(0,0,0,0) 48px 112px);}
+.s-power .rumble{position:absolute;top:-60px;bottom:-60px;width:11px;opacity:.8;
+      background:repeating-linear-gradient(180deg,var(--lane) 0 28px,#B8342C 28px 56px);}
+.s-power .plate{background:rgba(10,8,6,.82);border:2px solid #000;border-radius:9px;
+      box-shadow:0 3px 0 #000, 0 6px 16px rgba(0,0,0,.55), inset 0 1px 0 rgba(255,183,101,.18);}
+.s-power .lbl{font-size:9.5px;font-weight:800;letter-spacing:2.3px;color:var(--muted);}
+.s-power .num{font-weight:900;font-variant-numeric:tabular-nums;color:var(--cream);text-shadow:0 2px 0 rgba(0,0,0,.9);}
+.s-power .pill{display:flex;align-items:center;gap:9px;padding:7px 12px;border-radius:9px;
+      background:rgba(10,8,6,.85);border:2px solid #000;box-shadow:0 3px 0 #000;}
+.s-power .bar{width:78px;height:5px;border-radius:3px;background:#0B0908;border:1px solid #000;overflow:hidden;}
+.s-power .cap{font-size:9px;font-weight:900;letter-spacing:2px;}
+.s-power .coin{position:absolute;width:22px;height:22px;border-radius:50%;
+      background:radial-gradient(circle at 34% 30%,#FFE9A8,var(--gold) 48%,#C98A0E 100%);
+      border:2px solid #6B4708;box-shadow:0 0 14px 3px rgba(255,201,60,.55);}
+
+.s-pause .screen{position:relative;width:393px;height:852px;overflow:hidden;background:var(--ink);}
+.s-pause .scan{position:absolute;inset:0;z-index:90;pointer-events:none;
+      background:repeating-linear-gradient(180deg,rgba(0,0,0,.22) 0 1px,rgba(0,0,0,0) 1px 3px);}
+.s-pause .vig{position:absolute;inset:0;z-index:91;pointer-events:none;
+      background:radial-gradient(125% 80% at 50% 50%,rgba(0,0,0,0) 40%,rgba(0,0,0,.6) 100%);}
+.s-pause .dash{position:absolute;top:-60px;bottom:-60px;width:7px;margin-left:-3.5px;opacity:.88;
+      background:repeating-linear-gradient(180deg,var(--lane) 0 48px,rgba(0,0,0,0) 48px 112px);}
+.s-pause .rumble{position:absolute;top:-60px;bottom:-60px;width:11px;opacity:.8;
+      background:repeating-linear-gradient(180deg,var(--lane) 0 28px,#B8342C 28px 56px);}
+.s-pause .btn{width:100%;height:62px;border-radius:13px;border:3px solid #000;
+      display:flex;align-items:center;justify-content:center;gap:11px;
+      font-family:var(--display);font-size:27px;letter-spacing:1.2px;}
+.s-pause .btn-primary{background:linear-gradient(180deg,#FFC684 0%,var(--orange) 42%,var(--hot) 100%);color:#1A0F04;
+      box-shadow:0 7px 0 #000, 0 12px 22px rgba(0,0,0,.55), inset 0 2px 0 rgba(255,255,255,.4);}
+.s-pause .btn-sec{background:linear-gradient(180deg,#241E17,#171310);color:var(--cream);
+      box-shadow:0 6px 0 #000, inset 0 1px 0 rgba(255,183,101,.14);}
+.s-pause .stat{flex:1 1 0;text-align:center;}
+.s-pause .stat-l{font-size:9px;font-weight:800;letter-spacing:2.2px;color:var(--muted);}
+.s-pause .stat-v{font-weight:900;font-size:22px;font-variant-numeric:tabular-nums;margin-top:3px;text-shadow:0 2px 0 #000;}
+
+.s-summary .screen{position:relative;width:393px;height:852px;overflow:hidden;background:var(--ink);}
+.s-summary .scan{position:absolute;inset:0;z-index:90;pointer-events:none;
+      background:repeating-linear-gradient(180deg,rgba(0,0,0,.22) 0 1px,rgba(0,0,0,0) 1px 3px);}
+.s-summary .vig{position:absolute;inset:0;z-index:91;pointer-events:none;
+      background:radial-gradient(125% 78% at 50% 42%,rgba(0,0,0,0) 34%,rgba(0,0,0,.64) 100%);}
+.s-summary .row{display:flex;align-items:center;justify-content:space-between;padding:14px 17px;
+      background:rgba(10,8,6,.8);border:2px solid #000;border-radius:12px;
+      box-shadow:0 4px 0 #000, inset 0 1px 0 rgba(255,183,101,.13);}
+.s-summary .row-l{font-size:10px;font-weight:900;letter-spacing:2.4px;color:var(--muted);}
+.s-summary .row-v{font-weight:900;font-size:25px;font-variant-numeric:tabular-nums;text-shadow:0 2px 0 #000;}
+.s-summary .btn{height:60px;border-radius:13px;border:3px solid #000;display:flex;align-items:center;justify-content:center;gap:10px;
+      font-family:var(--display);letter-spacing:1.2px;}
+
+.s-countdown .screen{position:relative;width:393px;height:852px;overflow:hidden;background:var(--ink);}
+.s-countdown .scan{position:absolute;inset:0;z-index:90;pointer-events:none;
+      background:repeating-linear-gradient(180deg,rgba(0,0,0,.22) 0 1px,rgba(0,0,0,0) 1px 3px);}
+.s-countdown .vig{position:absolute;inset:0;z-index:91;pointer-events:none;
+      background:radial-gradient(125% 78% at 50% 46%,rgba(0,0,0,0) 38%,rgba(0,0,0,.62) 100%);}
+.s-countdown .plate{background:rgba(10,8,6,.86);border:2px solid #000;border-radius:9px;
+      box-shadow:0 3px 0 #000, inset 0 1px 0 rgba(255,183,101,.18);}
+.s-countdown .lbl{font-size:9.5px;font-weight:800;letter-spacing:2.3px;color:var(--muted);}
+.s-countdown .num{font-weight:900;font-variant-numeric:tabular-nums;text-shadow:0 2px 0 rgba(0,0,0,.9);}
+.s-countdown .btn{border-radius:13px;border:3px solid #000;display:flex;align-items:center;
+      justify-content:center;gap:10px;font-family:var(--display);letter-spacing:1.2px;}
+.s-countdown .prim{background:linear-gradient(180deg,#FFC684,var(--orange) 42%,var(--hot));color:#1A0F04;
+      box-shadow:0 7px 0 #000, 0 12px 20px rgba(0,0,0,.5), inset 0 2px 0 rgba(255,255,255,.4);}
+.s-countdown .sec{background:linear-gradient(180deg,#241E17,#171310);color:var(--cream);
+      box-shadow:0 6px 0 #000, inset 0 1px 0 rgba(255,183,101,.14);}
+.s-countdown .dash{position:absolute;top:-60px;bottom:-60px;width:7px;margin-left:-3.5px;opacity:.88;
+      background:repeating-linear-gradient(180deg,var(--lane) 0 48px,rgba(0,0,0,0) 48px 112px);}
+.s-countdown .rumble{position:absolute;top:-60px;bottom:-60px;width:11px;opacity:.8;
+      background:repeating-linear-gradient(180deg,var(--lane) 0 28px,#B8342C 28px 56px);}
+.s-countdown .row{display:flex;align-items:center;justify-content:space-between;padding:13px 16px;
+      background:linear-gradient(180deg,#1C1712,#131009);border:2px solid #000;border-radius:12px;
+      box-shadow:0 4px 0 #000, inset 0 1px 0 rgba(255,183,101,.12);}
+.s-countdown .burst{position:absolute;left:50%;top:50%;border-radius:50%;
+      background:repeating-conic-gradient(from 0deg,rgba(247,117,3,.5) 0deg 5deg,rgba(0,0,0,0) 5deg 11deg);
+      -webkit-mask-image:radial-gradient(circle,#000 20%,rgba(0,0,0,0) 62%);
+      mask-image:radial-gradient(circle,#000 20%,rgba(0,0,0,0) 62%);}
+
+</style>
+</helmet>
+<div style="display:flex;flex-wrap:wrap;gap:56px;padding:44px;background:#070605;align-items:flex-start;width:2333px;box-sizing:border-box;font-family:'Outfit','Avenir Next',system-ui,sans-serif;">
+<div style="display:flex;flex-direction:column;gap:12px;">
+<div style="font-size:9.5px;font-weight:900;letter-spacing:3px;color:#6A6058;">IN-RUN HUD</div>
+<div class="s-hud" data-screen-label="In-run HUD">
+<div class="screen">
+
+  <!-- ================= ROAD (edge to edge, runs behind the HUD) ================= -->
+  <div class="road">
+    <!-- lighter concrete stretch: proves HUD plates carry their own contrast -->
+    <div style="position:absolute;left:0;right:0;top:96px;height:250px;
+                background:linear-gradient(180deg,rgba(180,172,158,0) 0%,rgba(180,172,158,.30) 22%,rgba(180,172,158,.30) 78%,rgba(180,172,158,0) 100%);"></div>
+    <div style="position:absolute;left:0;right:0;top:520px;height:120px;
+                background:linear-gradient(180deg,rgba(150,142,130,0),rgba(150,142,130,.14),rgba(150,142,130,0));"></div>
+
+    <!-- 4 lanes: boundaries at 98.25 / 196.5 / 294.75 -->
+    <div class="dash" style="left:98.25px;"></div>
+    <div class="dash" style="left:196.5px;"></div>
+    <div class="dash" style="left:294.75px;"></div>
+    <div class="rumble" style="left:0;"></div>
+    <div class="rumble" style="right:0;"></div>
+
+    <div class="streak" style="left:70px;top:430px;height:120px;"></div>
+    <div class="streak" style="left:320px;top:210px;height:90px;"></div>
+    <div class="streak" style="left:170px;top:600px;height:140px;"></div>
+  </div>
+
+  <!-- ================= TRAFFIC ================= -->
+  <!-- lane 3 (centre 245) -->
+  <div class="car-traffic-patrol" style="position:absolute;left:214px;top:74px;width:62px;height:128px;
+       filter:drop-shadow(0 12px 10px rgba(0,0,0,.6));transform:rotate(180deg);"></div>
+  <!-- lane 1 (centre 49) -->
+  <div class="car-traffic-sedan" style="position:absolute;left:18px;top:196px;width:62px;height:128px;
+       filter:drop-shadow(0 12px 10px rgba(0,0,0,.6));transform:rotate(180deg);"></div>
+  <!-- lane 4 (centre 344) -->
+  <div class="car-traffic-van" style="position:absolute;left:309px;top:322px;width:70px;height:158px;
+       filter:drop-shadow(0 14px 12px rgba(0,0,0,.6));transform:rotate(180deg);"></div>
+  <!-- lane 1 far (centre 49) -->
+  <div class="car-traffic-box" style="position:absolute;left:12px;top:558px;width:74px;height:182px;
+       filter:drop-shadow(0 12px 10px rgba(0,0,0,.6));transform:rotate(180deg);"></div>
+
+  <!-- coin pickup in lane 3 -->
+  <div style="position:absolute;left:231px;top:470px;width:28px;height:28px;border-radius:50%;
+              background:radial-gradient(circle at 34% 30%,#FFE9A8,var(--gold) 48%,#C98A0E 100%);
+              border:2px solid #6B4708;box-shadow:0 0 16px 3px rgba(255,201,60,.5), 0 4px 0 rgba(0,0,0,.5);"></div>
+
+  <!-- ================= PLAYER (lane 2, centre 147) ================= -->
+  <div style="position:absolute;left:115px;top:648px;width:64px;height:130px;">
+    <div style="position:absolute;left:-6px;top:112px;width:76px;height:20px;border-radius:50%;
+                background:radial-gradient(ellipse,rgba(0,0,0,.6),rgba(0,0,0,0) 70%);"></div>
+    <div class="car-straycat" style="position:relative;width:60px;height:122px;
+         filter:drop-shadow(0 8px 10px rgba(0,0,0,.65));"></div>
+    <!-- exhaust heat -->
+    <div style="position:absolute;left:12px;top:124px;width:14px;height:34px;border-radius:50%;
+                background:linear-gradient(180deg,rgba(247,117,3,.55),rgba(247,117,3,0));filter:blur(3px);"></div>
+    <div style="position:absolute;left:38px;top:124px;width:14px;height:34px;border-radius:50%;
+                background:linear-gradient(180deg,rgba(247,117,3,.55),rgba(247,117,3,0));filter:blur(3px);"></div>
+  </div>
+
+  <!-- ================= HUD (everything lives above y=554) ================= -->
+
+  <!-- top row: safe-area gap above is left empty for the real status bar -->
+  <div style="position:absolute;left:16px;top:68px;z-index:40;">
+    <div class="plate" style="padding:9px 15px 10px;">
+      <div class="lbl">SCORE</div>
+      <div class="num" style="font-size:34px;line-height:1.02;color:var(--lite);
+           text-shadow:0 3px 0 #000, 0 0 20px rgba(247,117,3,.4);">08,420</div>
+    </div>
+    <div class="plate" style="margin-top:8px;padding:7px 15px 8px;display:inline-block;">
+      <span class="lbl">DIST</span>
+      <span class="num" style="font-size:17px;margin-left:8px;">2.4</span>
+      <span style="font-size:11px;font-weight:800;color:var(--muted);letter-spacing:1.4px;margin-left:2px;">KM</span>
+    </div>
+  </div>
+
+  <div style="position:absolute;right:16px;top:68px;z-index:40;display:flex;flex-direction:column;align-items:flex-end;gap:10px;">
+    <!-- pause: 48x48 hit target -->
+    <div class="plate" style="width:48px;height:48px;display:flex;align-items:center;justify-content:center;">
+      <svg viewBox="0 0 24 24" width="21" height="21">
+        <rect x="6.5" y="4.5" width="4.2" height="15" rx="1.6" fill="#F5EFE4"/>
+        <rect x="13.3" y="4.5" width="4.2" height="15" rx="1.6" fill="#F5EFE4"/>
+      </svg>
+    </div>
+    <!-- coins -->
+    <div class="plate" style="padding:7px 13px 7px 9px;display:flex;align-items:center;gap:8px;">
+      <svg viewBox="0 0 24 24" width="19" height="19">
+        <circle cx="12" cy="12" r="9.4" fill="#C98A0E"/>
+        <circle cx="12" cy="12" r="9.4" fill="none" stroke="#6B4708" stroke-width="1.6"/>
+        <circle cx="12" cy="12" r="6.4" fill="#FFC93C"/>
+        <path d="M9.4 12h5.2M12 9.4v5.2" stroke="#8A5B08" stroke-width="1.9" stroke-linecap="round"/>
+      </svg>
+      <span class="num" style="font-size:19px;color:var(--gold);">128</span>
+    </div>
+  </div>
+
+  <!-- power-up pill with draining timer -->
+  <div style="position:absolute;left:50%;top:196px;transform:translateX(-50%);z-index:40;">
+    <div class="plate" style="padding:8px 14px 9px;display:flex;align-items:center;gap:10px;
+         border-color:#000;box-shadow:0 3px 0 #000, 0 0 22px rgba(53,214,242,.28), inset 0 1px 0 rgba(53,214,242,.28);">
+      <svg viewBox="0 0 24 24" width="19" height="19">
+        <path d="M12 3.2 19.4 6v6.1c0 4.5-3.1 7.3-7.4 8.7-4.3-1.4-7.4-4.2-7.4-8.7V6z"
+              fill="none" stroke="#35D6F2" stroke-width="2" stroke-linejoin="round"/>
+      </svg>
+      <div>
+        <div style="font-size:10px;font-weight:900;letter-spacing:2.2px;color:var(--cyan);">SHIELD</div>
+        <div style="width:104px;height:6px;margin-top:5px;border-radius:3px;background:#0B0908;
+                    border:1px solid #000;overflow:hidden;">
+          <div style="width:58%;height:100%;background:linear-gradient(90deg,#8BE9FA,var(--cyan));"></div>
+        </div>
+      </div>
+      <span class="num" style="font-size:15px;color:var(--cyan);">4.6</span>
+    </div>
+  </div>
+
+  <!-- combo multiplier: fires mid-screen, still clear of the thumb zone -->
+  <div style="position:absolute;left:50%;top:372px;transform:translateX(-50%) rotate(-7deg);z-index:40;text-align:center;">
+    <div style="position:absolute;left:50%;top:50%;width:230px;height:230px;margin:-115px 0 0 -115px;
+                background:radial-gradient(circle,rgba(247,117,3,.42) 0%,rgba(247,117,3,0) 62%);"></div>
+    <div style="position:relative;font-family:var(--display);font-size:76px;line-height:.9;color:var(--lite);
+                text-shadow:5px 6px 0 #000, 0 0 30px rgba(247,117,3,.8);">&times;3</div>
+    <div style="position:relative;margin-top:2px;font-size:11px;font-weight:900;letter-spacing:3.4px;
+                color:var(--orange);text-shadow:2px 2px 0 #000;">NEAR MISS</div>
+  </div>
+
+  <div class="scan"></div>
+  <div class="vig"></div>
+</div>
+</div>
+</div>
+<div style="display:flex;flex-direction:column;gap:12px;">
+<div style="font-size:9.5px;font-weight:900;letter-spacing:3px;color:#6A6058;">HUD · POWER-UPS ACTIVE</div>
+<div class="s-power" data-screen-label="HUD · power-ups active">
+<div class="screen">
+
+  <!-- road -->
+  <div style="position:absolute;inset:0;background:linear-gradient(180deg,#1C1A17 0%,#2B2823 18%,#26241F 60%,#221F1B 100%);">
+    <div class="dash" style="left:98.25px;"></div>
+    <div class="dash" style="left:196.5px;"></div>
+    <div class="dash" style="left:294.75px;"></div>
+    <div class="rumble" style="left:0;"></div>
+    <div class="rumble" style="right:0;"></div>
+  </div>
+
+  <!-- traffic, motion-smeared by slow-mo -->
+  <div class="car-traffic-patrol" style="position:absolute;left:214px;top:110px;width:62px;height:128px;
+       filter:drop-shadow(0 12px 10px rgba(0,0,0,.6));transform:rotate(180deg);"></div>
+  <div class="car-traffic-box" style="position:absolute;left:12px;top:250px;width:74px;height:182px;
+       filter:drop-shadow(0 12px 10px rgba(0,0,0,.6));transform:rotate(180deg);"></div>
+
+  <!-- ================= SLOW-MO: full-screen colour wash ================= -->
+  <div style="position:absolute;inset:0;z-index:20;pointer-events:none;
+              background:linear-gradient(180deg,rgba(53,214,242,.20) 0%,rgba(23,86,140,.26) 55%,rgba(53,214,242,.16) 100%);
+              mix-blend-mode:screen;"></div>
+  <div style="position:absolute;inset:0;z-index:21;pointer-events:none;
+              background:radial-gradient(120% 70% at 50% 78%,rgba(53,214,242,0) 30%,rgba(53,214,242,.30) 100%);"></div>
+  <!-- horizontal time-slip bands -->
+  <div style="position:absolute;inset:0;z-index:22;pointer-events:none;opacity:.5;
+              background:repeating-linear-gradient(180deg,rgba(139,233,250,.16) 0 2px,rgba(0,0,0,0) 2px 14px);"></div>
+
+  <!-- ================= MAGNET: coins arcing into the car ================= -->
+  <svg viewBox="0 0 393 852" width="393" height="852" style="position:absolute;inset:0;z-index:30;">
+    <g fill="none" stroke="#F2359B" stroke-width="2.5" stroke-linecap="round" opacity=".75">
+      <path d="M62 566 Q104 640 141 700" stroke-dasharray="3 9"/>
+      <path d="M262 528 Q214 618 156 698" stroke-dasharray="3 9"/>
+      <path d="M334 622 Q248 664 162 706" stroke-dasharray="3 9"/>
+      <path d="M198 476 Q178 592 150 692" stroke-dasharray="3 9"/>
+    </g>
+  </svg>
+  <div class="coin" style="left:52px;top:556px;z-index:31;"></div>
+  <div class="coin" style="left:252px;top:518px;z-index:31;"></div>
+  <div class="coin" style="left:324px;top:612px;z-index:31;"></div>
+  <div class="coin" style="left:188px;top:466px;z-index:31;"></div>
+  <div style="position:absolute;left:147px;top:713px;width:300px;height:300px;margin:-150px 0 0 -150px;z-index:29;
+              border-radius:50%;background:radial-gradient(circle,rgba(242,53,155,.24) 0%,rgba(242,53,155,0) 62%);"></div>
+
+  <!-- ================= PLAYER + SHIELD BUBBLE ================= -->
+  <div style="position:absolute;left:147px;top:713px;z-index:33;">
+    <div style="position:absolute;width:172px;height:196px;margin:-98px 0 0 -86px;border-radius:50%;
+                background:radial-gradient(circle,rgba(53,214,242,.10) 0%,rgba(53,214,242,.30) 62%,rgba(53,214,242,.06) 78%,rgba(0,0,0,0) 100%);
+                border:3px solid rgba(139,233,250,.95);
+                box-shadow:0 0 34px 8px rgba(53,214,242,.55), inset 0 0 32px rgba(53,214,242,.55);"></div>
+    <div style="position:absolute;width:150px;height:174px;margin:-87px 0 0 -75px;border-radius:50%;
+                border:1.5px solid rgba(255,255,255,.4);"></div>
+    <!-- hex facet hint on the bubble -->
+    <div style="position:absolute;width:172px;height:196px;margin:-98px 0 0 -86px;border-radius:50%;opacity:.45;
+                background:repeating-linear-gradient(60deg,rgba(139,233,250,.4) 0 1px,rgba(0,0,0,0) 1px 17px),
+                           repeating-linear-gradient(-60deg,rgba(139,233,250,.4) 0 1px,rgba(0,0,0,0) 1px 17px);"></div>
+    <div class="car-straycat" style="position:absolute;left:-30px;top:-65px;width:60px;height:122px;
+         filter:drop-shadow(0 8px 10px rgba(0,0,0,.65));"></div>
+  </div>
+
+  <!-- ================= HUD (all above y=554) ================= -->
+  <div style="position:absolute;left:16px;top:68px;z-index:40;">
+    <div class="plate" style="padding:9px 15px 10px;">
+      <div class="lbl">SCORE</div>
+      <div class="num" style="font-size:34px;line-height:1.02;color:var(--lite);
+           text-shadow:0 3px 0 #000, 0 0 20px rgba(247,117,3,.4);">11,960</div>
+    </div>
+    <div class="plate" style="margin-top:8px;padding:7px 15px 8px;display:inline-block;">
+      <span class="lbl">DIST</span>
+      <span class="num" style="font-size:17px;margin-left:8px;">3.1</span>
+      <span style="font-size:11px;font-weight:800;color:var(--muted);letter-spacing:1.4px;margin-left:2px;">KM</span>
+    </div>
+  </div>
+
+  <div style="position:absolute;right:16px;top:68px;z-index:40;display:flex;flex-direction:column;align-items:flex-end;gap:10px;">
+    <div class="plate" style="width:48px;height:48px;display:flex;align-items:center;justify-content:center;">
+      <svg viewBox="0 0 24 24" width="21" height="21">
+        <rect x="6.5" y="4.5" width="4.2" height="15" rx="1.6" fill="#F5EFE4"/>
+        <rect x="13.3" y="4.5" width="4.2" height="15" rx="1.6" fill="#F5EFE4"/>
+      </svg>
+    </div>
+    <div class="plate" style="padding:7px 13px 7px 9px;display:flex;align-items:center;gap:8px;">
+      <svg viewBox="0 0 24 24" width="19" height="19">
+        <circle cx="12" cy="12" r="9.4" fill="#C98A0E"/>
+        <circle cx="12" cy="12" r="9.4" fill="none" stroke="#6B4708" stroke-width="1.6"/>
+        <circle cx="12" cy="12" r="6.4" fill="#FFC93C"/>
+        <path d="M9.4 12h5.2M12 9.4v5.2" stroke="#8A5B08" stroke-width="1.9" stroke-linecap="round"/>
+      </svg>
+      <span class="num" style="font-size:19px;color:var(--gold);">176</span>
+    </div>
+  </div>
+
+  <!-- three pills stack while stacked power-ups run -->
+  <div style="position:absolute;left:50%;top:196px;transform:translateX(-50%);z-index:40;display:flex;flex-direction:column;gap:7px;">
+    <div class="pill" style="box-shadow:0 3px 0 #000, 0 0 20px rgba(53,214,242,.3);">
+      <svg viewBox="0 0 24 24" width="17" height="17">
+        <path d="M12 3.2 19.4 6v6.1c0 4.5-3.1 7.3-7.4 8.7-4.3-1.4-7.4-4.2-7.4-8.7V6z" fill="none" stroke="#35D6F2" stroke-width="2" stroke-linejoin="round"/>
+      </svg>
+      <div><div class="cap" style="color:var(--cyan);">SHIELD</div>
+        <div class="bar" style="margin-top:4px;"><div style="width:72%;height:100%;background:linear-gradient(90deg,#8BE9FA,var(--cyan));"></div></div>
+      </div>
+      <span class="num" style="font-size:13px;color:var(--cyan);">5.8</span>
+    </div>
+    <div class="pill" style="box-shadow:0 3px 0 #000, 0 0 20px rgba(139,233,250,.22);">
+      <svg viewBox="0 0 24 24" width="17" height="17" fill="none" stroke="#8BE9FA" stroke-width="2" stroke-linecap="round">
+        <circle cx="12" cy="12.6" r="8.4"/><path d="M12 8.2v4.6l3 1.9"/><path d="M9.2 2.6h5.6"/>
+      </svg>
+      <div><div class="cap" style="color:#8BE9FA;">SLOW-MO</div>
+        <div class="bar" style="margin-top:4px;"><div style="width:41%;height:100%;background:linear-gradient(90deg,#CFF6FE,#8BE9FA);"></div></div>
+      </div>
+      <span class="num" style="font-size:13px;color:#8BE9FA;">3.2</span>
+    </div>
+    <div class="pill" style="box-shadow:0 3px 0 #000, 0 0 20px rgba(242,53,155,.28);">
+      <svg viewBox="0 0 24 24" width="17" height="17" fill="none" stroke="#F2359B" stroke-width="2" stroke-linecap="round">
+        <path d="M6 4.6v7.8a6 6 0 0 0 12 0V4.6"/><path d="M6 9.4h4.4"/><path d="M13.6 9.4H18"/>
+      </svg>
+      <div><div class="cap" style="color:var(--magenta);">MAGNET</div>
+        <div class="bar" style="margin-top:4px;"><div style="width:88%;height:100%;background:linear-gradient(90deg,#FF8FC8,var(--magenta));"></div></div>
+      </div>
+      <span class="num" style="font-size:13px;color:var(--magenta);">7.1</span>
+    </div>
+  </div>
+
+  <!-- combo -->
+  <div style="position:absolute;left:50%;top:392px;transform:translateX(-50%) rotate(-7deg);z-index:40;text-align:center;">
+    <div style="position:absolute;left:50%;top:50%;width:250px;height:250px;margin:-125px 0 0 -125px;
+                background:radial-gradient(circle,rgba(247,117,3,.45) 0%,rgba(247,117,3,0) 62%);"></div>
+    <div style="position:relative;font-family:var(--display);font-size:86px;line-height:.9;color:var(--lite);
+                text-shadow:5px 6px 0 #000, 0 0 34px rgba(247,117,3,.85);">&times;5</div>
+    <div style="position:relative;margin-top:2px;font-size:11px;font-weight:900;letter-spacing:3.4px;
+                color:var(--orange);text-shadow:2px 2px 0 #000;">ON FIRE</div>
+  </div>
+
+  <div class="scan"></div>
+  <div class="vig"></div>
+</div>
+</div>
+</div>
+<div style="display:flex;flex-direction:column;gap:12px;">
+<div style="font-size:9.5px;font-weight:900;letter-spacing:3px;color:#6A6058;">PAUSE</div>
+<div class="s-pause" data-screen-label="Pause">
+<div class="screen">
+
+  <!-- ---- live playfield, dimmed and blurred but still readable ---- -->
+  <div style="position:absolute;inset:0;filter:blur(3.5px) saturate(.7);transform:scale(1.04);">
+    <div style="position:absolute;inset:0;background:linear-gradient(180deg,#1C1A17 0%,#2B2823 18%,#26241F 60%,#221F1B 100%);">
+      <div class="dash" style="left:98.25px;"></div>
+      <div class="dash" style="left:196.5px;"></div>
+      <div class="dash" style="left:294.75px;"></div>
+      <div class="rumble" style="left:0;"></div>
+      <div class="rumble" style="right:0;"></div>
+    </div>
+    <div class="car-traffic-patrol" style="position:absolute;left:214px;top:150px;width:62px;height:128px;transform:rotate(180deg);"></div>
+    <div class="car-traffic-sedan" style="position:absolute;left:18px;top:300px;width:62px;height:128px;transform:rotate(180deg);"></div>
+    <div class="car-traffic-van" style="position:absolute;left:309px;top:470px;width:70px;height:158px;transform:rotate(180deg);"></div>
+    <div class="car-straycat" style="position:absolute;left:117px;top:648px;width:60px;height:122px;"></div>
+  </div>
+  <div style="position:absolute;inset:0;background:rgba(6,5,4,.68);"></div>
+
+  <!-- ---- panel ---- -->
+  <div style="position:absolute;inset:0;z-index:20;display:flex;flex-direction:column;align-items:center;">
+    <div style="height:172px;flex:none;"></div>
+
+    <div style="flex:none;text-align:center;transform:rotate(-2.5deg);">
+      <div style="font-family:var(--display);font-size:70px;line-height:1;color:var(--lite);
+                  text-shadow:5px 6px 0 #000, 0 0 34px rgba(247,117,3,.5);">PAUSED</div>
+      <div style="margin-top:6px;font-size:10px;font-weight:900;letter-spacing:3.6px;color:var(--orange);">ENGINE IDLING</div>
+    </div>
+
+    <div style="height:34px;flex:none;"></div>
+
+    <!-- current run -->
+    <div style="width:337px;flex:none;display:flex;padding:15px 8px;border-radius:13px;
+                background:rgba(10,8,6,.82);border:2px solid #000;
+                box-shadow:0 5px 0 #000, inset 0 1px 0 rgba(255,183,101,.14);">
+      <div class="stat"><div class="stat-l">SCORE</div><div class="stat-v" style="color:var(--lite);">08,420</div></div>
+      <div style="width:2px;background:#2A241E;"></div>
+      <div class="stat"><div class="stat-l">DIST</div><div class="stat-v">2.4<span style="font-size:11px;color:var(--muted);letter-spacing:1px;"> KM</span></div></div>
+      <div style="width:2px;background:#2A241E;"></div>
+      <div class="stat"><div class="stat-l">COINS</div><div class="stat-v" style="color:var(--gold);">128</div></div>
+    </div>
+
+    <div style="height:30px;flex:none;"></div>
+
+    <div style="width:337px;flex:none;display:flex;flex-direction:column;gap:13px;">
+      <div class="btn btn-primary">
+        <svg viewBox="0 0 24 24" width="23" height="23"><path d="M7 4.4 19.5 12 7 19.6z" fill="#1A0F04"/></svg>
+        <span>RESUME</span>
+      </div>
+      <div class="btn btn-sec">
+        <svg viewBox="0 0 24 24" width="21" height="21" fill="none" stroke="#F28D35" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M20.4 11.6a8.4 8.4 0 1 1-2.6-6"/><path d="M20.6 3.6v5.4h-5.4"/>
+        </svg>
+        <span>RESTART</span>
+      </div>
+      <div class="btn btn-sec">
+        <svg viewBox="0 0 24 24" width="21" height="21" fill="none" stroke="#F28D35" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+          <circle cx="12" cy="12" r="3.2"/><path d="M12 2.4v3M12 18.6v3M2.4 12h3M18.6 12h3M5.2 5.2l2.1 2.1M16.7 16.7l2.1 2.1M18.8 5.2l-2.1 2.1M7.3 16.7l-2.1 2.1"/>
+        </svg>
+        <span>SETTINGS</span>
+      </div>
+      <div class="btn btn-sec" style="color:#C9BEB2;">
+        <svg viewBox="0 0 24 24" width="21" height="21" fill="none" stroke="#8E8377" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M9.4 20.4H5.6a2 2 0 0 1-2-2V5.6a2 2 0 0 1 2-2h3.8"/><path d="M15.4 16.4 20.4 12l-5-4.4"/><path d="M20.4 12H9.6"/>
+        </svg>
+        <span>QUIT</span>
+      </div>
+    </div>
+
+    <div style="flex:1 1 auto;"></div>
+    <div style="font-size:10px;letter-spacing:2.6px;color:#6A6058;font-weight:800;flex:none;">TAP OUTSIDE TO RESUME</div>
+    <div style="height:52px;flex:none;"></div>
+  </div>
+
+  <div class="scan"></div>
+  <div class="vig"></div>
+</div>
+</div>
+</div>
+<div style="display:flex;flex-direction:column;gap:12px;">
+<div style="font-size:9.5px;font-weight:900;letter-spacing:3px;color:#6A6058;">RUN SUMMARY</div>
+<div class="s-summary" data-screen-label="Run summary">
+<div class="screen">
+
+  <!-- wreck glow -->
+  <div style="position:absolute;left:50%;top:60px;width:640px;height:640px;margin-left:-320px;border-radius:50%;
+              background:radial-gradient(circle,rgba(228,50,43,.22) 0%,rgba(247,117,3,.10) 40%,rgba(0,0,0,0) 66%);"></div>
+  <!-- skid marks -->
+  <svg viewBox="0 0 393 852" width="393" height="852" style="position:absolute;inset:0;opacity:.5;">
+    <g fill="none" stroke="#141110" stroke-width="13" stroke-linecap="round">
+      <path d="M128 852 Q136 720 186 636"/><path d="M182 852 Q190 726 238 642"/>
+    </g>
+  </svg>
+
+  <div style="position:absolute;inset:0;z-index:10;display:flex;flex-direction:column;align-items:center;">
+    <div style="height:80px;flex:none;"></div>
+
+    <div style="flex:none;text-align:center;transform:rotate(-3deg);">
+      <div style="font-family:var(--display);font-size:64px;line-height:1;color:var(--red);
+                  text-shadow:5px 6px 0 #000, 0 0 30px rgba(228,50,43,.55);">WRECKED!</div>
+    </div>
+
+    <div style="height:22px;flex:none;"></div>
+
+    <!-- NEW BEST celebration -->
+    <div style="position:relative;flex:none;">
+      <div style="position:absolute;left:50%;top:50%;width:330px;height:330px;margin:-165px 0 0 -165px;
+                  border-radius:50%;opacity:.55;
+                  background:repeating-conic-gradient(from 0deg,rgba(247,117,3,.55) 0deg 5deg,rgba(0,0,0,0) 5deg 11deg);
+                  -webkit-mask-image:radial-gradient(circle,#000 22%,rgba(0,0,0,0) 62%);
+                  mask-image:radial-gradient(circle,#000 22%,rgba(0,0,0,0) 62%);"></div>
+      <div style="position:relative;padding:7px 22px;border-radius:8px;transform:rotate(-3deg);
+                  background:linear-gradient(180deg,var(--gold),#E09A0B);border:3px solid #000;
+                  box-shadow:0 5px 0 #000, 0 0 26px rgba(255,201,60,.5);">
+        <span style="font-family:var(--display);font-size:23px;color:#2A1B02;letter-spacing:2px;">NEW BEST!</span>
+      </div>
+    </div>
+
+    <div style="height:14px;flex:none;"></div>
+
+    <div style="flex:none;text-align:center;">
+      <div style="font-size:10px;font-weight:900;letter-spacing:3.4px;color:var(--muted);">FINAL SCORE</div>
+      <div style="font-weight:900;font-size:78px;line-height:1.04;color:var(--lite);font-variant-numeric:tabular-nums;
+                  text-shadow:0 5px 0 #000, 0 0 36px rgba(247,117,3,.55);">13,110</div>
+      <div style="margin-top:2px;font-size:12px;font-weight:800;letter-spacing:1.6px;color:var(--muted);">
+        PREVIOUS BEST <span style="color:#6E645B;text-decoration:line-through;">12,480</span>
+      </div>
+    </div>
+
+    <div style="height:26px;flex:none;"></div>
+
+    <div style="width:337px;flex:none;display:flex;flex-direction:column;gap:10px;">
+      <div class="row">
+        <span class="row-l">DISTANCE</span>
+        <span class="row-v">3.7<span style="font-size:12px;color:var(--muted);letter-spacing:1px;"> KM</span></span>
+      </div>
+      <div class="row">
+        <span class="row-l">COINS EARNED</span>
+        <span style="display:flex;align-items:center;gap:9px;">
+          <svg viewBox="0 0 24 24" width="22" height="22">
+            <circle cx="12" cy="12" r="9.4" fill="#C98A0E"/>
+            <circle cx="12" cy="12" r="9.4" fill="none" stroke="#6B4708" stroke-width="1.6"/>
+            <circle cx="12" cy="12" r="6.4" fill="#FFC93C"/>
+            <path d="M9.4 12h5.2M12 9.4v5.2" stroke="#8A5B08" stroke-width="1.9" stroke-linecap="round"/>
+          </svg>
+          <span class="row-v" style="color:var(--gold);">+48</span>
+        </span>
+      </div>
+      <div class="row">
+        <span class="row-l">BEST COMBO</span>
+        <span class="row-v" style="color:var(--orange);">&times;7</span>
+      </div>
+    </div>
+
+    <div style="flex:1 1 auto;"></div>
+
+    <div style="width:337px;flex:none;">
+      <div class="btn" style="background:linear-gradient(180deg,#FFC684 0%,var(--orange) 42%,var(--hot) 100%);color:#1A0F04;
+                  height:74px;font-size:33px;
+                  box-shadow:0 8px 0 #000, 0 13px 24px rgba(0,0,0,.55), inset 0 2px 0 rgba(255,255,255,.4);">
+        <svg viewBox="0 0 24 24" width="25" height="25" fill="none" stroke="#1A0F04" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M20.4 11.6a8.4 8.4 0 1 1-2.6-6"/><path d="M20.6 3.6v5.4h-5.4"/>
+        </svg>
+        <span>RETRY</span>
+      </div>
+      <div style="height:12px;"></div>
+      <div style="display:flex;gap:12px;">
+        <div class="btn" style="flex:1 1 0;font-size:22px;background:linear-gradient(180deg,#241E17,#171310);color:var(--cream);
+                    box-shadow:0 6px 0 #000, inset 0 1px 0 rgba(255,183,101,.14);">GARAGE</div>
+        <div class="btn" style="flex:1 1 0;font-size:22px;background:linear-gradient(180deg,#241E17,#171310);color:var(--cream);
+                    box-shadow:0 6px 0 #000, inset 0 1px 0 rgba(255,183,101,.14);">MENU</div>
+      </div>
+    </div>
+
+    <div style="height:52px;flex:none;"></div>
+  </div>
+
+  <div class="scan"></div>
+  <div class="vig"></div>
+</div>
+</div>
+</div>
+<div style="display:flex;flex-direction:column;gap:12px;">
+<div style="font-size:9.5px;font-weight:900;letter-spacing:3px;color:#6A6058;">COUNTDOWN</div>
+<div class="s-countdown" data-screen-label="Countdown">
+<div class="screen">
+  <div style="position:absolute;inset:0;background:linear-gradient(180deg,#1C1A17 0%,#2B2823 18%,#26241F 60%,#221F1B 100%);">
+  <div class="dash" style="left:98.25px;"></div><div class="dash" style="left:196.5px;"></div>
+  <div class="dash" style="left:294.75px;"></div>
+  <div class="rumble" style="left:0;"></div><div class="rumble" style="right:0;"></div><div style="position:absolute;left:0;right:0;top:0;height:340px;
+    background:linear-gradient(180deg,rgba(10,8,6,.55),rgba(10,8,6,0));"></div></div>
+  <div class="car-traffic-sedan" style="position:absolute;left:18px;top:90px;width:62px;height:128px;opacity:.55;transform:rotate(180deg);filter:drop-shadow(0 12px 10px rgba(0,0,0,.6));"></div>
+  <div class="car-traffic-van" style="position:absolute;left:309px;top:30px;width:70px;height:158px;opacity:.55;transform:rotate(180deg);filter:drop-shadow(0 12px 10px rgba(0,0,0,.6));"></div>
+  <div class="car-straycat" style="position:absolute;left:117px;top:648px;width:60px;height:122px;filter:drop-shadow(0 8px 10px rgba(0,0,0,.65));"></div>
+
+  <!-- HUD is present but dimmed: it fades up as the count ends -->
+  <div style="position:absolute;left:16px;top:68px;z-index:40;opacity:.35;">
+    <div class="plate" style="padding:9px 15px 10px;"><div class="lbl">SCORE</div>
+      <div class="num" style="font-size:34px;line-height:1.02;color:var(--lite);">00,000</div></div>
+  </div>
+  <div style="position:absolute;right:16px;top:68px;z-index:40;opacity:.35;">
+    <div class="plate" style="padding:7px 13px 7px 9px;display:flex;align-items:center;gap:8px;">
+      <svg viewBox="0 0 24 24" width="19" height="19">
+  <circle cx="12" cy="12" r="9.4" fill="#C98A0E"/><circle cx="12" cy="12" r="9.4" fill="none" stroke="#6B4708" stroke-width="1.6"/>
+  <circle cx="12" cy="12" r="6.4" fill="#FFC93C"/><path d="M9.4 12h5.2M12 9.4v5.2" stroke="#8A5B08" stroke-width="1.9" stroke-linecap="round"/></svg><span class="num" style="font-size:19px;color:var(--gold);">0</span></div>
+  </div>
+
+  <div style="position:absolute;left:50%;top:392px;transform:translateX(-50%);z-index:50;text-align:center;">
+    <div class="burst" style="width:340px;height:340px;margin:-170px 0 0 -170px;opacity:.5;"></div>
+    <div style="position:relative;font-family:var(--display);font-size:190px;line-height:.86;color:var(--lite);
+      text-shadow:8px 9px 0 #000, 0 0 60px rgba(247,117,3,.85);">3</div>
+    <div style="position:relative;margin-top:6px;font-size:12px;font-weight:900;letter-spacing:5px;
+      color:var(--orange);text-shadow:2px 2px 0 #000;">GET READY</div>
+  </div>
+  <div style="position:absolute;left:50%;bottom:150px;transform:translateX(-50%);z-index:50;
+    font-size:11px;font-weight:800;letter-spacing:2.6px;color:var(--muted);">HOLD ANYWHERE BELOW TO STEER</div>
+  <div class="scan"></div><div class="vig"></div>
+</div>
+</div>
+</div>
+</div>
+</x-dc>
+<script data-dc-script data-props='{"$preview":{"width":2333,"height":940}}'>
+class Component extends DCLogic {}
+</script>
+</body>
+</html>

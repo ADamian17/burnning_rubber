@@ -1,0 +1,92 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Underdog&family=Outfit:wght@400;500;600;700;800;900&display=swap">
+  <style>
+    :root{
+      --ink:#0A0806; --orange:#F28D35; --hot:#f77503; --lite:#FFB765;
+      --cream:#F5EFE4; --muted:#9C9184; --gold:#FFC93C; --cyan:#35D6F2;
+      --magenta:#F2359B; --red:#E4322B; --lane:#EFE9DC;
+      --display:'Underdog','Chalkboard SE','Comic Sans MS',cursive;
+      --ui:'Outfit','Avenir Next','Segoe UI',system-ui,sans-serif;
+    }
+    *{box-sizing:border-box;}
+    body{margin:0;font-family:var(--ui);background:#000;color:var(--cream);-webkit-font-smoothing:antialiased;}
+    a{color:var(--orange);} a:hover{color:var(--hot);}
+    .screen{position:relative;width:393px;height:852px;overflow:hidden;background:var(--ink);}
+    .scan{position:absolute;inset:0;z-index:90;pointer-events:none;
+      background:repeating-linear-gradient(180deg,rgba(0,0,0,.22) 0 1px,rgba(0,0,0,0) 1px 3px);}
+    .vig{position:absolute;inset:0;z-index:91;pointer-events:none;
+      background:radial-gradient(125% 78% at 50% 46%,rgba(0,0,0,0) 38%,rgba(0,0,0,.62) 100%);}
+    .plate{background:rgba(10,8,6,.86);border:2px solid #000;border-radius:9px;
+      box-shadow:0 3px 0 #000, inset 0 1px 0 rgba(255,183,101,.18);}
+    .lbl{font-size:9.5px;font-weight:800;letter-spacing:2.3px;color:var(--muted);}
+    .num{font-weight:900;font-variant-numeric:tabular-nums;text-shadow:0 2px 0 rgba(0,0,0,.9);}
+    .btn{border-radius:13px;border:3px solid #000;display:flex;align-items:center;
+      justify-content:center;gap:10px;font-family:var(--display);letter-spacing:1.2px;}
+    .prim{background:linear-gradient(180deg,#FFC684,var(--orange) 42%,var(--hot));color:#1A0F04;
+      box-shadow:0 7px 0 #000, 0 12px 20px rgba(0,0,0,.5), inset 0 2px 0 rgba(255,255,255,.4);}
+    .sec{background:linear-gradient(180deg,#241E17,#171310);color:var(--cream);
+      box-shadow:0 6px 0 #000, inset 0 1px 0 rgba(255,183,101,.14);}
+    .dash{position:absolute;top:-60px;bottom:-60px;width:7px;margin-left:-3.5px;opacity:.88;
+      background:repeating-linear-gradient(180deg,var(--lane) 0 48px,rgba(0,0,0,0) 48px 112px);}
+    .rumble{position:absolute;top:-60px;bottom:-60px;width:11px;opacity:.8;
+      background:repeating-linear-gradient(180deg,var(--lane) 0 28px,#B8342C 28px 56px);}
+    .row{display:flex;align-items:center;justify-content:space-between;padding:13px 16px;
+      background:linear-gradient(180deg,#1C1712,#131009);border:2px solid #000;border-radius:12px;
+      box-shadow:0 4px 0 #000, inset 0 1px 0 rgba(255,183,101,.12);}
+    .burst{position:absolute;left:50%;top:50%;border-radius:50%;
+      background:repeating-conic-gradient(from 0deg,rgba(247,117,3,.5) 0deg 5deg,rgba(0,0,0,0) 5deg 11deg);
+      -webkit-mask-image:radial-gradient(circle,#000 20%,rgba(0,0,0,0) 62%);
+      mask-image:radial-gradient(circle,#000 20%,rgba(0,0,0,0) 62%);}
+</style>
+</helmet>
+
+<div class="screen">
+  <div style="position:absolute;left:50%;top:120px;width:620px;height:620px;margin-left:-310px;border-radius:50%;
+    background:radial-gradient(circle,rgba(242,141,53,.14) 0%,rgba(0,0,0,0) 62%);"></div>
+  <div style="position:absolute;inset:0;z-index:10;display:flex;flex-direction:column;align-items:center;">
+    <div style="height:66px;flex:none;"></div>
+    <div style="width:361px;flex:none;display:flex;align-items:center;gap:12px;">
+  <div style="width:48px;height:48px;flex:none;border-radius:11px;border:2px solid #000;
+    background:linear-gradient(180deg,#241E17,#171310);box-shadow:0 4px 0 #000;
+    display:flex;align-items:center;justify-content:center;">
+  <svg viewBox="0 0 24 24" width="21" height="21" fill="none" stroke="#F28D35" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M14.6 5.4 8 12l6.6 6.6"/></svg></div><div style="flex:1 1 auto;font-family:var(--display);font-size:36px;color:var(--lite);text-shadow:3px 4px 0 #000;">CREDITS</div></div>
+    <div style="height:28px;flex:none;"></div>
+    <div style="width:361px;flex:none;display:flex;flex-direction:column;gap:11px;">
+      <div class="row" style="flex-direction:column;align-items:flex-start;gap:4px;">
+        <div class="lbl">BUILT BY</div>
+        <div style="font-size:17px;font-weight:800;color:var(--cream);">Adonis D Martin</div>
+        <div style="font-size:11px;color:var(--muted);line-height:1.4;">Design, code, and the original 2019 game</div></div><div class="row" style="flex-direction:column;align-items:flex-start;gap:4px;">
+        <div class="lbl">VEHICLE ART</div>
+        <div style="font-size:17px;font-weight:800;color:var(--cream);">Original to this game</div>
+        <div style="font-size:11px;color:var(--muted);line-height:1.4;">Nine chassis drawn as SVG for Burning Rubber</div></div><div class="row" style="flex-direction:column;align-items:flex-start;gap:4px;">
+        <div class="lbl">DISPLAY TYPE</div>
+        <div style="font-size:17px;font-weight:800;color:var(--cream);">Underdog</div>
+        <div style="font-size:11px;color:var(--muted);line-height:1.4;">Google Fonts &middot; SIL Open Font License 1.1</div></div><div class="row" style="flex-direction:column;align-items:flex-start;gap:4px;">
+        <div class="lbl">INTERFACE TYPE</div>
+        <div style="font-size:17px;font-weight:800;color:var(--cream);">Outfit</div>
+        <div style="font-size:11px;color:var(--muted);line-height:1.4;">Google Fonts &middot; SIL Open Font License 1.1</div></div><div class="row" style="flex-direction:column;align-items:flex-start;gap:4px;">
+        <div class="lbl">AUDIO</div>
+        <div style="font-size:17px;font-weight:800;color:var(--red);">[NEEDS LICENSING]</div>
+        <div style="font-size:11px;color:var(--muted);line-height:1.4;">Engine and crash loops must be replaced or licensed before release</div></div>
+    </div>
+    <div style="flex:1 1 auto;"></div>
+    <div style="width:361px;flex:none;text-align:center;font-size:10px;font-weight:700;letter-spacing:2px;color:#5F5750;">
+      BURNING RUBBER &nbsp;&middot;&nbsp; &copy; 2026 ADONIS D MARTIN</div>
+    <div style="height:52px;flex:none;"></div>
+  </div>
+  <div class="scan"></div><div class="vig"></div>
+</div>
+</x-dc>
+<script data-dc-script data-props='{"$preview":{"width":393,"height":852}}'>
+class Component extends DCLogic {}
+</script>
+</body>
+</html>

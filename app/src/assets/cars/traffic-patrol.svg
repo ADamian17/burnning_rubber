@@ -1,0 +1,63 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 62 128" width="62" height="128">
+  
+  <defs>
+    <linearGradient id="bsedan" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0%"   stop-color="#6e7072"/>
+      <stop offset="20%"  stop-color="#15181C"/>
+      <stop offset="68%"  stop-color="#15181C"/>
+      <stop offset="100%" stop-color="#0d0e11"/>
+    </linearGradient>
+    <linearGradient id="gsedan" x1="0" y1="0" x2="0.4" y2="1">
+      <stop offset="0%"   stop-color="#415866"/>
+      <stop offset="52%"  stop-color="#161F27"/>
+      <stop offset="100%" stop-color="#40474e"/>
+    </linearGradient>
+  </defs>
+  
+  <rect x="0" y="22" width="12" height="25" rx="3.5999999999999996" fill="#121010"/>
+  <rect x="2.64" y="26" width="6.720000000000001" height="17" rx="1.92"
+        fill="none" stroke="#2E2926" stroke-width="1.5" stroke-dasharray="2.6 3"/>
+  <rect x="50" y="22" width="12" height="25" rx="3.5999999999999996" fill="#121010"/>
+  <rect x="52.64" y="26" width="6.720000000000001" height="17" rx="1.92"
+        fill="none" stroke="#2E2926" stroke-width="1.5" stroke-dasharray="2.6 3"/>
+  
+  <rect x="0" y="82" width="12" height="26" rx="3.5999999999999996" fill="#121010"/>
+  <rect x="2.64" y="86.16" width="6.720000000000001" height="17.68" rx="1.92"
+        fill="none" stroke="#2E2926" stroke-width="1.5" stroke-dasharray="2.6 3"/>
+  <rect x="50" y="82" width="12" height="26" rx="3.5999999999999996" fill="#121010"/>
+  <rect x="52.64" y="86.16" width="6.720000000000001" height="17.68" rx="1.92"
+        fill="none" stroke="#2E2926" stroke-width="1.5" stroke-dasharray="2.6 3"/>
+  <rect x="7" y="4" width="48" height="120" rx="18" fill="url(#bsedan)" stroke="#000" stroke-width="2.9"/>
+  <clipPath id="ksedan"><rect x="7" y="4" width="48" height="120" rx="18"/></clipPath>
+  <g clip-path="url(#ksedan)">
+    <rect x="0" y="42" width="62" height="44" fill="#E8E3D8"/>
+      <rect x="0" y="38" width="62" height="4.5" fill="#99968f"/>
+      <rect x="0" y="85" width="62" height="4.5" fill="#99968f"/>
+    
+  <rect x="0" y="0" width="9" height="128" fill="#FFF" opacity=".13"/>
+  <rect x="53" y="0" width="9" height="128" fill="#000" opacity=".22"/>
+  </g>
+  <path d="M20 40L42 40L47 56L15 56Z" fill="url(#gsedan)"
+         stroke="#000" stroke-width="1.9" stroke-linejoin="round"/>
+  <rect x="15" y="56" width="32" height="26" rx="6" fill="none" stroke="#0d0f12" stroke-width="1.7"/>
+  <path d="M16 82L46 82L42 93L20 93Z" fill="url(#gsedan)"
+         stroke="#000" stroke-width="1.9" stroke-linejoin="round"/>
+  <rect x="14" y="60" width="34" height="11" rx="3" fill="#3D7BFF" opacity=".22"/>
+    <rect x="15" y="62" width="32" height="9" rx="2.8" fill="#0D0B0A" stroke="#000" stroke-width="1.5"/>
+    <rect x="17" y="64" width="13" height="5.2" rx="1.8" fill="#3D7BFF"/>
+    <rect x="32" y="64" width="13" height="5.2" rx="1.8" fill="#F0402F"/>
+  
+  <rect x="9.6" y="5.6" width="17.8" height="8.8" rx="4.4" fill="#FFF6DC" opacity=".32"/>
+  <rect x="11" y="7" width="15" height="6" rx="2.857142857142857" fill="#FFF6DC" stroke="#000" stroke-width="1.2"/>
+  <rect x="12.6" y="8.1" width="11.8" height="2.142857142857143" rx="1" fill="#FFF" opacity=".6"/>
+  <rect x="34.6" y="5.6" width="17.8" height="8.8" rx="4.4" fill="#FFF6DC" opacity=".32"/>
+  <rect x="36" y="7" width="15" height="6" rx="2.857142857142857" fill="#FFF6DC" stroke="#000" stroke-width="1.2"/>
+  <rect x="37.6" y="8.1" width="11.8" height="2.142857142857143" rx="1" fill="#FFF" opacity=".6"/>
+  
+  <rect x="9.6" y="114.6" width="17.8" height="8.8" rx="4.4" fill="#F0402F" opacity=".32"/>
+  <rect x="11" y="116" width="15" height="6" rx="2.857142857142857" fill="#F0402F" stroke="#000" stroke-width="1.2"/>
+  <rect x="12.6" y="117.1" width="11.8" height="2.142857142857143" rx="1" fill="#FFF" opacity=".6"/>
+  <rect x="34.6" y="114.6" width="17.8" height="8.8" rx="4.4" fill="#F0402F" opacity=".32"/>
+  <rect x="36" y="116" width="15" height="6" rx="2.857142857142857" fill="#F0402F" stroke="#000" stroke-width="1.2"/>
+  <rect x="37.6" y="117.1" width="11.8" height="2.142857142857143" rx="1" fill="#FFF" opacity=".6"/>
+</svg>
