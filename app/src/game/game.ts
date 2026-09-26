@@ -726,10 +726,19 @@ export const createGame = ({
     ctx.font = `900 22px ${FONT_UI}`;
     ctx.fillText(`${(distance / 1000).toFixed(2)} km`, DESIGN_WIDTH - 136, distTop + 46);
 
-    // scaffold instrumentation, not shipping HUD
-    ctx.fillStyle = fps < 50 ? COLORS.red : COLORS.muted;
-    ctx.font = `800 12px ${FONT_UI}`;
-    ctx.fillText(`${fps.toFixed(0)} fps · ${obstacles.length} cars`, 18, 156);
+    /*
+     * Scaffold instrumentation, never the shipping HUD.
+     *
+     * `import.meta.env.DEV` inline rather than behind a helper: Vite replaces it
+     * with a literal, so the whole block is eliminated from a production bundle
+     * rather than merely skipped at runtime. A function call here would leave
+     * the strings and the measuring in the shipped file.
+     */
+    if (import.meta.env.DEV) {
+      ctx.fillStyle = fps < 50 ? COLORS.red : COLORS.muted;
+      ctx.font = `800 12px ${FONT_UI}`;
+      ctx.fillText(`${fps.toFixed(0)} fps · ${obstacles.length} cars`, 18, 156);
+    }
 
     drawPowerPills(ctx);
     drawCombo(ctx);
