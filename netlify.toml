@@ -1,0 +1,62 @@
+# Netlify deploys the web build of the game.
+#
+# The same `dist/` that Capacitor copies into the iOS app is what ships here —
+# there is no separate web entry point, so the browser and the phone run the
+# same bundle.
+
+[build]
+  # The Vite project is not at the repo root: `design/` sits beside it and has
+  # no package.json, so Netlify would find nothing to install without this.
+  base = "app"
+
+  # `pnpm build` is `tsc && vite build`, so a type error fails the deploy rather
+  # than shipping. That is deliberate — it is the same gate used locally.
+  command = "pnpm build"
+
+  # Relative to `base`, so this is app/dist. Writing "app/dist" here would make
+  # Netlify look for app/app/dist.
+  publish = "dist"
+
+[build.environment]
+  # 22 rather than the 24 used locally: it is the current LTS and nothing in the
+  # build needs anything newer. Raise it if a dependency ever does.
+  NODE_VERSION = "22"
+
+  # Pinned because app/pnpm-workspace.yaml uses `allowBuilds`, which is a pnpm 11
+  # key. On pnpm 10 it is simply unknown — not fatal, since 10 blocks build
+  # scripts by default anyway and @parcel/watcher is optional, but the pin keeps
+  # CI and local resolving identically.
+  PNPM_VERSION = "11.3.0"
+
+# The app routes with react-router's *memory* router, so the URL never changes —
+# every real visit is to `/`. This exists for the stray one: a bookmark or a
+# typed path would otherwise 404, and booting the game at the splash is a better
+# answer than a dead end. It does not make deep links work; nothing does, by
+# design (there is no URL bar in a webview).
+[[redirects]]
+  from = "/*"
+  to = "/index.html"
+  status = 200
+
+# Vite fingerprints everything under /assets, so those URLs are immutable: a
+# changed file gets a changed name.
+[[headers]]
+  for = "/assets/*"
+  [headers.values]
+    Cache-Control = "public, max-age=31536000, immutable"
+
+# The entry document is the one file whose name never changes, so it must not be
+# cached or a deploy would not reach anyone already holding it.
+[[headers]]
+  for = "/index.html"
+  [headers.values]
+    Cache-Control = "public, max-age=0, must-revalidate"
+
+[[headers]]
+  for = "/*"
+  [headers.values]
+    X-Content-Type-Options = "nosniff"
+    Referrer-Policy = "strict-origin-when-cross-origin"
+    # The game takes no input beyond touch and stores everything locally; none of
+    # these are needed, and denying them keeps the permission prompts away.
+    Permissions-Policy = "camera=(), microphone=(), geolocation=(), interest-cohort=()"
